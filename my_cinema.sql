@@ -12,7 +12,7 @@ CREATE TABLE PERSON(
    id_person INT NOT NULL AUTO_INCREMENT,
    first_name_person VARCHAR(50) NOT NULL,
    name_person VARCHAR(50) NOT NULL,
-   sex_person LOGICAL NOT NULL,
+   sex_person VARCHAR(50) NOT NULL,
    birth_person DATE NOT NULL,
    PRIMARY KEY(id_person)
 );
@@ -36,7 +36,8 @@ INSERT INTO DIRECTOR (first_name_person, name_person, sex_person, birth_person) 
     ("Quentin", "Tarantino", TRUE, '1963-03-27'),
     ("Ridley", "Scott", TRUE, '1937-11-30'),
     ("Steven", "Spielberg", TRUE, '1946-12-18'),
-    ("James", "Cameron", TRUE, '1954-08-16');    
+    ("James", "Cameron", TRUE, '1954-08-16'),
+    ("Robert", "Zemeckis", TRUE, '1952-05-14');    
 
 /*------------ FILM ------------*/
 CREATE TABLE FILM(
@@ -52,23 +53,29 @@ CREATE TABLE FILM(
 );
 
 INSERT INTO FILM (title_film, year_film, duration_film, id_director) VALUES
-    ("Pulp Fiction", '1994-01-01', '2:25:00', 1),
-    ("Inglourious Basterds", '2009-01-01', '2:33:00', 1),
-    ("Django Unchained", '2012-01-01', '2:45:00', 1),
-    ("Once Upon a Time… in Hollywood", '2019-01-01', '2:41:00', 1),
-    ("Alien", '1979-01-01', '1:57:00', 2),
-    ("Blade Runner", '1982-01-01', '1:51:00', 2),
-    ("Gladiator", '2000-01-01', '2:35:00', 2),
-    ("Robin des Bois", '2010-01-01', '2:20:00', 2),
-    ("E.T., l'extra-terrestre", '1982-01-01', '1:55:00', 3),
-    ("Jurassic Park", '1993-01-01', '2:08:00', 3),
-    ("Il faut sauver le soldat Ryan", '1998-01-01', '2:43:00', 3),
-    ("Minority Report", '2002-01-01', '2:25:00', 3),
-    ("Ready Player One", '2018-01-01', '2:20:00', 3),
-    ("Terminator 2 : Le Jugement dernier", '1991-01-01', '2:17:00', 4),
-    ("Titanic", '1997-01-01', '3:15:00', 4),
-    ("Avatar", '2009-01-01', '2:42:00', 4),
-    ("Avatar : La Voie de l'eau", '2022-01-01', '3:12:00', 4);
+   ("Pulp Fiction", '1994-01-01', '2:25:00', 1),
+   ("Inglourious Basterds", '2009-01-01', '2:33:00', 1),
+   ("Django Unchained", '2012-01-01', '2:45:00', 1),
+   ("Once Upon a Time… in Hollywood", '2019-01-01', '2:41:00', 1),
+   ("Alien", '1979-01-01', '1:57:00', 2),
+   ("Blade Runner", '1982-01-01', '1:51:00', 2),
+   ("Gladiator", '2000-01-01', '2:35:00', 2),
+   ("Robin des Bois", '2010-01-01', '2:20:00', 2),
+   ("E.T., l'extra-terrestre", '1982-01-01', '1:55:00', 3),
+   ("Jurassic Park", '1993-01-01', '2:08:00', 3),
+   ("Il faut sauver le soldat Ryan", '1998-01-01', '2:43:00', 3),
+   ("Minority Report", '2002-01-01', '2:25:00', 3),
+   ("Ready Player One", '2018-01-01', '2:20:00', 3),
+   ("Terminator 2 : Le Jugement dernier", '1991-01-01', '2:17:00', 4),
+   ("Titanic", '1997-01-01', '3:15:00', 4),
+   ("Avatar", '2009-01-01', '2:42:00', 4),
+   ("Avatar : La Voie de l'eau", '2022-01-01', '3:12:00', 4),
+   ("Retour vers le futur", '1985-01-01', '1:52:00', 5),
+   ("Forrest Gump", '1994-01-01', '2:22:00', 5);
+
+
+
+SELECT id_director FROM DIRECTOR WHERE first_name_person = "Quentin" AND name_person = "Tarantino";
 
 CREATE TABLE ACTOR(
    id_actor INT NOT NULL AUTO_INCREMENT,
@@ -97,3 +104,38 @@ CREATE TABLE talk(
    FOREIGN KEY(id_type_film) REFERENCES TYPE_FILM(id_type_film)
 );
 
+DECLARE @cnt INT = 32;
+
+WHILE @cnt < 90
+BEGIN
+   {INSERT INTO ACTOR (id_person)
+   VALUES (@cnt);}
+   SET @cnt = @cnt + 1;
+END;
+
+
+/*------------ da aggiungere ------------*/
+INSERT INTO role (name_role) VALUES	
+
+("Marty McFly"),
+("Emmett Brown"),
+("George McFly"),
+("Lorraine Baines-McFly"),
+("Biff Tannen");
+
+
+("Rick Dalton"),
+("Cliff Booth"),
+("Sharon Tate"),
+("Django Freeman"),
+("King Schultz"),
+("Calvin J. Candie"),
+("Broomhilda von Shaft),
+("Bridget von Hammersmark"),
+("Stephen, le majordome"),
+
+("Forrest Gump"),
+("Jennifer Curran"),
+("le lieutenant Dan Taylor"),
+("Benjamin Bufford),
+("Madame Gump");

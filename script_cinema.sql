@@ -170,7 +170,7 @@ INSERT INTO `film` (`id_film`, `title_film`, `id_director`, `year_film`, `durati
 	(6, 'Blade Runner', 2, '1982-01-01', '01:51:00', NULL, NULL),
 	(7, 'Gladiator', 2, '2000-01-01', '02:35:00', NULL, NULL),
 	(8, 'Robin des Bois', 2, '2010-01-01', '02:20:00', NULL, NULL),
-	(9, 'E.T., l\'extra-terrestre', 3, '1982-01-01', '01:55:00', NULL, NULL),
+	(9, 'E.T., lextra-terrestre', 3, '1982-01-01', '01:55:00', NULL, NULL), 
 	(10, 'Jurassic Park', 3, '1993-01-01', '02:08:00', NULL, NULL),
 	(11, 'Il faut sauver le soldat Ryan', 3, '1998-01-01', '02:43:00', NULL, NULL),
 	(12, 'Minority Report', 3, '2002-01-01', '02:25:00', NULL, NULL),
@@ -178,7 +178,7 @@ INSERT INTO `film` (`id_film`, `title_film`, `id_director`, `year_film`, `durati
 	(14, 'Terminator 2 : Le Jugement dernier', 4, '1991-01-01', '02:17:00', NULL, NULL),
 	(15, 'Titanic', 4, '1997-01-01', '03:15:00', NULL, NULL),
 	(16, 'Avatar', 4, '2009-01-01', '02:42:00', NULL, NULL),
-	(17, 'Avatar : La Voie de l\'eau', 4, '2022-01-01', '03:12:00', NULL, NULL),
+	(17, 'Avatar : La Voie de leau', 4, '2022-01-01', '03:12:00', NULL, NULL),
 	(18, 'Retour vers le futur', 5, '1985-01-01', '01:52:00', NULL, NULL),
 	(19, 'Forrest Gump', 5, '1994-01-01', '02:22:00', NULL, NULL),
 	(20, 'Seul au monde', 5, '2000-01-01', '02:23:00', NULL, NULL);
@@ -297,35 +297,42 @@ INSERT INTO `role` (`id_role`, `name_role`) VALUES
 	(2, 'Elliot'),
 	(3, 'Michael'),
 	(4, 'Gertie'),
+	
 	(5, 'Mary'),
 	(6, 'Alan Grant'),
 	(7, 'Ellie Sattler'),
 	(8, 'Ian Malcolm'),
 	(9, 'John Hammond'),
 	(10, 'Robert Muldoon'),
+	
 	(11, 'le capitaine John H. Miller'),
 	(12, 'le soldat 1re classe Richard Reiben'),
 	(13, 'le technical sergeant Michael Horvath'),
 	(14, 'le soldat 2e classe James Francis Ryan'),
 	(15, 'le soldat 1re classe Daniel Jackson'),
+	
 	(16, 'John Anderton'),
 	(17, 'Lamar Burgess'),
 	(18, 'Danny Witwer'),
 	(19, 'Agatha, la précog'),
-	(20, 'Lara Clarke Anderton, ex-femme d\'Anderton'),
+	(20, 'Lara Clarke Anderton, ex-femme dAnderton'),
+	
 	(21, 'Wade Owen Watts / Parzival'),
 	(22, 'Samantha Evelyn Cook / Art3mis'),
 	(23, 'Nolan Sorrento / Sorrento'),
 	(24, 'i-R0k'),
 	(25, 'Ogden Morrow / le Conservateu'),
 	(26, 'James Donovan Halliday / Anorak'),
+	
 	(27, 'le Terminator T-800'),
 	(28, 'John Connor'),
 	(29, 'Sarah Connor'),
 	(30, 'le Terminator T-1000'),
+	
 	(31, 'Jack Dawson'),
 	(32, 'Rose DeWitt Bukater'),
 	(33, 'Caledon \'Cal\' Hockley'),
+	
 	(34, 'Jake Sully'),
 	(35, 'Neytiri'),
 	(36, 'Dre Grace Augustine'),
@@ -333,19 +340,47 @@ INSERT INTO `role` (`id_role`, `name_role`) VALUES
 	(38, 'Trudy Chacon'),
 	(39, 'administrateur Parker Selfridge'),
 	(40, 'Ronal'),
+	
 	(41, 'Vincent Vega'),
 	(42, 'Jules Winnfield'),
 	(43, 'Butch Coolidge'),
 	(44, 'Mia Wallace'),
+	
 	(45, 'Chuck Noland'),
 	(46, 'Kelly Frears'),
+	
 	(54, 'le lieutenant Aldo Raine»'),
 	(55, 'Shosanna Dreyfus'),
 	(56, 'le colonel SS Hans Landa'),
 	(57, 'le sergent Donny Donowitz'),
 	(58, 'Bridget von Hammersmark'),
 	(59, 'le soldat Frederick Zoller'),
-	(60, 'le sergent Hugo Stiglitz');
+	(60, 'le sergent Hugo Stiglitz'),
+
+	(61, 'Marty McFly'),
+	(62, 'Emmett Brown'),
+	(63, 'George McFly'),
+	(64, 'Lorraine Baines-McFly'),
+	(65, 'Biff Tannen'),
+
+	(66, 'Rick Dalton'),
+	(67, 'Cliff Booth'),
+	(68, 'Sharon Tate'),
+
+	(69, 'Django Freeman'),
+	(70, 'King Schultz'),
+	(71, 'Calvin J. Candie'),
+	(72, 'Broomhilda von Shaft'),
+	(73, 'Bridget von Hammersmark'),
+	(74, 'Stephen, le majordome'),
+
+	(75, 'Forrest Gump'),
+	(76, 'Jennifer Curran'),
+	(77, 'le lieutenant Dan Taylor'),
+	(78, 'Benjamin Bufford'),
+	(79, 'Madame Gump');
+
+
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 
 -- Listage de la structure de la table my_cinema. talk
@@ -361,6 +396,38 @@ CREATE TABLE IF NOT EXISTS `talk` (
 -- Listage des données de la table my_cinema.talk : ~0 rows (environ)
 /*!40000 ALTER TABLE `talk` DISABLE KEYS */;
 /*!40000 ALTER TABLE `talk` ENABLE KEYS */;
+
+INSERT INTO `talk` (`id_film`, `id_type_film`) VALUES
+	(1, 9),
+	(1, 10),
+	(2, 5),
+	(3, 11),
+	(4, 10),
+	(5, 1),
+	(5, 13),
+	(6, 1),
+	(7, 3),
+	(7, 12),
+	(8, 4),
+	(9, 1),
+	(10, 1),
+	(10, 4),
+	(11, 3),
+	(11, 5),
+	(12, 1),
+	(12, 6),
+	(13, 1),
+	(14, 1),
+	(14, 7),
+	(15, 3),
+	(15, 8),
+	(16, 1),
+	(17, 1),
+	(18, 1),
+	(19, 2),
+	(19, 3),
+	(20, 3);
+
 
 -- Listage de la structure de la table my_cinema. type_film
 CREATE TABLE IF NOT EXISTS `type_film` (
@@ -383,7 +450,8 @@ INSERT INTO `type_film` (`id_type_film`, `name_type_film`) VALUES
 	(9, 'Film de gangster'),
 	(10, 'Comédie noire'),
 	(11, 'Western'),
-	(12, 'Historique');
+	(12, 'Historique'),
+	(13, 'Horror');
 /*!40000 ALTER TABLE `type_film` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

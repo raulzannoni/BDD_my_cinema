@@ -89,3 +89,19 @@ SELECT p.sex_person AS "Sex Actor",
  		COUNT(p.id_person) AS "Number of Actors"
 FROM person p
 GROUP BY p.sex_person
+
+/*-- K. Liste des acteurs ayant plus de 50 ans (âge révolu et non révolu) --*/
+SELECT p.first_name_person AS "First Name", 
+		p.name_person AS "Name"
+FROM actor a, person p
+WHERE p.id_person = a.id_person
+	AND p.birth_person >= NOW() - INTERVAL 50 year
+ORDER BY YEAR(p.birth_person) DESC 
+
+SELECT p.first_name_person AS "First Name", 
+		p.name_person AS "Name",
+		date_format(from_days(DATEDIFF(DATE(NOW()), p.birth_person))) AS  "Age"
+FROM actor a, person p
+WHERE p.id_person = a.id_person
+	AND p.birth_person >= NOW() - INTERVAL 50 year
+ORDER BY YEAR(p.birth_person) DESC 

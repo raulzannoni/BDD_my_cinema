@@ -56,7 +56,7 @@ WHERE f.id_film = (SELECT f.id_film WHERE f.title_film = "Blade Runner")
 	AND r.id_role = c.id_role
 ORDER BY p.name_person
 
-/*-- F. Films tournés par un acteur en particulier (id_acteur) avec leur rôle et l’année de
+/*-- G. Films tournés par un acteur en particulier (id_acteur) avec leur rôle et l’année de
 sortie (du film le plus récent au plus ancien) --*/
 SELECT  p.first_name_person AS "Actor First Name", 
 		p.name_person AS "Actor Name",

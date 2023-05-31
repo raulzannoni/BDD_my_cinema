@@ -69,3 +69,10 @@ WHERE p.id_person = (SELECT p.id_person WHERE p.first_name_person = "Tom" AND p.
 	AND f.id_film = (SELECT c.id_film WHERE a.id_actor = c.id_actor)
 	AND r.id_role = c.id_role
 ORDER BY YEAR(f.year_film) DESC
+
+/*-- H. Liste des personnes qui sont à la fois acteurs et réalisateurs --*/
+SELECT p.first_name_person AS "First Name", 
+		p.name_person AS "Name"		
+FROM actor a, person p, director d
+WHERE p.id_person = a.id_person
+	AND p.id_person = d.id_person

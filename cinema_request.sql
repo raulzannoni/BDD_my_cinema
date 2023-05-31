@@ -42,3 +42,16 @@ FROM person p, film f, director d
 WHERE f.id_director = d.id_director AND d.id_person = p.id_person
 GROUP BY f.id_director
 ORDER BY COUNT(f.title_film) DESC, p.name_person
+
+/*-- F. (Casting d’un film en particulier (id_film) : nom, prénom des acteurs + sexe --*/
+SELECT f.title_film AS "Movie Title", 
+		p.name_person AS "Actor Name", 
+		p.first_name_person AS "Actor First Name", 
+		p.sex_person AS "Sex", 
+		r.name_role AS "Role"
+FROM film f, casting c, actor a, person p, role r
+WHERE f.id_film = (SELECT f.id_film WHERE f.title_film = "Blade Runner")
+	AND f.id_film = c.id_film
+	AND p.id_person = (SELECT a.id_person WHERE a.id_actor = c.id_actor)
+	AND r.id_role = c.id_role
+ORDER BY p.name_person

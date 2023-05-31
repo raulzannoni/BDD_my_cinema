@@ -13,3 +13,11 @@ SELECT f.title_film AS "Movies longer than 2h15",
 FROM film f
 WHERE CEIL(TIME_TO_SEC(f.duration_film)/60) > 135
 ORDER BY CEIL(TIME_TO_SEC(f.duration_film)/60) DESC
+
+
+/*-- C. Liste des films d’un réalisateur (en précisant l’année de sortie)  --*/
+SELECT f.title_film AS "Movies longer than 2h15", 
+	CEIL(TIME_TO_SEC(f.duration_film)/60) AS "Duration (min)"
+FROM film f
+WHERE "Duration (min)" > 135
+ORDER BY "Duration (min)" DESC

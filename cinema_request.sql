@@ -19,7 +19,7 @@ ORDER BY CEIL(TIME_TO_SEC(f.duration_film)/60) DESC
 SELECT p.first_name_person AS "Director First Name",
 	p.name_person AS "Director Name",
 	f.title_film AS "Movie",
-	YEAR(f.year_film) AS "Year Release"
+	YEAR(f.year_film) AS "Year of Release"
 FROM person p, film f
 WHERE f.id_director = 
 	(SELECT d.id_director FROM director d WHERE d.id_person =
@@ -35,3 +35,10 @@ GROUP BY tf.name_type_film
 ORDER BY COUNT(t.id_type_film) DESC, tf.name_type_film
 
 /*-- E. Nombre de films par réalisateur (classés dans l’ordre décroissant) --*/
+SELECT p.first_name_person AS "Director First Name",
+	p.name_person AS "Director Name",
+	COUNT(f.title_film) AS "Number of Movies in DB"
+FROM person p, film f, director d
+WHERE f.id_director = d.id_director AND d.id_person = p.id_person
+GROUP BY f.id_director
+ORDER BY COUNT(f.title_film) DESC, p.name_person

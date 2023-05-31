@@ -77,10 +77,15 @@ FROM actor a, person p, director d
 WHERE p.id_person = a.id_person
 	AND p.id_person = d.id_person
 
-/*-- I. Liste des films qui ont moins de 5 ans (classés du plus récent au plus ancien)
- --*/
- SELECT f.title_film AS "Title Movie from the past 5 Years", 
+/*-- I. Liste des films qui ont moins de 5 ans (classés du plus récent au plus ancien) --*/
+SELECT f.title_film AS "Title Movie from the past 5 Years", 
 		YEAR(f.year_film) AS "Year of Release"		
 FROM film f
 WHERE f.year_film >= NOW() - INTERVAL 5 year
 ORDER BY YEAR(f.year_film) DESC
+
+/*-- J. Nombre d’hommes et de femmes parmi les acteurs --*/
+SELECT p.sex_person AS "Sex Actor",
+ 		COUNT(p.id_person) AS "Number of Actors"
+FROM person p
+GROUP BY p.sex_person

@@ -12,11 +12,11 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 
--- Listage de la structure de la base pour my_cinema
-CREATE DATABASE IF NOT EXISTS `my_cinema` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `my_cinema`;
+-- Listage de la structure de la base pour script_cinema_rz
+CREATE DATABASE IF NOT EXISTS `script_cinema_rz` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `script_cinema_rz`;
 
--- Listage de la structure de la table my_cinema. actor
+-- Listage de la structure de la table script_cinema_rz. actor
 CREATE TABLE IF NOT EXISTS `actor` (
   `id_actor` int(11) NOT NULL AUTO_INCREMENT,
   `id_person` int(11) NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `actor` (
   CONSTRAINT `actor_ibfk_1` FOREIGN KEY (`id_person`) REFERENCES `person` (`id_person`)
 ) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=latin1;
 
--- Listage des données de la table my_cinema.actor : ~79 rows (environ)
+-- Listage des données de la table script_cinema_rz.actor : ~79 rows (environ)
 /*!40000 ALTER TABLE `actor` DISABLE KEYS */;
 INSERT INTO `actor` (`id_actor`, `id_person`) VALUES
 	(19, 6),
@@ -109,7 +109,7 @@ INSERT INTO `actor` (`id_actor`, `id_person`) VALUES
 	(97, 89);
 /*!40000 ALTER TABLE `actor` ENABLE KEYS */;
 
--- Listage de la structure de la table my_cinema. casting
+-- Listage de la structure de la table script_cinema_rz. casting
 CREATE TABLE IF NOT EXISTS `casting` (
   `id_film` int(11) NOT NULL,
   `id_actor` int(11) NOT NULL,
@@ -122,11 +122,106 @@ CREATE TABLE IF NOT EXISTS `casting` (
   CONSTRAINT `casting_ibfk_3` FOREIGN KEY (`id_role`) REFERENCES `role` (`id_role`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Listage des données de la table my_cinema.casting : ~0 rows (environ)
+-- Listage des données de la table script_cinema_rz.casting : ~38 rows (environ)
 /*!40000 ALTER TABLE `casting` DISABLE KEYS */;
+INSERT INTO `casting` (`id_film`, `id_actor`, `id_role`) VALUES
+	(1, 19, 41),
+	(1, 20, 42),
+	(3, 20, 74),
+	(1, 21, 43),
+	(1, 22, 80),
+	(1, 23, 44),
+	(2, 24, 54),
+	(4, 24, 67),
+	(2, 25, 56),
+	(3, 25, 70),
+	(2, 26, 55),
+	(2, 27, 57),
+	(2, 28, 60),
+	(2, 29, 59),
+	(2, 30, 58),
+	(3, 31, 69),
+	(3, 32, 71),
+	(4, 32, 66),
+	(15, 32, 31),
+	(3, 33, 72),
+	(4, 34, 68),
+	(5, 35, 81),
+	(16, 35, 36),
+	(17, 35, 36),
+	(5, 36, 82),
+	(5, 37, 83),
+	(5, 38, 84),
+	(5, 39, 85),
+	(7, 40, 91),
+	(8, 40, 96),
+	(0, 41, 97),
+	(8, 41, 97),
+	(7, 42, 92),
+	(7, 43, 93),
+	(7, 44, 94),
+	(7, 45, 95),
+	(6, 46, 86),
+	(6, 47, 88),
+	(6, 48, 87),
+	(6, 49, 89),
+	(6, 50, 90),
+	(9, 51, 2),
+	(9, 52, 3),
+	(9, 53, 1),
+	(9, 54, 5),
+	(9, 55, 4),
+	(10, 56, 6),
+	(10, 57, 8),
+	(10, 58, 7),
+	(10, 59, 9),
+	(10, 60, 10),
+	(11, 61, 11),
+	(19, 61, 75),
+	(20, 61, 45),
+	(11, 62, 12),
+	(11, 63, 13),
+	(11, 64, 15),
+	(11, 65, 14),
+	(12, 66, 16),
+	(12, 67, 18),
+	(12, 68, 17),
+	(12, 69, 19),
+	(12, 70, 20),
+	(13, 71, 21),
+	(13, 72, 22),
+	(13, 73, 23),
+	(13, 74, 24),
+	(13, 75, 25),
+	(13, 76, 26),
+	(14, 77, 27),
+	(14, 78, 29),
+	(14, 79, 28),
+	(14, 80, 30),
+	(15, 81, 32),
+	(17, 81, 40),
+	(15, 82, 33),
+	(16, 83, 34),
+	(17, 83, 34),
+	(16, 84, 35),
+	(17, 84, 35),
+	(16, 85, 37),
+	(17, 85, 37),
+	(16, 86, 39),
+	(16, 87, 38),
+	(18, 88, 61),
+	(18, 89, 62),
+	(18, 90, 63),
+	(18, 91, 64),
+	(18, 92, 65),
+	(19, 93, 76),
+	(19, 94, 77),
+	(19, 95, 78),
+	(19, 96, 79),
+	(20, 97, 46);
 /*!40000 ALTER TABLE `casting` ENABLE KEYS */;
 
--- Listage de la structure de la table my_cinema. director
+-- Listage de la structure de la table script_cinema_rz. director
 CREATE TABLE IF NOT EXISTS `director` (
   `id_director` int(11) NOT NULL AUTO_INCREMENT,
   `id_person` int(11) NOT NULL,
@@ -135,7 +230,7 @@ CREATE TABLE IF NOT EXISTS `director` (
   CONSTRAINT `FK_director_person` FOREIGN KEY (`id_person`) REFERENCES `person` (`id_person`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
--- Listage des données de la table my_cinema.director : ~5 rows (environ)
+-- Listage des données de la table script_cinema_rz.director : ~5 rows (environ)
 /*!40000 ALTER TABLE `director` DISABLE KEYS */;
 INSERT INTO `director` (`id_director`, `id_person`) VALUES
 	(1, 1),
@@ -145,7 +240,7 @@ INSERT INTO `director` (`id_director`, `id_person`) VALUES
 	(5, 5);
 /*!40000 ALTER TABLE `director` ENABLE KEYS */;
 
--- Listage de la structure de la table my_cinema. film
+-- Listage de la structure de la table script_cinema_rz. film
 CREATE TABLE IF NOT EXISTS `film` (
   `id_film` int(11) NOT NULL AUTO_INCREMENT,
   `title_film` varchar(50) NOT NULL,
@@ -159,7 +254,7 @@ CREATE TABLE IF NOT EXISTS `film` (
   CONSTRAINT `FK_film_director` FOREIGN KEY (`id_director`) REFERENCES `director` (`id_director`)
 ) ENGINE=InnoDB AUTO_INCREMENT=157 DEFAULT CHARSET=latin1;
 
--- Listage des données de la table my_cinema.film : ~20 rows (environ)
+-- Listage des données de la table script_cinema_rz.film : ~20 rows (environ)
 /*!40000 ALTER TABLE `film` DISABLE KEYS */;
 INSERT INTO `film` (`id_film`, `title_film`, `id_director`, `year_film`, `duration_film`, `plot_film`, `star_film`) VALUES
 	(1, 'Pulp Fiction', 1, '1994-01-01', '02:25:00', NULL, NULL),
@@ -170,7 +265,7 @@ INSERT INTO `film` (`id_film`, `title_film`, `id_director`, `year_film`, `durati
 	(6, 'Blade Runner', 2, '1982-01-01', '01:51:00', NULL, NULL),
 	(7, 'Gladiator', 2, '2000-01-01', '02:35:00', NULL, NULL),
 	(8, 'Robin des Bois', 2, '2010-01-01', '02:20:00', NULL, NULL),
-	(9, 'E.T., lextra-terrestre', 3, '1982-01-01', '01:55:00', NULL, NULL), 
+	(9, 'E.T., l\'extra-terrestre', 3, '1982-01-01', '01:55:00', NULL, NULL),
 	(10, 'Jurassic Park', 3, '1993-01-01', '02:08:00', NULL, NULL),
 	(11, 'Il faut sauver le soldat Ryan', 3, '1998-01-01', '02:43:00', NULL, NULL),
 	(12, 'Minority Report', 3, '2002-01-01', '02:25:00', NULL, NULL),
@@ -184,7 +279,7 @@ INSERT INTO `film` (`id_film`, `title_film`, `id_director`, `year_film`, `durati
 	(20, 'Seul au monde', 5, '2000-01-01', '02:23:00', NULL, NULL);
 /*!40000 ALTER TABLE `film` ENABLE KEYS */;
 
--- Listage de la structure de la table my_cinema. person
+-- Listage de la structure de la table script_cinema_rz. person
 CREATE TABLE IF NOT EXISTS `person` (
   `id_person` int(11) NOT NULL AUTO_INCREMENT,
   `first_name_person` varchar(50) NOT NULL,
@@ -194,7 +289,7 @@ CREATE TABLE IF NOT EXISTS `person` (
   PRIMARY KEY (`id_person`)
 ) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=latin1;
 
--- Listage des données de la table my_cinema.person : ~84 rows (environ)
+-- Listage des données de la table script_cinema_rz.person : ~84 rows (environ)
 /*!40000 ALTER TABLE `person` DISABLE KEYS */;
 INSERT INTO `person` (`id_person`, `first_name_person`, `name_person`, `sex_person`, `birth_person`) VALUES
 	(1, 'Quentin', 'Tarantino', 'Masculin', '1963-03-27'),
@@ -277,62 +372,55 @@ INSERT INTO `person` (`id_person`, `first_name_person`, `name_person`, `sex_pers
 	(83, 'Lea', 'Thompson', 'Feminin', '1961-05-31'),
 	(84, 'Thomas F.', 'Wilson', 'Masculin', '1959-04-15'),
 	(85, 'Robin', 'Wright', 'Feminin', '1966-04-08'),
-	(86, 'Gary Sinise', 'Lang', 'Masculin', '1955-03-17'),
+	(86, 'Gary', 'Sinise', 'Masculin', '1955-03-17'),
 	(87, 'Mikelty', 'Williamson', 'Masculin', '1957-03-04'),
 	(88, 'Sally', 'Field', 'Feminin', '1946-11-06'),
 	(89, 'Helen', 'Hunt', 'Feminin', '1963-06-15');
 /*!40000 ALTER TABLE `person` ENABLE KEYS */;
 
--- Listage de la structure de la table my_cinema. role
+-- Listage de la structure de la table script_cinema_rz. role
 CREATE TABLE IF NOT EXISTS `role` (
   `id_role` int(11) NOT NULL AUTO_INCREMENT,
   `name_role` varchar(50) NOT NULL,
   PRIMARY KEY (`id_role`)
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=latin1;
 
--- Listage des données de la table my_cinema.role : ~53 rows (environ)
+-- Listage des données de la table script_cinema_rz.role : ~90 rows (environ)
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
 INSERT INTO `role` (`id_role`, `name_role`) VALUES
 	(1, 'E.T.'),
 	(2, 'Elliot'),
 	(3, 'Michael'),
 	(4, 'Gertie'),
-	
 	(5, 'Mary'),
 	(6, 'Alan Grant'),
 	(7, 'Ellie Sattler'),
 	(8, 'Ian Malcolm'),
 	(9, 'John Hammond'),
 	(10, 'Robert Muldoon'),
-	
 	(11, 'le capitaine John H. Miller'),
 	(12, 'le soldat 1re classe Richard Reiben'),
 	(13, 'le technical sergeant Michael Horvath'),
 	(14, 'le soldat 2e classe James Francis Ryan'),
 	(15, 'le soldat 1re classe Daniel Jackson'),
-	
 	(16, 'John Anderton'),
 	(17, 'Lamar Burgess'),
 	(18, 'Danny Witwer'),
 	(19, 'Agatha, la précog'),
-	(20, 'Lara Clarke Anderton, ex-femme dAnderton'),
-	
+	(20, 'Lara Clarke Anderton, ex-femme d\'Anderton'),
 	(21, 'Wade Owen Watts / Parzival'),
 	(22, 'Samantha Evelyn Cook / Art3mis'),
 	(23, 'Nolan Sorrento / Sorrento'),
 	(24, 'i-R0k'),
 	(25, 'Ogden Morrow / le Conservateu'),
 	(26, 'James Donovan Halliday / Anorak'),
-	
 	(27, 'le Terminator T-800'),
 	(28, 'John Connor'),
 	(29, 'Sarah Connor'),
 	(30, 'le Terminator T-1000'),
-	
 	(31, 'Jack Dawson'),
 	(32, 'Rose DeWitt Bukater'),
-	(33, 'Caledon \'Cal\' Hockley'),
-	
+	(33, 'Caledon Cal Hockley'),
 	(34, 'Jake Sully'),
 	(35, 'Neytiri'),
 	(36, 'Dre Grace Augustine'),
@@ -340,50 +428,58 @@ INSERT INTO `role` (`id_role`, `name_role`) VALUES
 	(38, 'Trudy Chacon'),
 	(39, 'administrateur Parker Selfridge'),
 	(40, 'Ronal'),
-	
 	(41, 'Vincent Vega'),
 	(42, 'Jules Winnfield'),
 	(43, 'Butch Coolidge'),
 	(44, 'Mia Wallace'),
-	
 	(45, 'Chuck Noland'),
 	(46, 'Kelly Frears'),
-	
-	(54, 'le lieutenant Aldo Raine»'),
+	(54, 'le lieutenant Aldo Raine'),
 	(55, 'Shosanna Dreyfus'),
 	(56, 'le colonel SS Hans Landa'),
 	(57, 'le sergent Donny Donowitz'),
 	(58, 'Bridget von Hammersmark'),
 	(59, 'le soldat Frederick Zoller'),
 	(60, 'le sergent Hugo Stiglitz'),
-
 	(61, 'Marty McFly'),
 	(62, 'Emmett Brown'),
 	(63, 'George McFly'),
 	(64, 'Lorraine Baines-McFly'),
 	(65, 'Biff Tannen'),
-
 	(66, 'Rick Dalton'),
 	(67, 'Cliff Booth'),
 	(68, 'Sharon Tate'),
-
 	(69, 'Django Freeman'),
 	(70, 'King Schultz'),
 	(71, 'Calvin J. Candie'),
 	(72, 'Broomhilda von Shaft'),
-	(73, 'Bridget von Hammersmark'),
 	(74, 'Stephen, le majordome'),
-
 	(75, 'Forrest Gump'),
 	(76, 'Jennifer Curran'),
 	(77, 'le lieutenant Dan Taylor'),
 	(78, 'Benjamin Bufford'),
-	(79, 'Madame Gump');
-
-
+	(79, 'Madame Gump'),
+	(80, 'Marsellus Wallace'),
+	(81, 'le lieutenant Ellen Louise Ripley'),
+	(82, 'le capitaine Arthur Koblenz Dallas'),
+	(83, 'la navigatrice Joan Marie Lambert'),
+	(84, 'l\'officier en second Gilbert Ward Thomas Kane'),
+	(85, 'l\'officier scientifique Ash'),
+	(86, 'Rick Deckard'),
+	(87, 'Roy Batty'),
+	(88, 'Rachel'),
+	(89, 'Pris'),
+	(90, 'Gaff'),
+	(91, 'Maximus Decimus Meridius'),
+	(92, 'Commode'),
+	(93, 'Lucilla'),
+	(94, 'Proximo'),
+	(95, 'le sénateur Gracchus'),
+	(96, 'Robin des Bois'),
+	(97, 'Belle Marianne');
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 
--- Listage de la structure de la table my_cinema. talk
+-- Listage de la structure de la table script_cinema_rz. talk
 CREATE TABLE IF NOT EXISTS `talk` (
   `id_film` int(11) NOT NULL,
   `id_type_film` int(11) NOT NULL,
@@ -393,50 +489,48 @@ CREATE TABLE IF NOT EXISTS `talk` (
   CONSTRAINT `talk_ibfk_2` FOREIGN KEY (`id_type_film`) REFERENCES `type_film` (`id_type_film`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Listage des données de la table my_cinema.talk : ~0 rows (environ)
+-- Listage des données de la table script_cinema_rz.talk : ~29 rows (environ)
 /*!40000 ALTER TABLE `talk` DISABLE KEYS */;
-/*!40000 ALTER TABLE `talk` ENABLE KEYS */;
-
 INSERT INTO `talk` (`id_film`, `id_type_film`) VALUES
-	(1, 9),
-	(1, 10),
-	(2, 5),
-	(3, 11),
-	(4, 10),
 	(5, 1),
-	(5, 13),
 	(6, 1),
-	(7, 3),
-	(7, 12),
-	(8, 4),
 	(9, 1),
 	(10, 1),
-	(10, 4),
-	(11, 3),
-	(11, 5),
 	(12, 1),
-	(12, 6),
 	(13, 1),
 	(14, 1),
-	(14, 7),
-	(15, 3),
-	(15, 8),
 	(16, 1),
 	(17, 1),
 	(18, 1),
 	(19, 2),
+	(7, 3),
+	(11, 3),
+	(15, 3),
 	(19, 3),
-	(20, 3);
+	(20, 3),
+	(8, 4),
+	(10, 4),
+	(2, 5),
+	(11, 5),
+	(12, 6),
+	(14, 7),
+	(15, 8),
+	(1, 9),
+	(1, 10),
+	(4, 10),
+	(3, 11),
+	(7, 12),
+	(5, 13);
+/*!40000 ALTER TABLE `talk` ENABLE KEYS */;
 
-
--- Listage de la structure de la table my_cinema. type_film
+-- Listage de la structure de la table script_cinema_rz. type_film
 CREATE TABLE IF NOT EXISTS `type_film` (
   `id_type_film` int(11) NOT NULL AUTO_INCREMENT,
   `name_type_film` varchar(50) NOT NULL,
   PRIMARY KEY (`id_type_film`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
--- Listage des données de la table my_cinema.type_film : ~12 rows (environ)
+-- Listage des données de la table script_cinema_rz.type_film : ~13 rows (environ)
 /*!40000 ALTER TABLE `type_film` DISABLE KEYS */;
 INSERT INTO `type_film` (`id_type_film`, `name_type_film`) VALUES
 	(1, 'Science-fiction'),

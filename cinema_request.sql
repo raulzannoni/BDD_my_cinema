@@ -21,3 +21,11 @@ SELECT f.title_film AS "Movies longer than 2h15",
 FROM film f
 WHERE "Duration (min)" > 135
 ORDER BY "Duration (min)" DESC
+
+/*-- D. Nombre de films par genre (classés dans l’ordre décroissant)  --*/
+SELECT tf.name_type_film AS "Movie Genre", 
+	COUNT(t.id_type_film) "Number of films in DB"
+FROM type_film tf, talk t
+WHERE tf.id_type_film = t.id_type_film
+GROUP BY tf.name_type_film
+ORDER BY COUNT(t.id_type_film) DESC, tf.name_type_film

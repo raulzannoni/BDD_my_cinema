@@ -1,9 +1,10 @@
 /*-- A. Informations d’un film (id_film) : titre, année, durée (au format HH:MM) et réalisateur --*/
 SELECT f.title_film AS "Movie title", 
 	YEAR(f.year_film) AS "Release date",
-	CEIL(TIME_TO_SEC(f.duration_film)/60)  AS "Movie duration", 
-	p.first_name_person AS "Director", 
-	p.name_person AS ""
+	TIME_FORMAT(f.duration_film, '%H:%i')  AS "Movie duration (h:m)",
+    CEIL(TIME_TO_SEC(f.duration_film)/60)  AS "Movie duration (m)", 
+	p.first_name_person AS "Director First Name", 
+	p.name_person AS "Director Name"
 FROM film f, person p, director d
 WHERE f.id_director = (SELECT d.id_director WHERE d.id_person = p.id_person) 
 	AND f.id_film = (SELECT f.id_film WHERE f.title_film = "Alien")

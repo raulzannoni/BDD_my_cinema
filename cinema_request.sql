@@ -101,7 +101,7 @@ ORDER BY YEAR(p.birth_person) DESC
 
 SELECT p.first_name_person AS "First Name", 
 		p.name_person AS "Name",
-		date_format(from_days(DATEDIFF(DATE(NOW()), p.birth_person))) AS  "Age"
+		DATE_FORMAT(FROM_DAYS(DATEDIFF(NOW(), p.birth_person)), '%Y') + 0 AS  "Age"
 FROM actor a, person p
 WHERE p.id_person = a.id_person
 	AND p.birth_person >= NOW() - INTERVAL 50 year

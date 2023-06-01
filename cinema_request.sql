@@ -106,3 +106,13 @@ FROM actor a, person p
 WHERE p.id_person = a.id_person
 	AND p.birth_person >= NOW() - INTERVAL 50 year
 ORDER BY YEAR(p.birth_person) DESC 
+
+/*-- K. Acteurs ayant joué dans 3 films ou plus --*/
+SELECT p.first_name_person AS "First Name Actor",
+		p.name_person AS "Name Actor",
+        COUNT(c.id_film) AS "Number of movies played"
+FROM person p, actor a, casting c
+WHERE p.id_person = a.id_person AND a.id_actor = c.id_actor
+GROUP BY p.id_person
+HAVING COUNT(c.id_film) >= 3
+ORDER BY COUNT(c.id_film) DESC, p.name_person

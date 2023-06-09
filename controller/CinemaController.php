@@ -18,7 +18,7 @@ class CinemaController
         public function filmList()
             {
                 $pdo = Connect::dbConnect();
-                $sql =  "SELECT id_film, title_film, YEAR(year_film) as year_film
+                $sql =  "SELECT title_film, YEAR(year_film) AS year_film
                         FROM film";
                 $db = $pdo->query($sql);
                 require "view/films/filmList.php";
@@ -26,6 +26,18 @@ class CinemaController
         public function filmDetail($id)
             {
                 $pdo = Connect::dbConnect();
+                $sqlFilm = "SELECT  f.title_film, 
+                                YEAR(f.year_film) AS year_film, 
+                                f.duration_film AS length_film,
+                                GROUP_CONCAT(tp.name_type_film SEPARATOR ' ') AS genres,
+                                CONCAT_WS(' ', p.first_name_person, p.name_person) as director
+                            FROM film f, person p, director d, talk t, type_film tp
+                            WHERE p.id_person = d.id_person
+                            AND f.id_director = d.id_director 
+                            AND tp.id_type_film = t.id_type_film
+                            AND t.id_film = f.id_film
+                            AND f.id_film = :id";
+                
             }
         public function addFilm($id)
             {

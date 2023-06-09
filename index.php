@@ -1,11 +1,14 @@
 <?php
 
+session_start();
+
 use Controller\CinemaController;
 
 spl_autoload_register(function ($class_name) {
     include $class_name . '.php';
 });
 
+require "controller/CinemaController.php";
 
 $ctrlCinema = new CinemaController();
 
@@ -24,7 +27,7 @@ if(isset($_GET["action"]))
         switch($_GET["action"])
             {
                 case "Home" : $ctrlCinema->Home(); break;
-                //case "Films" : $ctrlCinema->Films(); break;
+                case "Films" : $ctrlCinema->Films(); break;
                 
             }
         

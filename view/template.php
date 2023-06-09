@@ -24,6 +24,7 @@
             </div>
         </header>
         <main>
+            <?php //getMessages(); ?>
             <?= $content ?>
         </main> 
         <footer>

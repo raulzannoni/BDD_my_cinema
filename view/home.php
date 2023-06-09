@@ -9,7 +9,7 @@ if (isset($_SESSION['message'])) {
 
 ?>
 
-<div id="Home">
+<div id="Home" action="Home">
     <h2>Cinema_BDD</h2>
     <p>Welcome to the Home page!</p>
 

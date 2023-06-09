@@ -4,6 +4,8 @@ namespace Controller;
 session_start();
 use Model\Connect;
 
+require "model/Connect.php";
+
 class CinemaController  
     {
         public function Home()
@@ -14,12 +16,15 @@ class CinemaController
         public function Films()
             {
                 $pdo = Connect::dbConnect();
-                $sql =  "SELECT id_film, title_film, YEAR(year_film)
+                $sql =  "SELECT id_film, title_film, YEAR(year_film) as year_film
                         FROM film";
 
-                $data = $pdo->query($sql);
-                    
+                $d = $pdo->query($sql);
                 require "view/films/Films.php";
+                foreach($d as $data)
+                    {
+                        echo $data['id_film']." ".$data['title_film']." ".$data['year_film']."<br>";
+                    }
             }
     }
 

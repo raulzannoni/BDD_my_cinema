@@ -26,17 +26,31 @@ class CinemaController
         public function filmDetail($id)
             {
                 $pdo = Connect::dbConnect();
-                $sqlFilm = "SELECT  f.title_film, 
-                                YEAR(f.year_film) AS year_film, 
-                                f.duration_film AS length_film,
-                                GROUP_CONCAT(tp.name_type_film SEPARATOR ' ') AS genres,
-                                CONCAT_WS(' ', p.first_name_person, p.name_person) as director
-                            FROM film f, person p, director d, talk t, type_film tp
-                            WHERE p.id_person = d.id_person
-                            AND f.id_director = d.id_director 
-                            AND tp.id_type_film = t.id_type_film
-                            AND t.id_film = f.id_film
-                            AND f.id_film = :id";
+                $sql_filmDetail =   "SELECT  f.title_film, 
+                                    YEAR(f.year_film) AS year_film, 
+                                    f.duration_film AS length_film,
+                                    GROUP_CONCAT(tp.name_type_film SEPARATOR ' ') AS genres,
+                                    CONCAT_WS(' ', p.first_name_person, p.name_person) AS director
+                                    FROM film f, person p, director d, talk t, type_film tp
+                                    WHERE p.id_person = d.id_person
+                                    AND f.id_director = d.id_director 
+                                    AND tp.id_type_film = t.id_type_film
+                                    AND t.id_film = f.id_film
+                                    AND f.id_film = :id";
+                $db_filmDetail = $pdo->prepare($sql_filmDetail);
+                $db_filmDetail->execute(["id" => $id]);
+
+                $sql_castingDetail =   "SELECT CONCAT_WS(' ', p.first_name_person, p.name_person) AS actor, r.name_role AS role
+                                        FROM person p, actor a, film f, casting c, role r
+                                        WHERE f.id_film = c.id_film
+                                        AND a.id_actor = c.id_actor
+                                        AND r.id_role = c.id_role
+                                        AND p.id_person = a.id_person
+                                        AND f.id_film = :id";
+                $db_castingDetail = $pdo->prepare($sql_castingDetail);
+                $db_castingDetail->execute(["id" => $id]);
+
+                require "view/films/filmDetail.php";
                 
             }
         public function addFilm($id)

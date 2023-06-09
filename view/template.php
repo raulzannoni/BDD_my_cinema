@@ -13,22 +13,24 @@
     <div id="global">
         <header>
             <div id="header">
+                
                 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                    <a href="index.php?action=Home">Home</a>
-                    <a href="index.php?action=Films">Films</a>
-                    <a href="index.php?action=Actors">Acteurs</a>
-                    <a href="index.php?action=Directors">Réalisateurs</a>
-                    <a href="index.php?action=Type_Films">Genres</a>
+                    <a href="index.php?action=home">Accueil</a>
+                    <a href="index.php?action=filmList">Films</a>
+                    <a href="index.php?action=actorList">Acteurs</a>
+                    <a href="index.php?action=directorList">Réalisateurs</a>
+                    <a href="index.php?action=genreList">Genres</a>
+                    <button><a href="index.php?action=Connexion">Connexion</a></button>
                 </nav>
-                <button><a href="index.php?action=Connexion">Connexion</a></button>
+                
             </div>
         </header>
         <main>
             <?php //getMessages(); ?>
             <?= $content ?>
         </main> 
-        <footer>
-            MVC_cinema
+        <footer id="pied">
+            MVC_cinema appli créé par le stagiaire ELAN Raul ZANNONI
         </footer>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script> 

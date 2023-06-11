@@ -18,7 +18,7 @@ if(isset($_SESSION['message']))
 <div class="row m-3">
     <?php
 
-        foreach ($db->fetchAll() as $actor) 
+        foreach ($db_actorList->fetchAll() as $actor) 
             { ?>
             <div class="col-lg-2">
                 <a class="text-decoration-none text-reset" href="index.php?action=actorDetail&id=<?= $actor['id_person'] ?>">

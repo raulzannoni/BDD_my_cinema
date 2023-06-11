@@ -18,12 +18,12 @@ if(isset($_SESSION['message']))
 <div class="row m-3">
     <?php
 
-        foreach ($db->fetchAll() as $film) 
+        foreach ($db_filmList->fetchAll() as $film) 
             { ?>
             <div class="col-lg-2">
-                <a class="text-decoration-none text-reset" href="index.php?action=filmDetail&id=<?= $film['id_film'] ?>">
+                <a class="text-decoration-none text-reset" href="index.php?action=filmDetail&id=<?=$film['id_film']?>">
                     <img src="public/img/placeholder.png" alt="poster <?= $film['title_film'] ?>" style="width: 200px; height: 300px; object-fit: cover;">
-                    <h5 class="text-center fw-semibold"><?= $film['title_film'] ?> (<?= $film['year_film'] ?>)</h5>
+                    <h5 class="text-center fw-semibold"><?= $film['title_film'] ?> (<?= $film['year_film']  ?>)</h5>
                 </a>
             </div>
     <?php   } ?>

@@ -1,6 +1,6 @@
 <?php
 
-$dsn = "mysql:host=localhost;dbname=script_cinema_rz";
+$dsn = "mysql:host=localhost:3306;dbname=script_cinema_rz";
 $username = "root";
 $password = "";
 

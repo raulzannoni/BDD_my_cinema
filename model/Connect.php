@@ -4,7 +4,7 @@ namespace Model;
 
 abstract class Connect 
     {
-        const HOST = "localhost";
+        const HOST = "localhost:3306";
         const DB = "script_cinema_rz";
         const USER = "root";
         const PASS = "";

@@ -1,7 +1,7 @@
 <?php
 
 namespace Controller;
-session_start();
+//session_start();
 use Model\Connect;
 
 require "model/Connect.php";
@@ -92,7 +92,7 @@ class CinemaController
                                     AND a.id_actor = :id";
                 $db_filmsActor = $pdo->prepare($sql_filmsActor);
                 $db_filmsActor->execute(["id" => $id]);
-                require "view/films/actorDetail.php";
+                require "view/actors/actorDetail.php";
             }
         public function addActor()
             {

@@ -300,7 +300,7 @@ INSERT INTO `person` (`id_person`, `first_name_person`, `name_person`, `sex_pers
 	(6, 'John', 'Travolta', 'Masculin', '1954-02-18'),
 	(7, 'Samuel L.', 'Jackson', 'Masculin', '1948-12-21'),
 	(8, 'Bruce', 'Willis', 'Masculin', '1955-03-19'),
-	(9, 'Samuel L.', 'Jackson', 'Masculin', '1970-04-29'),
+	(9, 'Ving', 'Rhames', 'Masculin', '1959-05-12'),
 	(10, 'Uma', 'Thurman', 'Feminin', '1970-04-29'),
 	(11, 'Brad', 'Pitt', 'Masculin', '1963-12-18'),
 	(12, 'Christoph', 'Waltz', 'Masculin', '1956-10-04'),

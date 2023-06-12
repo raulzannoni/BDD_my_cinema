@@ -12,7 +12,7 @@ if(isset($_SESSION['message']))
 
 <div id="genreList">
     <h2>Cinema_BDD</h2>
-    <p>Genre List</p>
+    <p>Genres List</p>
 </div>
 
 <div class="row m-3">

@@ -25,6 +25,8 @@ $filmDetail = $db_filmDetail->fetch();
                         <p><?= $filmDetail['length_film'] ?></p>
                     <p class="card-text fw-bold lh-1">Director :</p>
                         <p><a class="text-decoration-none text-reset" href="index.php?action=directorDetail&id=<?= $filmDetail['id_director'] ?>"><?= $filmDetail['director'] ?></a></p>
+                    <p class="card-text fw-bold lh-1">Synopsis :</p>
+                        <p><?= $filmDetail['plot']?></p>
                 </div>
             </div>
         </div>

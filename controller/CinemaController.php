@@ -69,9 +69,9 @@ class CinemaController
         public function actorList()
             {
                 $pdo = Connect::dbConnect();
-                $sql =  "SELECT * FROM person p, actor a
-                        WHERE p.id_person = a.id_person";
-                $db_actorList = $pdo->query($sql);
+                $sql_actorList =   "SELECT * FROM person p, actor a
+                                    WHERE p.id_person = a.id_person";
+                $db_actorList = $pdo->query($sql_actorList);
                 require "view/actors/actorList.php";
             }
         public function actorDetail($id)
@@ -112,7 +112,7 @@ class CinemaController
                 $pdo = Connect::dbConnect();
                 $sql =  "SELECT * FROM person p, director d
                         WHERE p.id_person = d.id_person";
-                $db = $pdo->query($sql);
+                $db_directorList = $pdo->query($sql);
                 require "view/directors/directorList.php";
             }
         public function directorDetail($id)
@@ -149,17 +149,32 @@ class CinemaController
         public function genreList()
             {
                 $pdo = Connect::dbConnect();
-                $sql = "SELECT tp.id_type_film, tp.name_type_film, COUNT(f.title_film) AS count
-                        FROM type_film tp, film f, talk t
-                        WHERE t.id_type_film = tp.id_type_film AND t.id_film = f.id_film
-                        GROUP BY tp.id_type_film, tp.name_type_film
-                        ORDER BY COUNT(f.title_film) DESC";
-                $db = $pdo->query($sql);
+                $sql_genreList =   "SELECT tp.id_type_film, tp.name_type_film, COUNT(f.title_film) AS count
+                                    FROM type_film tp, film f, talk t
+                                    WHERE t.id_type_film = tp.id_type_film AND t.id_film = f.id_film
+                                    GROUP BY tp.id_type_film, tp.name_type_film
+                                    ORDER BY COUNT(f.title_film) DESC";
+                $db_genreList = $pdo->query($sql_genreList);
                 require "view/type_films/genreList.php";
             }
-        public function genreDetail()
+        public function genreDetail($id)
             {
                 $pdo = Connect::dbConnect();
+                $sql_genreDetail = "SELECT tp.id_type_film, tp.name_type_film AS genre
+                                    FROM type_film tp
+                                    WHERE tp.id_type_film = :id";
+                $db_genreDetail = $pdo->prepare($sql_genreDetail);
+                $db_genreDetail->execute(["id" => $id]);
+
+                $sql_filmsGenre =  "SELECT tp.id_type_film, f.title_film AS film, YEAR(f.year_film) AS year_film
+                                    FROM type_film tp, film f, talk t
+                                    WHERE tp.id_type_film = t.id_type_film 
+                                    AND t.id_film = f.id_film
+                                    AND tp.id_type_film = :id
+                                    ORDER BY YEAR(f.year_film) DESC";
+                
+                $db_filmsGenre = $pdo->prepare($sql_filmsGenre);
+                $db_filmsGenre->execute(["id" => $id]);
             }
         public function addGenre()
             {

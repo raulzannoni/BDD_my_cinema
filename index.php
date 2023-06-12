@@ -27,6 +27,7 @@ if(isset($_GET["action"]))
 
         switch($_GET["action"])
             {
+                /*---- HOME ----*/
                 case "home" : $ctrlCinema->home(); break;
 
                 /*---- FILMS ----*/
@@ -49,12 +50,13 @@ if(isset($_GET["action"]))
 
                 /*---- TYPE FILMS ----*/
                 case "genreList" : $ctrlCinema->genreList(); break;
+                case "genreDetail" : $ctrlCinema->genreDetail($id); break;
 
             }
-        
     }
 else
     {
+        /*---- HOME ----*/
         $ctrlCinema->home();
     }
     

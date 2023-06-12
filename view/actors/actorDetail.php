@@ -31,9 +31,7 @@ $actorDetail = $db_actorDetail->fetch();
     foreach ($db_filmsActor->fetchAll() as $filmsActor) {
     ?>
         <p class="lh-1">
-            <a class="text-decoration-none text-reset fw-bold" href="index.php?action=filmDetail&id=<?= $filmsActor['id_film'] ?>"><?= $filmsActor['film'] ?></a><?= "(".$filmsActor['year_film'].")"?>
-        </p>
-        <p>
+            <a class="text-decoration-none text-reset fw-bold" href="index.php?action=filmDetail&id=<?= $filmsActor['id_film'] ?> "><?= $filmsActor['film'] ?></a><?= " (".$filmsActor['year_film'].")"?>
             <span class="fw-bold">Role : </span> <?= $filmsActor['role'] ?>
         </p>
     <?php } ?>

@@ -32,7 +32,6 @@ $filmDetail = $db_filmDetail->fetch();
         </div>
     </div>
     <p class="fs-4">Casting :</p>
-
     <div class="row m-3">
         <?php
             foreach ($db_castingDetail->fetchAll() as $casting) 

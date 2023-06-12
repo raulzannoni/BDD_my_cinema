@@ -24,7 +24,7 @@ $actorDetail = $db_actorDetail->fetch();
         </div>
     </div>
 
-    <p class="fs-4">Movie played :</p> 
+    <p class="fs-4">Movie(s) played :</p> 
 
     <?php
 

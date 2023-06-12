@@ -2,7 +2,7 @@
 
 ob_start();
 
-$actorDetail = $db_actorDetail->fetch();
+$directorDetail = $db_directorDetail->fetch();
 
 ?>
 
@@ -10,29 +10,28 @@ $actorDetail = $db_actorDetail->fetch();
     <div class="card mb-3" style="max-width: 1024px;">
         <div class="row g-0">
             <div class="col-md-4">
-                <img src="public/img/placeholder.png" alt="portrait <?= $actorDetail['actor'] ?>" class="img-fluid rounded-start">
+                <img src="public/img/placeholder.png" alt="portrait <?= $directorDetail['director'] ?>" class="img-fluid rounded-start">
             </div>
             <div class="col-md-8">
                 <div class="card-body">
-                    <h2 class="card-title"><?= $actorDetail['actor'] ?></h2><br>
+                    <h2 class="card-title"><?= $directorDetail['director'] ?></h2><br>
                     <p class="card-text fw-bold lh-1">Birth Date :</p>
-                        <p><?= $actorDetail['birth'] ?></p>
+                        <p><?= $directorDetail['birth'] ?></p>
                     <p class="card-text fw-bold lh-1">Genre :</p>
-                        <p><?= $actorDetail['sex'] ?></p>
+                        <p><?= $directorDetail['sex'] ?></p>
                 </div>
             </div>
         </div>
     </div>
 
-    <p class="fs-4">Movie played :</p> 
+    <p class="fs-4">Movie(s) directed :</p> 
 
     <?php
 
-    foreach ($db_filmsActor->fetchAll() as $filmsActor) {
+    foreach ($db_filmsDirector->fetchAll() as $filmsDirector) {
     ?>
         <p class="lh-1">
-            <a class="text-decoration-none text-reset fw-bold" href="index.php?action=filmDetail&id=<?= $filmsActor['id_film'] ?> "><?= $filmsActor['film'] ?></a><?= " (".$filmsActor['year_film'].")"?>
-            <span class="fw-bold">Role : </span> <?= $filmsActor['role'] ?>
+            <a class="text-decoration-none text-reset fw-bold" href="index.php?action=filmDetail&id=<?= $filmsDirector['id_film'] ?> "><?= $filmsDirector['film'] ?></a><?= " (".$filmsDirector['year_film'].")"?>
         </p>
     <?php } ?>
 
@@ -41,7 +40,7 @@ $actorDetail = $db_actorDetail->fetch();
 <?php
 
 $content = ob_get_clean();
-$title = $actorDetail['actor'];
+$title = $directorDetail['director'];
 require 'view/template.php';
 
 ?>

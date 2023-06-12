@@ -17,6 +17,7 @@ $id = (isset($_GET['id'])) ? $_GET['id'] : null;
 if(isset($_GET["action"]))
     {
         /*
+        $id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $id_film = filter_input(INPUT_GET, "id_film", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $id_role = filter_input(INPUT_GET, "id_role", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $id_type_film = filter_input(INPUT_GET, "id_type_film", FILTER_SANITIZE_FULL_SPECIAL_CHARS);

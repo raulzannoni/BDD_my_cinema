@@ -115,9 +115,23 @@ class CinemaController
                 $db = $pdo->query($sql);
                 require "view/directors/directorList.php";
             }
-        public function directorDetail()
+        public function directorDetail($id)
             {
                 $pdo = Connect::dbConnect();
+                $sql_directorDetail =  "SELECT CONCAT_WS(' ', p.first_name_person, p.name_person) AS director, p.id_person, d.id_director, p.birth_person AS birth, p.sex_person AS sex  
+                                        FROM person p, director d
+                                        WHERE p.id_person = d.id_person
+                                        AND d.id_director = :id";
+                $db_directorDetail = $pdo->prepare($sql_directorDetail);
+                $db_directorDetail->execute(["id" => $id]);
+
+                $sql_filmsDirector =   "SELECT f.title_film AS film, YEAR(f.year_film) AS year_film, f.id_film
+                                        FROM film f, director d
+                                        WHERE f.id_director = d.id_director
+                                        AND d.id_director = :id";
+                $db_filmsDirector = $pdo->prepare($sql_filmsDirector);
+                $db_filmsDirector->execute(["id" => $id]);
+                require "view/directors/directorDetail.php";
             }
         public function addDirector()
             {

@@ -16,16 +16,15 @@ $filmDetail = $db_filmDetail->fetch();
                 <div class="card-body">
                     <h2 class="card-title"><?= $filmDetail['title_film'] ?> (<?= $filmDetail['year_film'] ?>)</h2><br>
                     <p class="card-text fw-bold lh-1">Genre(s) :</p>
-                        <p><?= $filmDetail['genres'] ?></p>
+                        <?php
+                            foreach ($db_genresFilm->fetchAll() as $genre) { ?>
+                                <a class="text-decoration-none text-reset" href="index.php?action=genreDetail&id=<?= $genre['id_type_film'] ?>"><?= $genre['genre'] ?></a>
+                    <?php } ?>
+                    <p></p>
                     <p class="card-text fw-bold lh-1">Duration :</p>
                         <p><?= $filmDetail['length_film'] ?></p>
                     <p class="card-text fw-bold lh-1">Director :</p>
                         <p><a class="text-decoration-none text-reset" href="index.php?action=directorDetail&id=<?= $filmDetail['id_director'] ?>"><?= $filmDetail['director'] ?></a></p>
-                    <p class="card-text">
-                        <a class="text-decoration-none" href="">
-                            <i class="fa-solid fa-pen-to-square"></i>
-                        </a>
-                    </p>
                 </div>
             </div>
         </div>

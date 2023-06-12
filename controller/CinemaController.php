@@ -30,7 +30,8 @@ class CinemaController
                                     YEAR(f.year_film) AS year_film, 
                                     f.duration_film AS length_film,
                                     GROUP_CONCAT(tp.name_type_film SEPARATOR ' ') AS genres,
-                                    CONCAT_WS(' ', p.first_name_person, p.name_person) AS director
+                                    CONCAT_WS(' ', p.first_name_person, p.name_person) AS director,
+                                    f.id_director
                                     FROM film f, person p, director d, talk t, type_film tp
                                     WHERE p.id_person = d.id_person
                                     AND f.id_director = d.id_director 
@@ -39,6 +40,14 @@ class CinemaController
                                     AND f.id_film = :id";
                 $db_filmDetail = $pdo->prepare($sql_filmDetail);
                 $db_filmDetail->execute(["id" => $id]);
+
+                $sql_genresFilm =   "SELECT f.title_film AS title, tp.name_type_film AS genre, tp.id_type_film
+                                    FROM type_film tp, talk t, film f
+                                    WHERE tp.id_type_film = t.id_type_film
+                                    AND t.id_film = f.id_film
+                                    AND f.id_film = :id";
+                $db_genresFilm = $pdo->prepare($sql_genresFilm);
+                $db_genresFilm->execute(["id" => $id]); 
 
                 $sql_castingDetail =   "SELECT CONCAT_WS(' ', p.first_name_person, p.name_person) AS actor, a.id_actor, r.name_role AS role
                                         FROM person p, actor a, film f, casting c, role r
@@ -166,7 +175,7 @@ class CinemaController
                 $db_genreDetail = $pdo->prepare($sql_genreDetail);
                 $db_genreDetail->execute(["id" => $id]);
 
-                $sql_filmsGenre =  "SELECT tp.id_type_film, f.title_film AS film, YEAR(f.year_film) AS year_film
+                $sql_filmsGenre =  "SELECT tp.id_type_film, f.id_film,  f.title_film AS film, YEAR(f.year_film) AS year_film
                                     FROM type_film tp, film f, talk t
                                     WHERE tp.id_type_film = t.id_type_film 
                                     AND t.id_film = f.id_film
@@ -175,6 +184,7 @@ class CinemaController
                 
                 $db_filmsGenre = $pdo->prepare($sql_filmsGenre);
                 $db_filmsGenre->execute(["id" => $id]);
+                require "view/type_films/genreDetail.php";
             }
         public function addGenre()
             {

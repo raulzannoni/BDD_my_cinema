@@ -18,11 +18,11 @@ if(isset($_SESSION['message']))
 <div class="row m-3">
     <?php
 
-        foreach ($db->fetchAll() as $genre) 
+        foreach ($db_genreList->fetchAll() as $genre) 
             { ?>
                 <ul>
                     <li class="list-inline-item">
-                        <a class="text-decoration-none text-reset fs-3" href="index.php?action=genre_detail&id=<?= $genre['id_type_film'] ?>">
+                        <a class="text-decoration-none text-reset fs-3" href="index.php?action=genreDetail&id=<?= $genre['id_type_film'] ?>">
                             <?= $genre['name_type_film'] ?>
                         </a>
                         (<?= $genre['count'] ?>)

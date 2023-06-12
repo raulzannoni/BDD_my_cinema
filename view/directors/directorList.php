@@ -18,7 +18,7 @@ if(isset($_SESSION['message']))
 <div class="row m-3">
     <?php
 
-        foreach ($db->fetchAll() as $director) 
+        foreach ($db_directorList->fetchAll() as $director) 
             { ?>
             <div class="col-lg-2">
                 <a class="text-decoration-none text-reset" href="index.php?action=directorDetail&id=<?= $director['id_director'] ?>">

@@ -27,31 +27,41 @@ if(isset($_GET["action"]))
 
         switch($_GET["action"])
             {
-                /*---- HOME ----*/
+                /*----------------*/
+                /*----- HOME -----*/
+                /*----------------*/
                 case "home" : $ctrlCinema->home(); break;
 
-                /*---- FILMS ----*/
+                /*-----------------*/
+                /*----- FILMS -----*/
+                /*-----------------*/
                 case "filmList" : $ctrlCinema->filmList(); break;
                 case "filmDetail" : $ctrlCinema->filmDetail($id); break;
                 case "addFilm" : $ctrlCinema->addFilm($id); break;
                 case "deleteFilm" : $ctrlCinema->deleteFilm($id); break;
                 //case "editFilm" : $ctrlCinema->editFilm($id); break;
 
-                /*---- ACTORS ----*/
+                /*------------------*/
+                /*----- ACTORS -----*/
+                /*------------------*/
                 case "actorList" : $ctrlCinema->actorList(); break;
                 case "actorDetail" : $ctrlCinema->actorDetail($id); break;
                 case "addActor" : $ctrlCinema->addActor($id); break;
                 case "deleteActor" : $ctrlCinema->deleteActor($id); break;
                 //case "editActor" : $ctrlCinema->editActor($id); break;
 
-                /*---- DIRECTORS ----*/
+                /*---------------------*/
+                /*----- DIRECTORS -----*/
+                /*---------------------*/
                 case "directorList" : $ctrlCinema->directorList(); break;
                 case "directorDetail" : $ctrlCinema->directorDetail($id); break;
                 case "addDirector" : $ctrlCinema->addDirector($id); break;
                 case "deleteDirector" : $ctrlCinema->deleteDirector($id); break;
                 //case "editDirector" : $ctrlCinema->editDirector($id); break;
 
-                /*---- TYPE FILMS ----*/
+                /*----------------*/
+                /*----- GENRES -----*/
+                /*----------------*/
                 case "genreList" : $ctrlCinema->genreList(); break;
                 case "genreDetail" : $ctrlCinema->genreDetail($id); break;
                 case "addGenre" : $ctrlCinema->addGenre($id); break;
@@ -62,7 +72,9 @@ if(isset($_GET["action"]))
     }
 else
     {
-        /*---- HOME ----*/
+        /*----------------*/
+        /*----- HOME -----*/
+        /*----------------*/
         $ctrlCinema->home();
     }
     

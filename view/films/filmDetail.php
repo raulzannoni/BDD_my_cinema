@@ -32,17 +32,19 @@ $filmDetail = $db_filmDetail->fetch();
         </div>
     </div>
     <p class="fs-4">Casting :</p>
-    <?php
 
-    foreach ($db_castingDetail->fetchAll() as $casting) {
-    ?>
-        <ul>
-            <a class="text-decoration-none text-reset" href="index.php?action=actorDetail&id=<?= $casting['id_actor'] ?>">
-                <li><span class="fw-bold"><?= $casting['actor'] . "</span> (" . $casting['role'] . ") " ?></li>
-            </a>
-        </ul>
-    <?php } ?>
-
+    <div class="row m-3">
+        <?php
+            foreach ($db_castingDetail->fetchAll() as $casting) 
+                { ?>
+                <div class="col-lg-2">
+                    <a class="text-decoration-none text-reset" href="index.php?action=actorDetail&id=<?=$casting['id_actor']?>">
+                        <img src="public/img/placeholder.png" alt="poster <?= $casting['actor'] ?>" style="width: 200px; height: 300px; object-fit: cover;">
+                        <h5 class="text-center fw-semibold"><?= $casting['actor'] ?> (<?= $casting['role']  ?>)</h5>
+                    </a>
+                </div>
+        <?php   } ?>
+    </div>
 </div>
 
 <?php

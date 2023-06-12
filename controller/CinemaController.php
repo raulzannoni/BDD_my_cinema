@@ -8,13 +8,17 @@ require "model/Connect.php";
 
 class CinemaController  
     {
-        /*--- HOME ---*/
+        /*----------------*/
+        /*----- HOME -----*/
+        /*----------------*/
         public function home()
             {
                 $pdo = Connect::dbConnect();
                 require "view/home.php";
             }
-        /*--- FILMS ---*/
+        /*-----------------*/
+        /*----- FILMS -----*/
+        /*-----------------*/
         public function filmList()
             {
                 $pdo = Connect::dbConnect();
@@ -75,7 +79,9 @@ class CinemaController
             {
                 $pdo = Connect::dbConnect();
             }
-        /*--- ACTORS ---*/
+        /*------------------*/
+        /*----- ACTORS -----*/
+        /*------------------*/
         public function actorList()
             {
                 $pdo = Connect::dbConnect();
@@ -117,7 +123,9 @@ class CinemaController
             {
                 $pdo = Connect::dbConnect();
             }
-        /*--- DIRECTORS ---*/
+        /*---------------------*/
+        /*----- DIRECTORS -----*/
+        /*---------------------*/
         public function directorList()
             {
                 $pdo = Connect::dbConnect();
@@ -147,6 +155,7 @@ class CinemaController
         public function addDirector()
             {
                 $pdo = Connect::dbConnect();
+                require "view/directors/addDirector.php";
             }
         public function modifyDirector()
             {
@@ -156,7 +165,9 @@ class CinemaController
             {
                 $pdo = Connect::dbConnect();
             }
-        /*--- GENRES ---*/
+        /*------------------*/
+        /*----- GENRES -----*/
+        /*------------------*/
         public function genreList()
             {
                 $pdo = Connect::dbConnect();
@@ -166,7 +177,7 @@ class CinemaController
                                     GROUP BY tp.id_type_film, tp.name_type_film
                                     ORDER BY COUNT(f.title_film) DESC";
                 $db_genreList = $pdo->query($sql_genreList);
-                require "view/type_films/genreList.php";
+                require "view/genres/genreList.php";
             }
         public function genreDetail($id)
             {
@@ -186,7 +197,7 @@ class CinemaController
                 
                 $db_filmsGenre = $pdo->prepare($sql_filmsGenre);
                 $db_filmsGenre->execute(["id" => $id]);
-                require "view/type_films/genreDetail.php";
+                require "view/genres/genreDetail.php";
             }
         public function addGenre()
             {
@@ -200,7 +211,9 @@ class CinemaController
             {
                 $pdo = Connect::dbConnect();
             }
-        /*--- ROLES ---*/
+        /*-----------------*/
+        /*----- ROLES -----*/
+        /*-----------------*/
         public function addRole()
             {
                 $pdo = Connect::dbConnect();

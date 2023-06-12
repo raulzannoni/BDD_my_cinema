@@ -107,6 +107,7 @@ class CinemaController
         public function addActor()
             {
                 $pdo = Connect::dbConnect();
+                require "view/actors/addActor.php";
             }
         public function modifyActor()
             {

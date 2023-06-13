@@ -114,7 +114,7 @@ class CinemaController
                 $db_actorDetail = $pdo->prepare($sql_actorDetail);
                 $db_actorDetail->execute(["id" => $id]);
 
-                $sql_filmsActor =   "SELECT f.title_film AS film, YEAR(f.year_film) AS year_film, r.name_role AS role, f.id_film
+                $sql_filmsActor =   "SELECT f.title_film AS film, YEAR(f.year_film) AS year_film, r.name_role AS role, f.id_film, f.star_film AS star
                                     FROM film f, casting c, role r, actor a
                                     WHERE f.id_film = c.id_film
                                     AND a.id_actor = c.id_actor
@@ -210,7 +210,7 @@ class CinemaController
                 $db_directorDetail = $pdo->prepare($sql_directorDetail);
                 $db_directorDetail->execute(["id" => $id]);
 
-                $sql_filmsDirector =   "SELECT f.title_film AS film, YEAR(f.year_film) AS year_film, f.id_film
+                $sql_filmsDirector =   "SELECT f.title_film AS film, YEAR(f.year_film) AS year_film, f.id_film, f.star_film AS star
                                         FROM film f, director d
                                         WHERE f.id_director = d.id_director
                                         AND d.id_director = :id";

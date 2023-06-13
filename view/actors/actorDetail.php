@@ -32,6 +32,21 @@ $actorDetail = $db_actorDetail->fetch();
     ?>
         <p class="lh-1">
             <a class="text-decoration-none text-reset fw-bold" href="index.php?action=filmDetail&id=<?= $filmsActor['id_film'] ?> "><?= $filmsActor['film'] ?></a><?= " (".$filmsActor['year_film'].")"?>
+            <?php
+                $stars_yellow = array_fill(0, $filmsActor['star'], 'yellow_star');
+                $stars_black = array_fill($filmsActor['star'], 5 - $filmsActor['star'], 'black_star');
+                $stars = array_merge($stars_yellow, $stars_black);
+                foreach($stars as $key => $value) 
+                    {
+                        if($value == 'yellow_star')
+                            { ?>
+                                <i class="fa fa-star rating-color" style="color: #fbc634"></i>
+                    <?php   }
+                        else
+                            {   ?>
+                                <i class="fa fa-star "></i>
+                    <?php   }
+                            }?>
             <span class="fw-bold">Role : </span> <?= $filmsActor['role'] ?>
         </p>
     <?php } ?>

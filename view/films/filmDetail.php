@@ -58,7 +58,7 @@ $filmDetail = $db_filmDetail->fetch();
                 { ?>
                 <div class="col-lg-2">
                     <a class="text-decoration-none text-reset" href="index.php?action=actorDetail&id=<?=$casting['id_actor']?>">
-                        <img src="public/img/placeholder.png" alt="poster <?= $casting['actor'] ?>" style="width: 200px; height: 300px; object-fit: cover;">
+                        <img src="public/img/placeholder.png" alt="poster <?= $casting['actor'] ?>" class="img-thumbnail">
                         <h5 class="text-center fw-semibold"><?= $casting['actor'] ?> (<?= $casting['role']  ?>)</h5>
                     </a>
                 </div>

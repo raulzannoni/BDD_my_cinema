@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
--- Hôte :                        127.0.0.1
--- Version du serveur:           8.0.30 - MySQL Community Server - GPL
+-- Hôte:                         127.0.0.1
+-- Version du serveur:           5.7.33 - MySQL Community Server (GPL)
 -- SE du serveur:                Win64
--- HeidiSQL Version:             10.2.0.5599
+-- HeidiSQL Version:             11.2.0.6213
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -10,16 +10,17 @@
 /*!50503 SET NAMES utf8mb4 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
 -- Listage de la structure de la base pour script_cinema_rz
-CREATE DATABASE IF NOT EXISTS `script_cinema_rz` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE IF NOT EXISTS `script_cinema_rz` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin */;
 USE `script_cinema_rz`;
 
 -- Listage de la structure de la table script_cinema_rz. actor
 CREATE TABLE IF NOT EXISTS `actor` (
-  `id_actor` int NOT NULL AUTO_INCREMENT,
-  `id_person` int NOT NULL,
+  `id_actor` int(11) NOT NULL AUTO_INCREMENT,
+  `id_person` int(11) NOT NULL,
   PRIMARY KEY (`id_actor`),
   KEY `id_person` (`id_person`),
   CONSTRAINT `actor_ibfk_1` FOREIGN KEY (`id_person`) REFERENCES `person` (`id_person`)
@@ -111,9 +112,9 @@ INSERT INTO `actor` (`id_actor`, `id_person`) VALUES
 
 -- Listage de la structure de la table script_cinema_rz. casting
 CREATE TABLE IF NOT EXISTS `casting` (
-  `id_film` int NOT NULL,
-  `id_actor` int NOT NULL,
-  `id_role` int NOT NULL,
+  `id_film` int(11) NOT NULL,
+  `id_actor` int(11) NOT NULL,
+  `id_role` int(11) NOT NULL,
   PRIMARY KEY (`id_film`,`id_actor`,`id_role`),
   KEY `id_actor` (`id_actor`),
   KEY `id_role` (`id_role`),
@@ -223,8 +224,8 @@ INSERT INTO `casting` (`id_film`, `id_actor`, `id_role`) VALUES
 
 -- Listage de la structure de la table script_cinema_rz. director
 CREATE TABLE IF NOT EXISTS `director` (
-  `id_director` int NOT NULL AUTO_INCREMENT,
-  `id_person` int NOT NULL,
+  `id_director` int(11) NOT NULL AUTO_INCREMENT,
+  `id_person` int(11) NOT NULL,
   PRIMARY KEY (`id_director`),
   KEY `id_personne` (`id_person`),
   CONSTRAINT `FK_director_person` FOREIGN KEY (`id_person`) REFERENCES `person` (`id_person`)
@@ -242,13 +243,13 @@ INSERT INTO `director` (`id_director`, `id_person`) VALUES
 
 -- Listage de la structure de la table script_cinema_rz. film
 CREATE TABLE IF NOT EXISTS `film` (
-  `id_film` int NOT NULL AUTO_INCREMENT,
+  `id_film` int(11) NOT NULL AUTO_INCREMENT,
   `title_film` varchar(50) NOT NULL,
-  `id_director` int NOT NULL DEFAULT '0',
+  `id_director` int(11) NOT NULL DEFAULT '0',
   `year_film` date NOT NULL,
   `duration_film` time NOT NULL,
   `plot_film` text,
-  `star_film` smallint DEFAULT NULL,
+  `star_film` smallint(6) DEFAULT NULL,
   `poster_film` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id_film`),
   KEY `FK_film_director` (`id_director`),
@@ -282,7 +283,7 @@ INSERT INTO `film` (`id_film`, `title_film`, `id_director`, `year_film`, `durati
 
 -- Listage de la structure de la table script_cinema_rz. person
 CREATE TABLE IF NOT EXISTS `person` (
-  `id_person` int NOT NULL AUTO_INCREMENT,
+  `id_person` int(11) NOT NULL AUTO_INCREMENT,
   `first_name_person` varchar(50) NOT NULL,
   `name_person` varchar(50) NOT NULL,
   `sex_person` varchar(50) NOT NULL,
@@ -382,7 +383,7 @@ INSERT INTO `person` (`id_person`, `first_name_person`, `name_person`, `sex_pers
 
 -- Listage de la structure de la table script_cinema_rz. role
 CREATE TABLE IF NOT EXISTS `role` (
-  `id_role` int NOT NULL AUTO_INCREMENT,
+  `id_role` int(11) NOT NULL AUTO_INCREMENT,
   `name_role` varchar(50) NOT NULL,
   PRIMARY KEY (`id_role`)
 ) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=latin1;
@@ -483,8 +484,8 @@ INSERT INTO `role` (`id_role`, `name_role`) VALUES
 
 -- Listage de la structure de la table script_cinema_rz. talk
 CREATE TABLE IF NOT EXISTS `talk` (
-  `id_film` int NOT NULL,
-  `id_type_film` int NOT NULL,
+  `id_film` int(11) NOT NULL,
+  `id_type_film` int(11) NOT NULL,
   PRIMARY KEY (`id_film`,`id_type_film`),
   KEY `id_type_film` (`id_type_film`),
   CONSTRAINT `talk_ibfk_1` FOREIGN KEY (`id_film`) REFERENCES `film` (`id_film`),
@@ -527,29 +528,32 @@ INSERT INTO `talk` (`id_film`, `id_type_film`) VALUES
 
 -- Listage de la structure de la table script_cinema_rz. type_film
 CREATE TABLE IF NOT EXISTS `type_film` (
-  `id_type_film` int NOT NULL AUTO_INCREMENT,
+  `id_type_film` int(11) NOT NULL AUTO_INCREMENT,
   `name_type_film` varchar(50) NOT NULL,
+  `poster_type_film` text,
+  `description_type_film` text,
   PRIMARY KEY (`id_type_film`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 -- Listage des données de la table script_cinema_rz.type_film : ~13 rows (environ)
 /*!40000 ALTER TABLE `type_film` DISABLE KEYS */;
-INSERT INTO `type_film` (`id_type_film`, `name_type_film`) VALUES
-	(1, 'Science-fiction'),
-	(2, 'Comédie dramatique'),
-	(3, 'Drame'),
-	(4, 'Aventure'),
-	(5, 'Guerre'),
-	(6, 'Policier'),
-	(7, 'Action'),
-	(8, 'Romantique'),
-	(9, 'Film de gangster'),
-	(10, 'Comédie noire'),
-	(11, 'Western'),
-	(12, 'Historique'),
-	(13, 'Horror');
+INSERT INTO `type_film` (`id_type_film`, `name_type_film`, `poster_type_film`, `description_type_film`) VALUES
+	(1, 'Science-fiction', NULL, NULL),
+	(2, 'Comédie dramatique', NULL, NULL),
+	(3, 'Drame', NULL, NULL),
+	(4, 'Aventure', NULL, NULL),
+	(5, 'Guerre', NULL, NULL),
+	(6, 'Policier', NULL, NULL),
+	(7, 'Action', NULL, NULL),
+	(8, 'Romantique', NULL, NULL),
+	(9, 'Film de gangster', NULL, NULL),
+	(10, 'Comédie noire', NULL, NULL),
+	(11, 'Western', NULL, NULL),
+	(12, 'Historique', NULL, NULL),
+	(13, 'Horror', NULL, NULL);
 /*!40000 ALTER TABLE `type_film` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;

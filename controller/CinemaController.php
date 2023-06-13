@@ -70,6 +70,19 @@ class CinemaController
         public function addFilm($id)
             {
                 $pdo = Connect::dbConnect();
+                $sql_addFilm = "INSERT INTO film (title_film, id_director, year_film, duration_film, plot_film, star_film, poster_film)
+                                VALUES (:title_film, :id_director, :year_film, :duration_film, :plot_film, :star_film, :poster_film)";
+                $db_addFilm = $pdo->prepare($sql_addFilm);
+                
+                $db_addFilm->bindValue(':title_film', $title_film);
+                $db_addFilm->bindValue(':id_director', $id_director);
+                $db_addFilm->bindValue(':year_film', $year_film);
+                $db_addFilm->bindValue(':duration_film', $duration_film);
+                $db_addFilm->bindValue(':plot_film', $plot_film);
+                $db_addFilm->bindValue(':star_film', $star_film);
+                $db_addFilm->bindValue(':poster_film', $poster_film);
+
+                $db_addFilm->execute();
             }
         public function modifyFilm($id)
             {
@@ -112,7 +125,6 @@ class CinemaController
             }
         public function addActor()
             {
-                $pdo = Connect::dbConnect();
                 if(isset($_POST['submit']))
                     {
                         $first_name = filter_input(INPUT_POST, "first_name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -164,6 +176,7 @@ class CinemaController
                                     }
                             }
                     }
+                $pdo = Connect::dbConnect();
                 $sql_actorData = "";
                 require "view/actors/addActor.php";
             }

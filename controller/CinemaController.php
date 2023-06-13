@@ -22,7 +22,7 @@ class CinemaController
         public function filmList()
             {
                 $pdo = Connect::dbConnect();
-                $sql =  "SELECT id_film, title_film, YEAR(year_film) AS year_film
+                $sql =  "SELECT id_film, title_film, YEAR(year_film) AS year_film, star_film AS star
                         FROM film";
                 $db_filmList = $pdo->query($sql);
                 require "view/films/filmList.php";

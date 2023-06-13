@@ -24,7 +24,7 @@ if(isset($_SESSION['message']))
                     <a class="text-decoration-none text-reset" href="index.php?action=filmDetail&id=<?=$film['id_film']?>">
                         <img src="public/img/placeholder.png" alt="poster <?= $film['title_film'] ?>" class="img-thumbnail">
                         <h5 class="text-center fw-semibold"><?= $film['title_film'] ?> (<?= $film['year_film']  ?>)</h5>
-                        <div class="mt-0 d-flex  justify-content-between align-items-center">
+                        <div class="mt-0 d-flex justify-content-between align-items-center">
                             <div class="small-ratings">
                                 <?php
                                     $stars_yellow = array_fill(0, $film['star'], 'yellow_star');

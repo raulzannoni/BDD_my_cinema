@@ -47,6 +47,8 @@ $filmDetail = $db_filmDetail->fetch();
                         </div>
                     <p class="card-text fw-bold lh-1" style="margin-top: 16px">Synopsis :</p>
                         <p><?= $filmDetail['plot']?></p>
+                    <p class="card-text fw-bold lh-1">Edit : <a class="text-decoration-none text-reset" href="index.php?action=editFilm&id=<?= $filmDetail['id_film'] ?>"><i class="fa-regular fa-pen-to-square"></i></a></p>
+                    <p class="card-text fw-bold lh-1">Delete : <a class="text-decoration-none text-reset" href="index.php?action=deleteFilm&id=<?= $filmDetail['id_film'] ?>"><i class="fa-regular fa-trash-can"></i></a></p>
                 </div>
             </div>
         </div>

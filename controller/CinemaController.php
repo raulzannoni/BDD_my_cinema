@@ -37,7 +37,8 @@ class CinemaController
                                     CONCAT_WS(' ', p.first_name_person, p.name_person) AS director,
                                     f.star_film AS star,
                                     f.plot_film AS plot,
-                                    f.id_director
+                                    f.id_director,
+                                    f.id_film
                                     FROM film f, person p, director d, talk t, type_film tp
                                     WHERE p.id_person = d.id_person
                                     AND f.id_director = d.id_director 
@@ -123,6 +124,12 @@ class CinemaController
                             }
                     }
                 $pdo = Connect::dbConnect();
+                
+                $sql_directorList = "SELECT * FROM person p, director d
+                                    WHERE p.id_person = d.id_person";
+                $db_directorList = $pdo->query($sql_directorList);
+                
+
                 $sql_addFilm = "INSERT INTO film (title_film, id_director, year_film, duration_film, plot_film, star_film, poster_film)
                                 VALUES (:title_film, :id_director, :year_film, :duration_film, :plot_film, :star_film, :poster_film)";
                 $db_addFilm = $pdo->prepare($sql_addFilm);
@@ -137,7 +144,7 @@ class CinemaController
 
                 $db_addFilm->execute();
             }
-        public function modifyFilm($id)
+        public function editFilm($id)
             {
                 $pdo = Connect::dbConnect();
             }
@@ -251,7 +258,7 @@ class CinemaController
                 $sql_actorData = "";
                 require "view/actors/addActor.php";
             }
-        public function modifyActor()
+        public function editActor()
             {
                 $pdo = Connect::dbConnect();
             }
@@ -293,7 +300,7 @@ class CinemaController
                 $pdo = Connect::dbConnect();
                 require "view/directors/addDirector.php";
             }
-        public function modifyDirector()
+        public function editDirector()
             {
                 $pdo = Connect::dbConnect();
             }
@@ -403,35 +410,55 @@ class CinemaController
                                         $_SESSION['message'] = "<p class='insuccess fadeOut'>Mauvaise extension ou image trop volumineuse!</p>";
                                     }
                             }
-                    }
-                if($genre)
-                    {
-                        $pdo = Connect::dbConnect();
-                        $sql_addGenre =    "INSERT INTO type_film (name_type_film, poster_film, description_type_film)
-                                            VALUES (:name_type_film, :poster_film, :description_type_film)";
-                        $db_addGenre = $pdo->prepare($sql_addGenre);
-
-                        $db_addGenre->bindValue(":name_type_film", $genre);
-                        $db_addGenre->bindValue(":poster_film", $portrait);
-                        $db_addGenre->bindValue(":description_type_film", $description);
+                    
                         
-                        $db_addGenre->execute();
+                        $pdo = Connect::dbConnect();
+                        $sql_genreList = "SELECT * FROM type_film tp";
+                        $db_genreList = $pdo->query($sql_genreList);
+                        foreach($db_genreList->fetchAll() as $genres)
+                            {
+                                if(strtolower($genres['name_type_film']) ==
+                                strtolower($genre))
+                                    {
+                                        $genreExist = TRUE;
+                                    }
+                                else
+                                    {
+                                        $genreExist = FALSE;
+                                    }
+                            }
+                        if($genreExist)
+                            {
+                                $_SESSION['message'] = "<p class='insuccess fadeOut'>Le genre de film ajouté exist déjà...</p>";
+                                header("Location:index.php?action=addGenre");
+                            }
+                                $sql_addGenre =    "INSERT INTO type_film (name_type_film, poster_film, description_type_film)
+                                VALUES (:name_type_film, :poster_film, :description_type_film)";
+                                $db_addGenre = $pdo->prepare($sql_addGenre);
+
+                                $db_addGenre->bindValue(":name_type_film", $genre);
+                                $db_addGenre->bindValue(":poster_film", $portrait);
+                                $db_addGenre->bindValue(":description_type_film", $description);
+                                
+                                $db_addGenre->execute();
                     }
                 require "view/genres/addGenre.php";
             }
-        public function modifyGenre()
+        public function editGenre()
             {
                 $pdo = Connect::dbConnect();
+                require "view/genres/editGenre.php";
             }
         public function deleteGenre()
             {
                 $pdo = Connect::dbConnect();
+                require "view/genres/deleteGenre.php";
             }
         public function checkGenre($id)
             {
                 $pdo = Connect::dbConnect();
-                $sql_checkGenre =  "SELECT * FROM person
-                                    WHERE id_person = :id";
+                $sql_checkGenre =  "SELECT * FROM type_film
+                                    WHERE id_type_film = :id";
                 $db_checkGenre = $pdo->prepare($sql_checkGenre);
                 $db_checkGenre->execute(["id" => $id]);
                 $genreExist = $db_checkGenre->fetch();
@@ -448,7 +475,7 @@ class CinemaController
             {
                 $pdo = Connect::dbConnect();
             }
-        public function modifyRole()
+        public function editRole()
             {
                 $pdo = Connect::dbConnect();
             }

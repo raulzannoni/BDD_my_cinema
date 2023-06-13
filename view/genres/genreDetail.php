@@ -8,7 +8,10 @@ $genreDetail = $db_genreDetail->fetch();
 
 <div id="genreDetail">
     <h2>Cinema_BDD</h2>
-    <p><?= $genreDetail['genre'] ?> films</p>
+    <p><?= $genreDetail['genre'] ?> films
+        <p class="card-text fw-bold lh-1">Edit : <a class="text-decoration-none text-reset" href="index.php?action=editGenre&id=<?= $genreDetail['id_type_film'] ?>"><i class="fa-regular fa-pen-to-square"></i></a></p>
+        <p class="card-text fw-bold lh-1">Delete : <a class="text-decoration-none text-reset" href="index.php?action=deleteGenre&id=<?= $genreDetail['id_type_film'] ?>"><i class="fa-regular fa-trash-can"></i></a></p>
+    </p>
 </div>
 
 <div class="row">

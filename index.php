@@ -39,16 +39,16 @@ if(isset($_GET["action"]))
                 case "filmDetail" : $ctrlCinema->filmDetail($id); break;
                 case "addFilm" : $ctrlCinema->addFilm(); break;
                 case "deleteFilm" : $ctrlCinema->deleteFilm($id); break;
-                //case "editFilm" : $ctrlCinema->editFilm($id); break;
+                case "editFilm" : $ctrlCinema->editFilm($id); break;
 
                 /*------------------*/
                 /*----- ACTORS -----*/
                 /*------------------*/
                 case "actorList" : $ctrlCinema->actorList(); break;
                 case "actorDetail" : $ctrlCinema->actorDetail($id); break;
-                case "addActor" : $ctrlCinema->addActor($id); break;
+                case "addActor" : $ctrlCinema->addActor(); break;
                 case "deleteActor" : $ctrlCinema->deleteActor($id); break;
-                //case "editActor" : $ctrlCinema->editActor($id); break;
+                case "editActor" : $ctrlCinema->editActor($id); break;
 
                 /*---------------------*/
                 /*----- DIRECTORS -----*/
@@ -57,7 +57,7 @@ if(isset($_GET["action"]))
                 case "directorDetail" : $ctrlCinema->directorDetail($id); break;
                 case "addDirector" : $ctrlCinema->addDirector(); break;
                 case "deleteDirector" : $ctrlCinema->deleteDirector($id); break;
-                //case "editDirector" : $ctrlCinema->editDirector($id); break;
+                case "editDirector" : $ctrlCinema->editDirector($id); break;
 
                 /*----------------*/
                 /*----- GENRES -----*/
@@ -66,7 +66,7 @@ if(isset($_GET["action"]))
                 case "genreDetail" : $ctrlCinema->genreDetail($id); break;
                 case "addGenre" : $ctrlCinema->addGenre(); break;
                 case "deleteGenre" : $ctrlCinema->deleteGenre($id); break;
-                //case "editGenre" : $ctrlCinema->editGenre($id); break;
+                case "editGenre" : $ctrlCinema->editGenre($id); break;
 
             }
     }

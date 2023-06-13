@@ -15,15 +15,14 @@ if(isset($_SESSION['message']))
     <p>Film List</p>
 </div>
 
-<div class="row m-2">
-    <div class="row m-3">
+    <div class="row">
         <?php
 
             foreach ($db_filmList->fetchAll() as $film) 
                 { ?>
                 <div class="col-lg-2">
                     <a class="text-decoration-none text-reset" href="index.php?action=filmDetail&id=<?=$film['id_film']?>">
-                        <img src="public/img/placeholder.png" alt="poster <?= $film['title_film'] ?>" style="width: 200px; height: 300px; object-fit: cover;">
+                        <img src="public/img/placeholder.png" alt="poster <?= $film['title_film'] ?>" class="img-thumbnail">
                         <h5 class="text-center fw-semibold"><?= $film['title_film'] ?> (<?= $film['year_film']  ?>)</h5>
                         <div class="mt-0 d-flex  justify-content-between align-items-center">
                             <div class="small-ratings">
@@ -48,7 +47,7 @@ if(isset($_SESSION['message']))
                 </div>
         <?php   } ?>
     </div>
-</div>
+
 <?php
 $title = "Films List";
 $content = ob_get_clean();

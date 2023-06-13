@@ -22,7 +22,7 @@ if(isset($_SESSION['message']))
             { ?>
             <div class="col-lg-2">
                 <a class="text-decoration-none text-reset" href="index.php?action=actorDetail&id=<?= $actor['id_actor'] ?>">
-                    <img src="public/img/placeholder.png" alt="portrait <?= $actor['first_name_person']." ".$actor['name_person'] ?>" style="width: 200px; height: 300px; object-fit: cover;">
+                    <img src="public/img/placeholder.png" alt="portrait <?= $actor['first_name_person']." ".$actor['name_person'] ?>" class="img-thumbnail">
                     <h5 class="text-center fw-semibold"><?= $actor['first_name_person']." ".$actor['name_person'] ?></h5>
                 </a>
             </div>

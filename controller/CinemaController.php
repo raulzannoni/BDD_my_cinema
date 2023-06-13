@@ -254,7 +254,7 @@ class CinemaController
                 $db_genreDetail = $pdo->prepare($sql_genreDetail);
                 $db_genreDetail->execute(["id" => $id]);
 
-                $sql_filmsGenre =  "SELECT tp.id_type_film, f.id_film,  f.title_film AS film, YEAR(f.year_film) AS year_film
+                $sql_filmsGenre =  "SELECT tp.id_type_film, f.id_film,  f.title_film AS film, YEAR(f.year_film) AS year_film, f.star_film AS star
                                     FROM type_film tp, film f, talk t
                                     WHERE tp.id_type_film = t.id_type_film 
                                     AND t.id_film = f.id_film

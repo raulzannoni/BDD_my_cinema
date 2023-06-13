@@ -35,6 +35,7 @@ class CinemaController
                                     f.duration_film AS length_film,
                                     GROUP_CONCAT(tp.name_type_film SEPARATOR ' ') AS genres,
                                     CONCAT_WS(' ', p.first_name_person, p.name_person) AS director,
+                                    f.star_film AS star,
                                     f.plot_film AS plot,
                                     f.id_director
                                     FROM film f, person p, director d, talk t, type_film tp

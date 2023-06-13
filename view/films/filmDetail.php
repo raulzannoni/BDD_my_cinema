@@ -25,7 +25,27 @@ $filmDetail = $db_filmDetail->fetch();
                         <p><?= $filmDetail['length_film'] ?></p>
                     <p class="card-text fw-bold lh-1">Director :</p>
                         <p><a class="text-decoration-none text-reset" href="index.php?action=directorDetail&id=<?= $filmDetail['id_director'] ?>"><?= $filmDetail['director'] ?></a></p>
-                    <p class="card-text fw-bold lh-1">Synopsis :</p>
+                    <p class="card-text fw-bold lh-1">Rating :</p>
+                        <div class="mt-0 d-flex  justify-content-between align-items-center">
+                            <div class="small-ratings">
+                                <?php
+                                    $stars_yellow = array_fill(0, $filmDetail['star'], 'yellow_star');
+                                    $stars_black = array_fill($filmDetail['star'], 5 - $filmDetail['star'], 'black_star');
+                                    $stars = array_merge($stars_yellow, $stars_black);
+                                    foreach($stars as $key => $value) 
+                                        {
+                                            if($value == 'yellow_star')
+                                                { ?>
+                                                    <i class="fa fa-star rating-color" style="color: #fbc634"></i>
+                                        <?php   }
+                                            else
+                                                {   ?>
+                                                    <i class="fa fa-star "></i>
+                                        <?php   }
+                                        }?>
+                            </div>
+                        </div>
+                    <p class="card-text fw-bold lh-1" style="margin-top: 16px">Synopsis :</p>
                         <p><?= $filmDetail['plot']?></p>
                 </div>
             </div>

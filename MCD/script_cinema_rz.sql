@@ -364,7 +364,7 @@ INSERT INTO `person` (`id_person`, `first_name_person`, `name_person`, `sex_pers
 	(72, 'Robert', 'Patrick', 'Masculin', '1958-11-05', NULL),
 	(73, 'Kate', 'Winslet', 'Feminin', '1975-10-05', NULL),
 	(74, 'Billy', 'Zane', 'Masculin', '1966-02-24', NULL),
-	(75, 'Sam', 'WWorthington', 'Masculin', '1976-08-02', NULL),
+	(75, 'Sam', 'Worthington', 'Masculin', '1976-08-02', NULL),
 	(76, 'Zoe', 'Saldana', 'Feminin', '1978-06-19', NULL),
 	(77, 'Stephen', 'Lang', 'Masculin', '1952-07-11', NULL),
 	(78, 'Giovanni', 'Ribisi', 'Masculin', '1974-12-17', NULL),

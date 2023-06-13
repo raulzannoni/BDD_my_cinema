@@ -30,7 +30,7 @@ class CinemaController
         public function filmDetail($id)
             {
                 $pdo = Connect::dbConnect();
-                $sql_filmDetail =   "SELECT  f.title_film, 
+                $sql_filmDetail =  "SELECT  f.title_film, 
                                     YEAR(f.year_film) AS year_film, 
                                     f.duration_film AS length_film,
                                     GROUP_CONCAT(tp.name_type_film SEPARATOR ' ') AS genres,
@@ -68,8 +68,60 @@ class CinemaController
                 require "view/films/filmDetail.php";
                 
             }
-        public function addFilm($id)
+        public function addFilm()
             {
+                if(isset($_POST['submit']))
+                    {
+                        $title_film = filter_input(INPUT_POST, "title_film", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                        $id_director = filter_input(INPUT_POST, "id_director", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                        $year_film = filter_input(INPUT_POST, "year_film");
+                        $duration_film =  filter_input(INPUT_POST, "duration_film");
+                        $plot_film =  filter_input(INPUT_POST, "plot_film", FILTER_VALIDATE_BOOL);
+                        $star_film =  filter_input(INPUT_POST, "star_film", FILTER_VALIDATE_BOOL);
+
+                        if(isset($_FILES['portrait']))
+                            {
+                                $imgTmpName = $_FILES['portrait']['tmp_name'];
+                                $imgName = $_FILES['portrait']['name'];
+                                $imgSize = $_FILES['portrait']['size'];
+                                $imgError = $_FILES['portrait']['error'];
+                                
+                                //on va a prendre le dernier element de le nome de le file (l'extension)
+                                $tabExtension = explode('.', $imgName);
+                                $extension = strtolower(end($tabExtension));
+
+                                //on va a verifier que l'extension de le file ajouté soit effectivement d'une image
+                                $extensions = ['jpg', 'png', 'jpeg', 'gif'];
+                                $maxSize = 500000000;
+                                
+                                //pour envoyer l'image dans notre dossier, on doit verifier que l'estension soit correct, 
+                                //qu'il n'y ait pas des errors et que le dimension de l'image soit raisonnable
+                                if(in_array($extension, $extensions) && $imgSize <= $maxSize && $imgError == 0)
+                                    {
+                                        //uniqid va à créer un ID unique et aleatoire
+                                        $uniqueName = uniqid('', true);
+                                        
+                                        //on va à créer la variable img = ID + extension
+                                        $poster_film = $uniqueName.'.'.$extension;
+
+                                        //On doit exprimer le chemin de le dossier où les images doivent etré stockées (sur le Mac)
+                                        $path = "/Applications/XAMPP/xamppfiles/htdocs/raul_ZANNONI/BDD_my_cinema/public/img/person";
+
+                                        //fonction poutr envoyer l'image dans le dossier upload
+                                        move_uploaded_file($imgTmpName, './public/img/person/'.$poster_film);
+                                        
+                                        //si le chargement n'est pas marché, on utilise le PATH complet de le dossier "upload"
+                                        if(!move_uploaded_file($imgTmpName, './public/img/person/'.$poster_film))
+                                            {
+                                                move_uploaded_file($imgTmpName, $path.$poster_film);
+                                            }
+                                    }
+                                else
+                                    {
+                                        $_SESSION['message'] = "<p class='insuccess fadeOut'>Mauvaise extension ou image trop volumineuse!</p>";
+                                    }
+                            }
+                    }
                 $pdo = Connect::dbConnect();
                 $sql_addFilm = "INSERT INTO film (title_film, id_director, year_film, duration_film, plot_film, star_film, poster_film)
                                 VALUES (:title_film, :id_director, :year_film, :duration_film, :plot_film, :star_film, :poster_film)";
@@ -92,6 +144,24 @@ class CinemaController
         public function deleteFilm($id)
             {
                 $pdo = Connect::dbConnect();
+            }
+        public function checkFilm($id)
+            {
+                $pdo = Connect::dbConnect();
+                $sql_checkFilm =   "SELECT * FROM film
+                                    WHERE id_film = :id";
+                $db_checkFilm = $pdo->prepare($sql_checkFilm);
+                $db_checkFilm->execute(["id" => $id]);
+                $filmExist = $db_checkFilm->fetch();
+                if (!empty($filmExist))
+                    {
+                        $result = TRUE;
+                    }
+                else
+                    {
+                        $result = FALSE;
+                    }
+                return $result;
             }
         /*------------------*/
         /*----- ACTORS -----*/
@@ -144,7 +214,7 @@ class CinemaController
                                 //on va a prendre le dernier element de le nome de le file (l'extension)
                                 $tabExtension = explode('.', $imgName);
                                 $extension = strtolower(end($tabExtension));
-        
+
                                 //on va a verifier que l'extension de le file ajouté soit effectivement d'une image
                                 $extensions = ['jpg', 'png', 'jpeg', 'gif'];
                                 $maxSize = 500000000;
@@ -232,6 +302,23 @@ class CinemaController
                 $pdo = Connect::dbConnect();
             }
         /*------------------*/
+        /*----- PERSON -----*/
+        /*------------------*/
+        public function checkPerson($id)
+            {
+                $pdo = Connect::dbConnect();
+                $sql_checkPerson = "SELECT * FROM person
+                                    WHERE id_person = :id";
+                $db_checkPerson = $pdo->prepare($sql_checkPerson);
+                $db_checkPerson->execute(["id" => $id]);
+                $personExist = $db_checkPerson->fetch();
+                
+                if (!empty($personExist)) {$result = TRUE;}
+                else {$result = FALSE;}
+                
+                return $result;
+            }
+        /*------------------*/
         /*----- GENRES -----*/
         /*------------------*/
         public function genreList()
@@ -267,7 +354,70 @@ class CinemaController
             }
         public function addGenre()
             {
-                $pdo = Connect::dbConnect();
+                if(isset($_POST['submit']))
+                    {
+                        $genre = filter_input(INPUT_POST, "genre", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                        $description = filter_input(INPUT_POST, "description", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                        //$checkGenre = filter_input(INPUT_POST, "checkGenre", FILTER_VALIDATE_BOOL);
+
+                        if(isset($_FILES['portrait']))
+                            {
+                                $imgTmpName = $_FILES['portrait']['tmp_name'];
+                                $imgName = $_FILES['portrait']['name'];
+                                $imgSize = $_FILES['portrait']['size'];
+                                $imgError = $_FILES['portrait']['error'];
+                                
+                                //on va a prendre le dernier element de le nome de le file (l'extension)
+                                $tabExtension = explode('.', $imgName);
+                                $extension = strtolower(end($tabExtension));
+
+                                //on va a verifier que l'extension de le file ajouté soit effectivement d'une image
+                                $extensions = ['jpg', 'png', 'jpeg', 'gif'];
+                                $maxSize = 500000000;
+                                
+                                //pour envoyer l'image dans notre dossier, on doit verifier que l'estension soit correct, 
+                                //qu'il n'y ait pas des errors et que le dimension de l'image soit raisonnable
+                                if(in_array($extension, $extensions) && $imgSize <= $maxSize && $imgError == 0)
+                                    {
+                                        //uniqid va à créer un ID unique et aleatoire
+                                        $uniqueName = uniqid('', true);
+                                        
+                                        //on va à créer la variable img = ID + extension
+                                        $portrait = $uniqueName.'.'.$extension;
+
+                                        //On doit exprimer le chemin de le dossier où les images doivent etré stockées (sur le Mac)
+                                        $path = "/Applications/XAMPP/xamppfiles/htdocs/raul_ZANNONI/BDD_my_cinema/public/img/person";
+
+                                        //fonction poutr envoyer l'image dans le dossier upload
+                                        move_uploaded_file($imgTmpName, './public/img/person/'.$portrait);
+                                        
+                                        //si le chargement n'est pas marché, on utilise le PATH complet de le dossier "upload"
+                                        if(!move_uploaded_file($imgTmpName, './public/img/person/'.$portrait))
+                                            {
+                                                move_uploaded_file($imgTmpName, $path.$portrait);
+                                            }
+                                    }
+                                else
+                                    {
+                                        $portrait = "public/img/placeholder.png"; 
+                                        $_SESSION['message'] = "<p class='insuccess fadeOut'>Mauvaise extension ou image trop volumineuse!</p>";
+                                    }
+                            }
+                    }
+                if($genre)
+                    {
+                        $pdo = Connect::dbConnect();
+                        $sql_addGenre =    "INSERT INTO type_film (name_type_film, poster_film, description_type_film)
+                                            VALUES (:name_type_film, :poster_film, :description_type_film)";
+                        $db_addGenre = $pdo->prepare($sql_addGenre);
+
+                        $db_addGenre->bindValue(":name_type_film", $genre);
+                        $db_addGenre->bindValue(":poster_film", $portrait);
+                        $db_addGenre->bindValue(":description_type_film", $description);
+                        
+                        $db_addGenre->execute();
+                    }
+                require "view/genres/addGenre.php";
             }
         public function modifyGenre()
             {
@@ -276,6 +426,20 @@ class CinemaController
         public function deleteGenre()
             {
                 $pdo = Connect::dbConnect();
+            }
+        public function checkGenre($id)
+            {
+                $pdo = Connect::dbConnect();
+                $sql_checkGenre =  "SELECT * FROM person
+                                    WHERE id_person = :id";
+                $db_checkGenre = $pdo->prepare($sql_checkGenre);
+                $db_checkGenre->execute(["id" => $id]);
+                $genreExist = $db_checkGenre->fetch();
+                
+                if (!empty($genreExist)) {$result = TRUE;}
+                else {$result = FALSE;}
+                
+                return $result;
             }
         /*-----------------*/
         /*----- ROLES -----*/
@@ -292,9 +456,6 @@ class CinemaController
             {
                 $pdo = Connect::dbConnect();
             }
-        
-
-
     }
 
 

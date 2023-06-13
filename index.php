@@ -37,7 +37,7 @@ if(isset($_GET["action"]))
                 /*-----------------*/
                 case "filmList" : $ctrlCinema->filmList(); break;
                 case "filmDetail" : $ctrlCinema->filmDetail($id); break;
-                case "addFilm" : $ctrlCinema->addFilm($id); break;
+                case "addFilm" : $ctrlCinema->addFilm(); break;
                 case "deleteFilm" : $ctrlCinema->deleteFilm($id); break;
                 //case "editFilm" : $ctrlCinema->editFilm($id); break;
 
@@ -55,7 +55,7 @@ if(isset($_GET["action"]))
                 /*---------------------*/
                 case "directorList" : $ctrlCinema->directorList(); break;
                 case "directorDetail" : $ctrlCinema->directorDetail($id); break;
-                case "addDirector" : $ctrlCinema->addDirector($id); break;
+                case "addDirector" : $ctrlCinema->addDirector(); break;
                 case "deleteDirector" : $ctrlCinema->deleteDirector($id); break;
                 //case "editDirector" : $ctrlCinema->editDirector($id); break;
 
@@ -64,7 +64,7 @@ if(isset($_GET["action"]))
                 /*----------------*/
                 case "genreList" : $ctrlCinema->genreList(); break;
                 case "genreDetail" : $ctrlCinema->genreDetail($id); break;
-                case "addGenre" : $ctrlCinema->addGenre($id); break;
+                case "addGenre" : $ctrlCinema->addGenre(); break;
                 case "deleteGenre" : $ctrlCinema->deleteGenre($id); break;
                 //case "editGenre" : $ctrlCinema->editGenre($id); break;
 

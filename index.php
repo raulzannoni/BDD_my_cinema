@@ -3,14 +3,17 @@
 session_start();
 
 use Controller\CinemaController;
+//use Controller\GenreController;
 
 spl_autoload_register(function ($class_name) {
     include $class_name . '.php';
 });
 
 require "controller/CinemaController.php";
+//require "controller/GenreController.php";
 
 $ctrlCinema = new CinemaController();
+//$ctrlGenre = new GenreController();
 
 $id = (isset($_GET['id'])) ? $_GET['id'] : null;
 

@@ -14,15 +14,12 @@ catch(PDOException $e){
     exit();
 }
 
-$sql = "SELECT * FROM film
-        ORDER BY title_film";
+$sql = "INSERT INTO type_film (name_type_film)
+        VALUES (?)";
 
-$d = $db->query($sql);
+$d = $db->prepare($sql);
+$d->execute(["Comique"]);
 
-foreach($d as $data)
-    {
-        echo $data['title_film']."<br>";
-    }
 
 
 ?>

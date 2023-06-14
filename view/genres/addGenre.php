@@ -19,21 +19,21 @@ if(isset($_SESSION['message']))
     <form class="row w-50 g-3 p-6 m-3 border" action="index.php?action=addGenre" method="post" enctype="multipart/form-data" autocomplete="off">
         <div class="col-md-6">
             <label for="genre" class="form-label">Genre :
-                <input type="text" class="form-control" name="firstname" id="firstname" value="required">
+                <input type="text" class="form-control" name="genre" id="genre" value="required">
             </label>
         </div>
         <div class="col-md-6">
             <label for="description" class="form-label">Description :
-                <input type="text" class="form-control" name="lastname" id="lastname">
+                <input type="text" class="form-control" name="description" id="description">
             </label>
         </div>
         <div class="col-md-6">
             <label for="poster" class="form-label">Poster :
-                <input type="file" class="form-control" name="portrait" id="portrait">
+                <input type="file" class="form-control" name="poster" id="poster">
             </label>
         </div>
         <div class="col-12">
-            <button type="submit" class="btn btn-primary">Ajouter</button>
+            <button type="submit" name="submit" class="btn btn-primary">Ajouter</button>
         </div>
     </form>
 </div>

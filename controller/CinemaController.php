@@ -333,10 +333,12 @@ class CinemaController
                 $pdo = Connect::dbConnect();
                 $sql_genreList =   "SELECT tp.id_type_film, tp.name_type_film, COUNT(f.title_film) AS count
                                     FROM type_film tp, film f, talk t
-                                    WHERE t.id_type_film = tp.id_type_film AND t.id_film = f.id_film
+                                    WHERE t.id_type_film = tp.id_type_film 
+                                    AND t.id_film = f.id_film
                                     GROUP BY tp.id_type_film, tp.name_type_film
                                     ORDER BY COUNT(f.title_film) DESC";
-                $db_genreList = $pdo->query($sql_genreList);
+                $sql_text = "SELECT * from type_film";
+                $db_genreList = $pdo->query($sql_text);
                 require "view/genres/genreList.php";
             }
         public function genreDetail($id)
@@ -361,12 +363,15 @@ class CinemaController
             }
         public function addGenre()
             {
+                $pdo = Connect::dbConnect();
+                $sql_genreList = "SELECT * FROM type_film tp";
+                $db_genreList = $pdo->query($sql_genreList);
+                
                 if(isset($_POST['submit']))
                     {
                         $genre = filter_input(INPUT_POST, "genre", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
                         $description = filter_input(INPUT_POST, "description", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-                        //$checkGenre = filter_input(INPUT_POST, "checkGenre", FILTER_VALIDATE_BOOL);
-
+                        
                         if(isset($_FILES['portrait']))
                             {
                                 $imgTmpName = $_FILES['portrait']['tmp_name'];
@@ -406,41 +411,54 @@ class CinemaController
                                     }
                                 else
                                     {
-                                        $portrait = "public/img/placeholder.png"; 
+                                        $portrait = NULL; 
                                         $_SESSION['message'] = "<p class='insuccess fadeOut'>Mauvaise extension ou image trop volumineuse!</p>";
                                     }
                             }
-                    
+                        else
+                            {
+                                $portrait = NULL; 
+                            }
                         
-                        $pdo = Connect::dbConnect();
-                        $sql_genreList = "SELECT * FROM type_film tp";
-                        $db_genreList = $pdo->query($sql_genreList);
+                        $genreExist = TRUE;
+
                         foreach($db_genreList->fetchAll() as $genres)
                             {
-                                if(strtolower($genres['name_type_film']) ==
-                                strtolower($genre))
+                                if(strtolower($genres['name_type_film']) == strtolower($genre))
                                     {
                                         $genreExist = TRUE;
+                                        break;
                                     }
                                 else
                                     {
                                         $genreExist = FALSE;
                                     }
                             }
+                        
                         if($genreExist)
                             {
                                 $_SESSION['message'] = "<p class='insuccess fadeOut'>Le genre de film ajouté exist déjà...</p>";
                                 header("Location:index.php?action=addGenre");
                             }
-                                $sql_addGenre =    "INSERT INTO type_film (name_type_film, poster_film, description_type_film)
-                                VALUES (:name_type_film, :poster_film, :description_type_film)";
+                        else
+                            {  
+                                if(!$description)
+                                    {
+                                        $description = NULL;
+                                    }
+                        
+                                $sql_addGenre =    "INSERT INTO type_film (name_type_film, poster_type_film, description_type_film)
+                                                    VALUES (:name_type_film, :poster_type_film, :description_type_film)";
                                 $db_addGenre = $pdo->prepare($sql_addGenre);
 
                                 $db_addGenre->bindValue(":name_type_film", $genre);
-                                $db_addGenre->bindValue(":poster_film", $portrait);
+                                $db_addGenre->bindValue(":poster_type_film", $portrait);
                                 $db_addGenre->bindValue(":description_type_film", $description);
-                                
+                                        
                                 $db_addGenre->execute();
+
+                                header("Location:index.php?action=addGenre");
+                            }
                     }
                 require "view/genres/addGenre.php";
             }

@@ -203,14 +203,18 @@ class CinemaController
             }
         public function addActor()
             {
+                $pdo = Connect::dbConnect();
+                $sql_actorList =   "SELECT * FROM person p, actor a
+                                    WHERE p.id_person = a.id_person";
+                $db_actorList = $pdo->query($sql_actorList);
                 if(isset($_POST['submit']))
                     {
                         $first_name = filter_input(INPUT_POST, "first_name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
                         $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
                         $birth = filter_input(INPUT_POST, "birth");
                         $sexe =  filter_input(INPUT_POST, "sexe");
-                        $checkActor =  filter_input(INPUT_POST, "checkActor", FILTER_VALIDATE_BOOL);
-
+                        //$checkActor =  filter_input(INPUT_POST, "checkActor", FILTER_VALIDATE_BOOL);
+                        
                         if(isset($_FILES['portrait']))
                             {
                                 $imgTmpName = $_FILES['portrait']['tmp_name'];
@@ -253,9 +257,51 @@ class CinemaController
                                         $_SESSION['message'] = "<p class='insuccess fadeOut'>Mauvaise extension ou image trop volumineuse!</p>";
                                     }
                             }
+                        else
+                            {
+                                $portrait = NULL; 
+                            }
+                        
+                        $actorExist = TRUE;
+
+                        foreach($db_actorList->fetchAll() as $actors)
+                            {
+                                if(strtolower($actors['first_name_person']) == strtolower($first_name) && strtolower($actors['name_person']) == strtolower($name))
+                                    {
+                                        $actorExist = TRUE;
+                                        break;
+                                    }
+                                else
+                                    {
+                                        $actorExist = FALSE;
+                                    }
+                            }
+                        
+                        if($actorExist)
+                            {
+                                $_SESSION['message'] = "<p class='insuccess fadeOut'>L'acteur ajouté exist déjà...</p>";
+                                header("Location:index.php?action=addActor");
+                            }
+                        else
+                            { 
+                                $sql_addActor =    "INSERT INTO person (first_name_person, name_person, sex_person, birth_person)
+                                                    VALUES (:first_name_person, :name_person, :sex_person, :birth_person);
+                                                    SET @last_id_person = LAST_INSERT_ID();
+                                                    INSERT INTO actor (id_person)
+                                                    VALUES (@last_id_person);";
+                                $db_addActor = $pdo->prepare($sql_addActor);
+
+                                $db_addActor->bindValue(":first_name_person", $first_name);
+                                $db_addActor->bindValue(":name_person", $name);
+                                $db_addActor->bindValue(":sex_person", $sexe);
+                                $db_addActor->bindValue(":birth_person", $birth);
+                                        
+                                $db_addActor->execute();
+                                var_dump($db_addActor);die;
+                                
+                                
+                            }
                     }
-                $pdo = Connect::dbConnect();
-                $sql_actorData = "";
                 require "view/actors/addActor.php";
             }
         public function editActor()
@@ -337,7 +383,6 @@ class CinemaController
                                     AND t.id_film = f.id_film
                                     GROUP BY tp.id_type_film, tp.name_type_film
                                     ORDER BY COUNT(f.title_film) DESC";
-                //$sql_text = "SELECT * from type_film";
                 $db_genreList = $pdo->query($sql_genreList);
                 require "view/genres/genreList.php";
             }
@@ -395,29 +440,29 @@ class CinemaController
                                         $uniqueName = uniqid('', true);
                                         
                                         //on va à créer la variable img = ID + extension
-                                        $portrait = $uniqueName.'.'.$extension;
+                                        $poster = $uniqueName.'.'.$extension;
 
                                         //On doit exprimer le chemin de le dossier où les images doivent etré stockées (sur le Mac)
                                         $path = "/Applications/XAMPP/xamppfiles/htdocs/raul_ZANNONI/BDD_my_cinema/public/img/person";
 
                                         //fonction poutr envoyer l'image dans le dossier upload
-                                        move_uploaded_file($imgTmpName, './public/img/person/'.$portrait);
+                                        move_uploaded_file($imgTmpName, './public/img/person/'.$poster);
                                         
                                         //si le chargement n'est pas marché, on utilise le PATH complet de le dossier "upload"
-                                        if(!move_uploaded_file($imgTmpName, './public/img/person/'.$portrait))
+                                        if(!move_uploaded_file($imgTmpName, './public/img/person/'.$poster))
                                             {
-                                                move_uploaded_file($imgTmpName, $path.$portrait);
+                                                move_uploaded_file($imgTmpName, $path.$poster);
                                             }
                                     }
                                 else
                                     {
-                                        $portrait = NULL; 
+                                        $poster = NULL; 
                                         $_SESSION['message'] = "<p class='insuccess fadeOut'>Mauvaise extension ou image trop volumineuse!</p>";
                                     }
                             }
                         else
                             {
-                                $portrait = NULL; 
+                                $poster = NULL; 
                             }
                         
                         $genreExist = TRUE;
@@ -447,12 +492,12 @@ class CinemaController
                                         $description = NULL;
                                     }
                         
-                                $sql_addGenre =    "INSERT INTO type_film (name_type_film, poster_type_film, description_type_film)
-                                                    VALUES (:name_type_film, :poster_type_film, :description_type_film)";
+                                $sql_addGenre = "INSERT INTO type_film (name_type_film, poster_type_film, description_type_film)
+                                                VALUES (:name_type_film, :poster_type_film, :description_type_film)";
                                 $db_addGenre = $pdo->prepare($sql_addGenre);
 
                                 $db_addGenre->bindValue(":name_type_film", $genre);
-                                $db_addGenre->bindValue(":poster_type_film", $portrait);
+                                $db_addGenre->bindValue(":poster_type_film", $poster);
                                 $db_addGenre->bindValue(":description_type_film", $description);
                                         
                                 $db_addGenre->execute();

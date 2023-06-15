@@ -208,12 +208,13 @@ class CinemaController
                                     WHERE p.id_person = a.id_person";
                 $db_actorList = $pdo->query($sql_actorList);
                 if(isset($_POST['submit']))
-                    {
-                        $first_name = filter_input(INPUT_POST, "first_name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-                        $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-                        $birth = filter_input(INPUT_POST, "birth");
-                        $sexe =  filter_input(INPUT_POST, "sexe");
-                        //$checkActor =  filter_input(INPUT_POST, "checkActor", FILTER_VALIDATE_BOOL);
+                {
+                    
+                    $first_name = filter_input(INPUT_POST, "first_name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                    $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                    $birth = filter_input(INPUT_POST, "birth");
+                    $sexe =  filter_input(INPUT_POST, "sexe");
+                    $portrait = NULL;
                         
                         if(isset($_FILES['portrait']))
                             {
@@ -262,18 +263,13 @@ class CinemaController
                                 $portrait = NULL; 
                             }
                         
-                        $actorExist = TRUE;
+                        $actorExist = FALSE;
 
                         foreach($db_actorList->fetchAll() as $actors)
                             {
                                 if(strtolower($actors['first_name_person']) == strtolower($first_name) && strtolower($actors['name_person']) == strtolower($name))
                                     {
                                         $actorExist = TRUE;
-                                        break;
-                                    }
-                                else
-                                    {
-                                        $actorExist = FALSE;
                                     }
                             }
                         
@@ -284,8 +280,8 @@ class CinemaController
                             }
                         else
                             { 
-                                $sql_addActor =    "INSERT INTO person (first_name_person, name_person, sex_person, birth_person)
-                                                    VALUES (:first_name_person, :name_person, :sex_person, :birth_person);
+                                $sql_addActor =    "INSERT INTO person (first_name_person, name_person, sex_person, birth_person, portrait_person)
+                                                    VALUES (:first_name_person, :name_person, :sex_person, :birth_person, :portrait_person);
                                                     SET @last_id_person = LAST_INSERT_ID();
                                                     INSERT INTO actor (id_person)
                                                     VALUES (@last_id_person);";
@@ -295,10 +291,9 @@ class CinemaController
                                 $db_addActor->bindValue(":name_person", $name);
                                 $db_addActor->bindValue(":sex_person", $sexe);
                                 $db_addActor->bindValue(":birth_person", $birth);
-                                        
-                                $db_addActor->execute();
-                                var_dump($db_addActor);die;
+                                $db_addActor->bindValue(":portrait_person", $portrait);
                                 
+                                $db_addActor->execute();
                                 
                             }
                     }
@@ -308,7 +303,7 @@ class CinemaController
             {
                 $pdo = Connect::dbConnect();
             }
-        public function deleteActor()
+        public function deleteActor($id)
             {
                 $pdo = Connect::dbConnect();
             }
@@ -465,18 +460,13 @@ class CinemaController
                                 $poster = NULL; 
                             }
                         
-                        $genreExist = TRUE;
+                        $genreExist = FALSE;
 
                         foreach($db_genreList->fetchAll() as $genres)
                             {
                                 if(strtolower($genres['name_type_film']) == strtolower($genre))
                                     {
                                         $genreExist = TRUE;
-                                        break;
-                                    }
-                                else
-                                    {
-                                        $genreExist = FALSE;
                                     }
                             }
                         
@@ -499,7 +489,7 @@ class CinemaController
                                 $db_addGenre->bindValue(":name_type_film", $genre);
                                 $db_addGenre->bindValue(":poster_type_film", $poster);
                                 $db_addGenre->bindValue(":description_type_film", $description);
-                                        
+
                                 $db_addGenre->execute();
 
                                 header("Location:index.php?action=addGenre");

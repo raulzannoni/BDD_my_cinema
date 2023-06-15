@@ -19,8 +19,8 @@ $directorDetail = $db_directorDetail->fetch();
                         <p><?= $directorDetail['birth'] ?></p>
                     <p class="card-text fw-bold lh-1">Genre :</p>
                         <p><?= $directorDetail['sex'] ?></p>
-                    <p class="card-text fw-bold lh-1">Edit : <a class="text-decoration-none text-reset" href="index.php?action=editDirector&id=<?= $directorDetail['id_director'] ?>"><i class="fa-regular fa-pen-to-square"></i></a></p>
-                    <p class="card-text fw-bold lh-1">Delete : <a class="text-decoration-none text-reset" href="index.php?action=deleteDirector&id=<?= $directorDetail['id_director'] ?>"><i class="fa-regular fa-trash-can"></i></a></p>
+                    <p class="card-text fw-bold lh-1">Edit : <a class="text-decoration-none text-reset" href="index.php?action=editDirector&id=<?= $directorDetail['id_person'] ?>"><i class="fa-regular fa-pen-to-square"></i></a></p>
+                    <p class="card-text fw-bold lh-1">Delete : <a class="text-decoration-none text-reset" href="index.php?action=deleteDirector&id=<?= $directorDetail['id_person'] ?>"><i class="fa-regular fa-trash-can"></i></a></p>
                 </div>
             </div>
         </div>

@@ -447,9 +447,17 @@ class CinemaController
             {
                 $pdo = Connect::dbConnect();
             }
-        public function deleteDirector()
+        public function deleteDirector($id)
             {
                 $pdo = Connect::dbConnect();
+                $sql_deleteDirector =  "DELETE FROM person
+                                        WHERE id_person = :id";
+                $db_deleteDirector = $pdo->prepare($sql_deleteDirector);
+                $db_deleteDirector->bindParam(":id", $id);
+
+                $db_deleteDirector->execute();
+
+                header("Location:index.php?action=directorList");
             }
         /*------------------*/
         /*----- PERSON -----*/

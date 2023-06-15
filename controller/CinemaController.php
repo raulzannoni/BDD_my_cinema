@@ -306,6 +306,14 @@ class CinemaController
         public function deleteActor($id)
             {
                 $pdo = Connect::dbConnect();
+                $sql_deleteActor = "DELETE FROM person
+                                    WHERE id_person = :id";
+                $db_deleteActor = $pdo->prepare($sql_deleteActor);
+                $db_deleteActor->bindParam(":id", $id);
+
+                $db_deleteActor->execute();
+
+                header("Location:index.php?action=actorList");
             }
         /*---------------------*/
         /*----- DIRECTORS -----*/
@@ -561,7 +569,7 @@ class CinemaController
                                 $portrait = NULL; 
                             }
                         
-                        $genreExist = TRUE;
+                        $genreExist = FALSE;
 
                         foreach($db_genreList->fetchAll() as $genres)
                             {
@@ -574,11 +582,6 @@ class CinemaController
                                         if(strtolower($genres['name_type_film']) == strtolower($genre))
                                             {
                                                 $genreExist = TRUE;
-                                                break;
-                                            }
-                                        else
-                                            {
-                                                $genreExist = FALSE;
                                             }
                                     }
                             }

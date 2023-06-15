@@ -19,8 +19,8 @@ $actorDetail = $db_actorDetail->fetch();
                         <p><?= $actorDetail['birth'] ?></p>
                     <p class="card-text fw-bold lh-1">Genre :</p>
                         <p><?= $actorDetail['sex'] ?></p>
-                    <p class="card-text fw-bold lh-1">Edit : <a class="text-decoration-none text-reset" href="index.php?action=editActor&id=<?= $actorDetail['id_actor'] ?>"><i class="fa-regular fa-pen-to-square"></i></a></p>
-                    <p class="card-text fw-bold lh-1">Delete : <a class="text-decoration-none text-reset" href="index.php?action=deleteActor&id=<?= $actorDetail['id_actor'] ?>"><i class="fa-regular fa-trash-can"></i></a></p>
+                    <p class="card-text fw-bold lh-1">Edit : <a class="text-decoration-none text-reset" href="index.php?action=editActor&id=<?= $actorDetail['id_person'] ?>"><i class="fa-regular fa-pen-to-square"></i></a></p>
+                    <p class="card-text fw-bold lh-1">Delete : <a class="text-decoration-none text-reset" href="index.php?action=deleteActor&id=<?= $actorDetail['id_person'] ?>"><i class="fa-regular fa-trash-can"></i></a></p>
                 </div>
             </div>
         </div>

@@ -17,6 +17,7 @@ $genreDetail = $db_genreDetail->fetch();
     <p>Edit Genre</p>
 </div>
 
+<?= var_dump($genreDetail) ?> 
 <div class="p-2">
     <form class="row w-50 g-3 p-6 m-3 border" action="index.php?action=editGenre&id=<?= $genreDetail['id_type_film']?>" method="post" enctype="multipart/form-data" autocomplete="off">
         <div class="col-md-6">

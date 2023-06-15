@@ -452,10 +452,11 @@ class CinemaController
 
                 $sql_directorDetail =  "SELECT * FROM person p, director d
                                         WHERE p.id_person = d.id_person
-                                        AND d.id_director = :id";
+                                        AND d.id_person = :id";
                 $db_directorDetail = $pdo->prepare($sql_directorDetail);
                 $db_directorDetail->execute(["id" => $id]);
-                var_dump($db_directorDetail->fetch());
+                
+                // var_dump($db_directorDetail->fetch());
                 if(isset($_POST['submit']))
                     {
                         $first_name = filter_input(INPUT_POST, "first_name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -507,56 +508,55 @@ class CinemaController
                                     $_SESSION['message'] = "<p class='insuccess fadeOut'>Mauvaise extension ou image trop volumineuse!</p>";
                                 }
                         }
-                    else
-                        {
-                            $portrait = NULL; 
-                        }
-                    */
-                    $directorExist = FALSE;
+                        else
+                            {
+                                $portrait = NULL; 
+                            }
+                        */
+                        $directorExist = FALSE;
+                        
+                        foreach($db_directorList->fetchAll() as $directors)
+                            {
+                                if($directors['id_person'] == $id)
+                                    {
+                                        continue;
+                                    }
+                                else
+                                    {
+                                        if(strtolower($directors['first_name_person']) == strtolower($first_name) && strtolower($directors['name_person']) == strtolower($name))
+                                            {
+                                                $directorExist = TRUE;
+                                            }
+                                    }
+                            }
+                        
+                        if($directorExist)
+                            {
+                                $_SESSION['message'] = "<p class='insuccess fadeOut'>Le realisateur ajouté exist déjà...</p>";
+                                header("Location:index.php?action=directorList");
+                            }
+                        else
+                            { 
+                                $sql_editDirector = "UPDATE person
+                                                    SET  first_name_person = :first_name_person, 
+                                                    name_person = :name_person, 
+                                                    sex_person = :sex_person, 
+                                                    birth_person = :birth_person,
+                                                    portrait_person = :portrait_person
+                                                    WHERE id_person = :id";
+                                $db_editDirector = $pdo->prepare($sql_editDirector);
 
-                    foreach($db_directorList->fetchAll() as $directors)
-                        {
-                            if($directors['id_person'] == $id)
-                                {
-                                    continue;
-                                }
-                            else
-                                {
-                                    if(strtolower($directors['first_name_person']) == strtolower($first_name) && strtolower($directors['name_person']) == strtolower($name))
-                                        {
-                                            $directorExist = TRUE;
-                                        }
-                                }
-                        }
-                    
-                    if($directorExist)
-                        {
-                            $_SESSION['message'] = "<p class='insuccess fadeOut'>Le realisateur ajouté exist déjà...</p>";
-                            header("Location:index.php?action=editDirector&id=".$id);
-                        }
-                    else
-                        { 
-                            $sql_editDirector = "UPDATE person
-                                                SET  first_name_person = :first_name_person, 
-                                                name_person = :name_person, 
-                                                sex_person = :sex_person, 
-                                                birth_person = :birth_person,
-                                                portrait_person = :portrait_person
-                                                WHERE id_person = :id";
-                            $db_editDirector = $pdo->prepare($sql_editDirector);
-
-                            $db_editDirector->bindValue(":first_name_person", $first_name);
-                            $db_editDirector->bindValue(":name_person", $name);
-                            $db_editDirector->bindValue(":sex_person", $sexe);
-                            $db_editDirector->bindValue(":birth_person", $birth);
-                            $db_editDirector->bindValue(":portrait_person", $portrait);
-                            var_dump($db_editDirector);
-                            var_dump($_POST);
-                            die;
-                            $db_editDirector->execute();
-                            header("Location:index.php?action=directorDetail&id=".$db_directorDetail['id_director']);
-                            
-                        }
+                                $db_editDirector->bindValue(":first_name_person", $first_name);
+                                $db_editDirector->bindValue(":name_person", $name);
+                                $db_editDirector->bindValue(":sex_person", $sexe);
+                                $db_editDirector->bindValue(":birth_person", $birth);
+                                $db_editDirector->bindValue(":portrait_person", $portrait);
+                                $db_editDirector->bindValue(":id",$id);
+                                
+                                $db_editDirector->execute();
+                                header("Location:index.php?action=directorList");
+                                
+                            }
                 }
                 require "view/directors/editDirector.php";
             }

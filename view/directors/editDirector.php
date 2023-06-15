@@ -17,11 +17,6 @@ $directorDetail = $db_directorDetail->fetch();
     <p>Edit Director</p>
 </div>
 
-
-<?= var_dump($db_directorList->fetchAll());?>
-
-<?= var_dump($directorDetail);?>
-
 <div class="p-2">
     <form class="row w-50 g-3 p-6 m-3 border" action="index.php?action=editDirector&id=<?= $directorDetail["id_person"]; ?>" method="post" enctype="multipart/form-data" autocomplete="off">
         <div class="col-md-6">

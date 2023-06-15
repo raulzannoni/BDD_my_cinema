@@ -8,6 +8,7 @@ if(isset($_SESSION['message']))
         unset($_SESSION['message']);
     }
 
+    $actorDetail = $db_actorDetail->fetch();
 ?>
 
 <div id="edit Actor">
@@ -16,7 +17,7 @@ if(isset($_SESSION['message']))
 </div>
 
 <div class="p-2">
-    <form class="row w-50 g-3 p-6 m-3 border" action="index.php?action=editActor&id=" method="post" enctype="multipart/form-data" autocomplete="off">
+    <form class="row w-50 g-3 p-6 m-3 border" action="index.php?action=editActor&id=<?=$actorDetail["id_person"];?>" method="post" enctype="multipart/form-data" autocomplete="off">
         <div class="col-md-6">
             <label for="first_name" class="form-label">Prenom :
                 <input type="text" class="form-control" name="first_name" id="first_name" value="required">

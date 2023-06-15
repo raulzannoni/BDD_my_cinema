@@ -299,9 +299,122 @@ class CinemaController
                     }
                 require "view/actors/addActor.php";
             }
-        public function editActor()
+        public function editActor($id)
             {
                 $pdo = Connect::dbConnect();
+                $sql_actorList = "SELECT * FROM person p, actor a
+                WHERE p.id_person = a.id_person";
+                $db_actorList = $pdo->query($sql_actorList);
+
+                $sql_actorDetail =  "SELECT * FROM person p, actor a
+                                    WHERE p.id_person = a.id_person
+                                    AND a.id_person = :id";
+                $db_actorDetail = $pdo->prepare($sql_actorDetail);
+                $db_actorDetail->execute(["id" => $id]);
+
+                // var_dump($db_directorDetail->fetch());
+                if(isset($_POST['submit']))
+                {
+                    $first_name = filter_input(INPUT_POST, "first_name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                    $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                    $birth = filter_input(INPUT_POST, "birth");
+                    $sexe =  filter_input(INPUT_POST, "sexe");
+                    $portrait = NULL;
+
+                /*
+                if(isset($_FILES['portrait']))
+                    {
+                        $imgTmpName = $_FILES['portrait']['tmp_name'];
+                        $imgName = $_FILES['portrait']['name'];
+                        $imgSize = $_FILES['portrait']['size'];
+                        $imgError = $_FILES['portrait']['error'];
+                        
+                        //on va a prendre le dernier element de le nome de le file (l'extension)
+                        $tabExtension = explode('.', $imgName);
+                        $extension = strtolower(end($tabExtension));
+
+                        //on va a verifier que l'extension de le file ajouté soit effectivement d'une image
+                        $extensions = ['jpg', 'png', 'jpeg', 'gif'];
+                        $maxSize = 500000000;
+                        
+                        //pour envoyer l'image dans notre dossier, on doit verifier que l'estension soit correct, 
+                        //qu'il n'y ait pas des errors et que le dimension de l'image soit raisonnable
+                        if(in_array($extension, $extensions) && $imgSize <= $maxSize && $imgError == 0)
+                            {
+                                //uniqid va à créer un ID unique et aleatoire
+                                $uniqueName = uniqid('', true);
+                                
+                                //on va à créer la variable img = ID + extension
+                                $portrait = $uniqueName.'.'.$extension;
+
+                                //On doit exprimer le chemin de le dossier où les images doivent etré stockées (sur le Mac)
+                                $path = "/Applications/XAMPP/xamppfiles/htdocs/raul_ZANNONI/BDD_my_cinema/public/img/person";
+
+                                //fonction poutr envoyer l'image dans le dossier upload
+                                move_uploaded_file($imgTmpName, './public/img/person/'.$portrait);
+                                
+                                //si le chargement n'est pas marché, on utilise le PATH complet de le dossier "upload"
+                                if(!move_uploaded_file($imgTmpName, './public/img/person/'.$portrait))
+                                    {
+                                        move_uploaded_file($imgTmpName, $path.$portrait);
+                                    }
+                            }
+                        else
+                            {
+                                $_SESSION['message'] = "<p class='insuccess fadeOut'>Mauvaise extension ou image trop volumineuse!</p>";
+                            }
+                    }
+                    else
+                        {
+                            $portrait = NULL; 
+                        }
+                    */
+                    $actorExist = FALSE;
+                    
+                    foreach($db_actorList->fetchAll() as $actors)
+                        {
+                            if($actors['id_person'] == $id)
+                                {
+                                    continue;
+                                }
+                            else
+                                {
+                                    if(strtolower($actors['first_name_person']) == strtolower($first_name) && strtolower($actors['name_person']) == strtolower($name))
+                                        {
+                                            $actorExist = TRUE;
+                                        }
+                                }
+                        }
+                    
+                    if($actorExist)
+                        {
+                            $_SESSION['message'] = "<p class='insuccess fadeOut'>L'acteur ajouté exist déjà...</p>";
+                            header("Location:index.php?action=directorList");
+                        }
+                    else
+                        { 
+                            $sql_editActor =    "UPDATE person
+                                                SET  first_name_person = :first_name_person, 
+                                                name_person = :name_person, 
+                                                sex_person = :sex_person, 
+                                                birth_person = :birth_person,
+                                                portrait_person = :portrait_person
+                                                WHERE id_person = :id";
+                            $db_editActor = $pdo->prepare($sql_editActor);
+
+                            $db_editActor->bindValue(":first_name_person", $first_name);
+                            $db_editActor->bindValue(":name_person", $name);
+                            $db_editActor->bindValue(":sex_person", $sexe);
+                            $db_editActor->bindValue(":birth_person", $birth);
+                            $db_editActor->bindValue(":portrait_person", $portrait);
+                            $db_editActor->bindValue(":id",$id);
+                            
+                            $db_editActor->execute();
+                            header("Location:index.php?action=actorList");
+                            
+                        }
+                }
+                require "view/actors/editActor.php";
             }
         public function deleteActor($id)
             {

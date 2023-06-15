@@ -347,6 +347,100 @@ class CinemaController
         public function addDirector()
             {
                 $pdo = Connect::dbConnect();
+                $sql_directorList =    "SELECT * FROM person p, director d
+                                        WHERE p.id_person = d.id_person";
+                $db_directorList = $pdo->query($sql_directorList);
+                if(isset($_POST['submit']))
+                {
+
+                    $first_name = filter_input(INPUT_POST, "first_name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                    $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                    $birth = filter_input(INPUT_POST, "birth");
+                    $sexe =  filter_input(INPUT_POST, "sexe");
+                    $portrait = NULL;
+                    
+                    /*
+                    if(isset($_FILES['portrait']))
+                        {
+                            $imgTmpName = $_FILES['portrait']['tmp_name'];
+                            $imgName = $_FILES['portrait']['name'];
+                            $imgSize = $_FILES['portrait']['size'];
+                            $imgError = $_FILES['portrait']['error'];
+                            
+                            //on va a prendre le dernier element de le nome de le file (l'extension)
+                            $tabExtension = explode('.', $imgName);
+                            $extension = strtolower(end($tabExtension));
+
+                            //on va a verifier que l'extension de le file ajouté soit effectivement d'une image
+                            $extensions = ['jpg', 'png', 'jpeg', 'gif'];
+                            $maxSize = 500000000;
+                            
+                            //pour envoyer l'image dans notre dossier, on doit verifier que l'estension soit correct, 
+                            //qu'il n'y ait pas des errors et que le dimension de l'image soit raisonnable
+                            if(in_array($extension, $extensions) && $imgSize <= $maxSize && $imgError == 0)
+                                {
+                                    //uniqid va à créer un ID unique et aleatoire
+                                    $uniqueName = uniqid('', true);
+                                    
+                                    //on va à créer la variable img = ID + extension
+                                    $portrait = $uniqueName.'.'.$extension;
+
+                                    //On doit exprimer le chemin de le dossier où les images doivent etré stockées (sur le Mac)
+                                    $path = "/Applications/XAMPP/xamppfiles/htdocs/raul_ZANNONI/BDD_my_cinema/public/img/person";
+
+                                    //fonction poutr envoyer l'image dans le dossier upload
+                                    move_uploaded_file($imgTmpName, './public/img/person/'.$portrait);
+                                    
+                                    //si le chargement n'est pas marché, on utilise le PATH complet de le dossier "upload"
+                                    if(!move_uploaded_file($imgTmpName, './public/img/person/'.$portrait))
+                                        {
+                                            move_uploaded_file($imgTmpName, $path.$portrait);
+                                        }
+                                }
+                            else
+                                {
+                                    $_SESSION['message'] = "<p class='insuccess fadeOut'>Mauvaise extension ou image trop volumineuse!</p>";
+                                }
+                        }
+                    else
+                        {
+                            $portrait = NULL; 
+                        }
+                    */
+                    $directorExist = FALSE;
+
+                    foreach($db_directorList->fetchAll() as $directors)
+                        {
+                            if(strtolower($directors['first_name_person']) == strtolower($first_name) && strtolower($directors['name_person']) == strtolower($name))
+                                {
+                                    $directorExist = TRUE;
+                                }
+                        }
+                    
+                    if($directorExist)
+                        {
+                            $_SESSION['message'] = "<p class='insuccess fadeOut'>L'acteur ajouté exist déjà...</p>";
+                            header("Location:index.php?action=addDirector");
+                        }
+                    else
+                        { 
+                            $sql_addDirector =    "INSERT INTO person (first_name_person, name_person, sex_person, birth_person, portrait_person)
+                                                VALUES (:first_name_person, :name_person, :sex_person, :birth_person, :portrait_person);
+                                                SET @last_id_person = LAST_INSERT_ID();
+                                                INSERT INTO director (id_person)
+                                                VALUES (@last_id_person);";
+                            $db_addDirector = $pdo->prepare($sql_addDirector);
+
+                            $db_addDirector->bindValue(":first_name_person", $first_name);
+                            $db_addDirector->bindValue(":name_person", $name);
+                            $db_addDirector->bindValue(":sex_person", $sexe);
+                            $db_addDirector->bindValue(":birth_person", $birth);
+                            $db_addDirector->bindValue(":portrait_person", $portrait);
+                            
+                            $db_addDirector->execute();
+                            
+                        }
+                }
                 require "view/directors/addDirector.php";
             }
         public function editDirector()

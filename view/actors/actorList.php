@@ -21,7 +21,7 @@ if(isset($_SESSION['message']))
         foreach ($db_actorList->fetchAll() as $actor) 
             { ?>
             <div class="col-lg-2">
-                <a class="text-decoration-none text-reset" href="index.php?action=actorDetail&id=<?= $actor['id_actor'] ?>">
+                <a class="text-decoration-none text-reset" href="index.php?action=actorDetail&id=<?= $actor['id_person'] ?>">
                     <img src="public/img/placeholder.png" alt="portrait <?= $actor['first_name_person']." ".$actor['name_person'] ?>" class="img-thumbnail">
                     <h5 class="text-center fw-semibold"><?= $actor['first_name_person']." ".$actor['name_person'] ?></h5>
                 </a>

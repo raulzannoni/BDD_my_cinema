@@ -21,7 +21,7 @@ if(isset($_SESSION['message']))
         foreach ($db_directorList->fetchAll() as $director) 
             { ?>
             <div class="col-lg-2">
-                <a class="text-decoration-none text-reset" href="index.php?action=directorDetail&id=<?= $director['id_director'] ?>">
+                <a class="text-decoration-none text-reset" href="index.php?action=directorDetail&id=<?= $director['id_person'] ?>">
                     <img src="public/img/placeholder.png" alt="portrait <?= $director['first_name_person']." ".$director['name_person'] ?>" class="img-thumbnail">
                     <h5 class="text-center fw-semibold"><?= $director['first_name_person']." ".$director['name_person'] ?></h5>
                 </a>

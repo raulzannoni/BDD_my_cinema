@@ -712,6 +712,9 @@ class CinemaController
                                     FROM type_film tp, film f, talk t
                                     WHERE t.id_type_film = tp.id_type_film 
                                     AND t.id_film = f.id_film
+                                    OR tp.id_type_film NOT IN
+                                    (SELECT t.id_type_film
+                                    FROM talk t)
                                     GROUP BY tp.id_type_film, tp.name_type_film
                                     ORDER BY COUNT(f.title_film) DESC";
                 $db_genreList = $pdo->query($sql_genreList);

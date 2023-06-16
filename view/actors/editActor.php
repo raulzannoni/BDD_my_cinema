@@ -20,26 +20,42 @@ if(isset($_SESSION['message']))
     <form class="row w-50 g-3 p-6 m-3 border" action="index.php?action=editActor&id=<?=$actorDetail["id_person"];?>" method="post" enctype="multipart/form-data" autocomplete="off">
         <div class="col-md-6">
             <label for="first_name" class="form-label">Prenom :
-                <input type="text" class="form-control" name="first_name" id="first_name" value="required">
+                <input type="text" class="form-control" name="first_name" id="first_name" value="<?= $actorDetail['first_name_person'];?>">
             </label>
         </div>
         <div class="col-md-6">
             <label for="name" class="form-label">Nom :
-                <input type="text" class="form-control" name="name" id="name" value="required">
+                <input type="text" class="form-control" name="name" id="name" value="<?= $actorDetail['name_person'];?>">
             </label>
         </div>
         <div class="col-md-6">
             <label for="birth" class="form-label">Date de naissance :
-                <input type="date" class="form-control" name="birth" id="birth" value="required">
+                <input type="date" class="form-control" name="birth" id="birth" value="<?= $actorDetail['birth_person'];?>">
             </label>
         </div>
         <div class="col-md-6">
             <label for="sexe" class="form-label">Genre :
                 <select class="form-select" name="sexe" id="sexe">
-                    <option value="Sexe" selected disabled>Genre</option>
-                    <option value="Masculin">Masculin</option>
-                    <option value="Feminin">Feminin</option>
-                    <option value="Autre">Autre</option>
+                    <?php
+                        switch($actorDetail["sex_person"])
+                            {
+                                case "Masculin":
+                                    echo    "<option value='Masculin' selected>Masculin</option>
+                                            <option value='Feminin'>Feminin</option>
+                                            <option value='Autre'>Autre</option>";
+                                    break;
+                                case "Feminin":
+                                    echo    "<option value='Masculin'>Masculin</option>
+                                            <option value='Feminin' selected>Feminin</option>
+                                            <option value='Autre'>Autre</option>";
+                                    break;
+                                case "Autre":
+                                    echo    "<option value='Masculin'>Masculin</option>
+                                            <option value='Feminin'>Feminin</option>
+                                            <option value='Autre' selected>Autre</option>";
+                                    break;
+                            }
+                    ?>
                 </select>
             </label>
         </div>
@@ -49,7 +65,7 @@ if(isset($_SESSION['message']))
             </label>
         </div>
         <div class="col-12">
-            <button type="submit" name="submit" class="btn btn-primary">Ajouter</button>
+            <button type="submit" name="submit" class="btn btn-primary">Editer</button>
         </div>
     </form>
 </div>

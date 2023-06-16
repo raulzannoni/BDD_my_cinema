@@ -56,7 +56,7 @@ class CinemaController
                 $db_genresFilm = $pdo->prepare($sql_genresFilm);
                 $db_genresFilm->execute(["id" => $id]); 
 
-                $sql_castingDetail =   "SELECT CONCAT_WS(' ', p.first_name_person, p.name_person) AS actor, a.id_actor, r.name_role AS role
+                $sql_castingDetail =   "SELECT CONCAT_WS(' ', p.first_name_person, p.name_person) AS actor, a.id_actor, p.id_person, r.name_role AS role
                                         FROM person p, actor a, film f, casting c, role r
                                         WHERE f.id_film = c.id_film
                                         AND a.id_actor = c.id_actor
@@ -196,7 +196,7 @@ class CinemaController
                                     WHERE f.id_film = c.id_film
                                     AND a.id_actor = c.id_actor
                                     AND r.id_role = c.id_role
-                                    AND a.id_actor = :id";
+                                    AND a.id_person = :id";
                 $db_filmsActor = $pdo->prepare($sql_filmsActor);
                 $db_filmsActor->execute(["id" => $id]);
                 require "view/actors/actorDetail.php";
@@ -452,7 +452,7 @@ class CinemaController
                 $sql_filmsDirector =   "SELECT f.title_film AS film, YEAR(f.year_film) AS year_film, f.id_film, f.star_film AS star
                                         FROM film f, director d
                                         WHERE f.id_director = d.id_director
-                                        AND d.id_director = :id";
+                                        AND d.id_person = :id";
                 $db_filmsDirector = $pdo->prepare($sql_filmsDirector);
                 $db_filmsDirector->execute(["id" => $id]);
                 require "view/directors/directorDetail.php";

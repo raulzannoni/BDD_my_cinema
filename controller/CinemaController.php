@@ -22,15 +22,15 @@ class CinemaController
         public function filmList()
             {
                 $pdo = Connect::dbConnect();
-                $sql =  "SELECT id_film, title_film, YEAR(year_film) AS year_film, star_film AS star
-                        FROM film";
-                $db_filmList = $pdo->query($sql);
+                $sql_filmList =  "SELECT id_film, title_film, YEAR(year_film) AS year_film, star_film AS star
+                                FROM film";
+                $db_filmList = $pdo->query($sql_filmList);
                 require "view/films/filmList.php";
             }
         public function filmDetail($id)
             {
                 $pdo = Connect::dbConnect();
-                $sql_filmDetail =  "SELECT  f.title_film, 
+                $sql_filmDetail =   "SELECT  f.title_film, 
                                     YEAR(f.year_film) AS year_film, 
                                     f.duration_film AS length_film,
                                     GROUP_CONCAT(tp.name_type_film SEPARATOR ' ') AS genres,
@@ -71,15 +71,29 @@ class CinemaController
             }
         public function addFilm()
             {
-                if(isset($_POST['submit']))
-                    {
-                        $title_film = filter_input(INPUT_POST, "title_film", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-                        $id_director = filter_input(INPUT_POST, "id_director", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-                        $year_film = filter_input(INPUT_POST, "year_film");
-                        $duration_film =  filter_input(INPUT_POST, "duration_film");
-                        $plot_film =  filter_input(INPUT_POST, "plot_film", FILTER_VALIDATE_BOOL);
-                        $star_film =  filter_input(INPUT_POST, "star_film", FILTER_VALIDATE_BOOL);
+                $pdo = Connect::dbConnect();
+                $sql_filmList = "SELECT id_film, title_film
+                                FROM film";
+                $db_filmList = $pdo->query($sql_filmList);
 
+                $sql_directorList = "SELECT d.id_director, p.id_person,
+                                    CONCAT_WS(' ', p.first_name_person, p.name_person) AS director
+                                    FROM person p, director d
+                                    WHERE p.id_person = d.id_person
+                                    ORDER BY p.name_person";
+                
+                if(isset($_POST['submit']))
+                {
+                    
+                    $title_film = filter_input(INPUT_POST, "title_film", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                    $year_film = filter_input(INPUT_POST, "year_film", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                    $star_film = filter_input(INPUT_POST, "star_film");
+                    $duration_film = filter_input(INPUT_POST, "duration_film");
+                    $plot_film =  filter_input(INPUT_POST, "plot_film", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                    $director_film = filter_input(INPUT_POST, "director_film", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                    $portrait = NULL;
+                    
+                    /*
                         if(isset($_FILES['portrait']))
                             {
                                 $imgTmpName = $_FILES['portrait']['tmp_name'];
@@ -103,18 +117,18 @@ class CinemaController
                                         $uniqueName = uniqid('', true);
                                         
                                         //on va à créer la variable img = ID + extension
-                                        $poster_film = $uniqueName.'.'.$extension;
+                                        $portrait = $uniqueName.'.'.$extension;
 
                                         //On doit exprimer le chemin de le dossier où les images doivent etré stockées (sur le Mac)
                                         $path = "/Applications/XAMPP/xamppfiles/htdocs/raul_ZANNONI/BDD_my_cinema/public/img/person";
 
                                         //fonction poutr envoyer l'image dans le dossier upload
-                                        move_uploaded_file($imgTmpName, './public/img/person/'.$poster_film);
+                                        move_uploaded_file($imgTmpName, './public/img/person/'.$portrait);
                                         
                                         //si le chargement n'est pas marché, on utilise le PATH complet de le dossier "upload"
-                                        if(!move_uploaded_file($imgTmpName, './public/img/person/'.$poster_film))
+                                        if(!move_uploaded_file($imgTmpName, './public/img/person/'.$portrait))
                                             {
-                                                move_uploaded_file($imgTmpName, $path.$poster_film);
+                                                move_uploaded_file($imgTmpName, $path.$portrait);
                                             }
                                     }
                                 else
@@ -122,27 +136,47 @@ class CinemaController
                                         $_SESSION['message'] = "<p class='insuccess fadeOut'>Mauvaise extension ou image trop volumineuse!</p>";
                                     }
                             }
+                        else
+                            {
+                                $portrait = NULL; 
+                            }
+                        */
+                        $filmExist = FALSE;
+
+                        foreach($db_filmList->fetchAll() as $films)
+                            {
+                                if(strtolower($films['title_film']) == strtolower($title_film))
+                                    {
+                                        $filmExist = TRUE;
+                                    }
+                            }
+                        
+                        if($filmExist)
+                            {
+                                $_SESSION['message'] = "<p class='insuccess fadeOut'>Le film ajouté exist déjà...</p>";
+                                header("Location:index.php?action=addFilm");
+                            }
+                        else
+                            { 
+                                
+                                $sql_addFilm =  "INSERT INTO film (title_film, id_director, year_film, duration_film, plot_film, star_film)
+                                                VALUES (:title_film, :id_director, :year_film, :duration_film, :plot_film, :star_film)
+                                                SET @last_id_person = LAST_INSERT_ID();
+                                                INSERT INTO actor (id_person)
+                                                VALUES (@last_id_person);";
+                                $db_addFilm = $pdo->prepare($sql_addFilm);
+
+                                $db_addFilm->bindValue(":first_name_person", $first_name);
+                                $db_addFilm->bindValue(":name_person", $name);
+                                $db_addFilm->bindValue(":sex_person", $sexe);
+                                $db_addFilm->bindValue(":birth_person", $birth);
+                                $db_addFilm->bindValue(":portrait_person", $portrait);
+                                
+                                $db_addFilm->execute();
+                                
+                            }
                     }
-                $pdo = Connect::dbConnect();
-                
-                $sql_directorList = "SELECT * FROM person p, director d
-                                    WHERE p.id_person = d.id_person";
-                $db_directorList = $pdo->query($sql_directorList);
-                
-
-                $sql_addFilm = "INSERT INTO film (title_film, id_director, year_film, duration_film, plot_film, star_film, poster_film)
-                                VALUES (:title_film, :id_director, :year_film, :duration_film, :plot_film, :star_film, :poster_film)";
-                $db_addFilm = $pdo->prepare($sql_addFilm);
-                
-                $db_addFilm->bindValue(':title_film', $title_film);
-                $db_addFilm->bindValue(':id_director', $id_director);
-                $db_addFilm->bindValue(':year_film', $year_film);
-                $db_addFilm->bindValue(':duration_film', $duration_film);
-                $db_addFilm->bindValue(':plot_film', $plot_film);
-                $db_addFilm->bindValue(':star_film', $star_film);
-                $db_addFilm->bindValue(':poster_film', $poster_film);
-
-                $db_addFilm->execute();
+                require "view/films/addFilm.php";
             }
         public function editFilm($id)
             {

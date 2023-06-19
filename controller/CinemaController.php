@@ -81,17 +81,28 @@ class CinemaController
                                     FROM person p, director d
                                     WHERE p.id_person = d.id_person
                                     ORDER BY p.name_person";
+
+                $db_directorList = $pdo->query($sql_directorList);
+
+                $sql_directorDetail =   "SELECT d.id_director, p.id_person
+                                        FROM person p, director d
+                                        WHERE p.first_name_person = :first_name_director
+                                        AND p.name_person = :name_director
+                                        AND p.id_person = d.id_person";
+
+                $db_directorDetail = $pdo->prepare($sql_directorDetail);
                 
                 if(isset($_POST['submit']))
                 {
-                    
-                    $title_film = filter_input(INPUT_POST, "title_film", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-                    $year_film = filter_input(INPUT_POST, "year_film", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-                    $star_film = filter_input(INPUT_POST, "star_film");
-                    $duration_film = filter_input(INPUT_POST, "duration_film");
-                    $plot_film =  filter_input(INPUT_POST, "plot_film", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-                    $director_film = filter_input(INPUT_POST, "director_film", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-                    $portrait = NULL;
+                    var_dump($_POST['submit']);
+                    $title_film = filter_input(INPUT_POST, "title", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                    $year_film = filter_input(INPUT_POST, "year", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                    $star_film = filter_input(INPUT_POST, "rating");
+                    $duration_film = filter_input(INPUT_POST, "duration");
+                    $plot_film =  filter_input(INPUT_POST, "plot", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                    $director_film = filter_input(INPUT_POST, "director", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                    $poster_film = NULL;
+                    var_dump($_POST['submit']);
                     
                     /*
                         if(isset($_FILES['portrait']))
@@ -158,20 +169,28 @@ class CinemaController
                             }
                         else
                             { 
+                                $directorName = explode(" ", $director_film);
                                 
-                                $sql_addFilm =  "INSERT INTO film (title_film, id_director, year_film, duration_film, plot_film, star_film)
-                                                VALUES (:title_film, :id_director, :year_film, :duration_film, :plot_film, :star_film)
-                                                SET @last_id_person = LAST_INSERT_ID();
-                                                INSERT INTO actor (id_person)
-                                                VALUES (@last_id_person);";
+                                $db_directorDetail->bindValue(":first_name_director", $directorName[0]);
+                                $db_directorDetail->bindValue(":name_director", $directorName[1]);
+
+                                $db_directorDetail->execute();
+
+                                $directorDetail = $db_directorDetail->fetch();
+
+
+                                $sql_addFilm =  "INSERT INTO film (title_film, id_director, year_film, duration_film, plot_film, star_film, poster_film)
+                                                VALUES (:title_film, :id_director, :year_film, :duration_film, :plot_film, :star_film, :poster_film)";
                                 $db_addFilm = $pdo->prepare($sql_addFilm);
 
-                                $db_addFilm->bindValue(":first_name_person", $first_name);
-                                $db_addFilm->bindValue(":name_person", $name);
-                                $db_addFilm->bindValue(":sex_person", $sexe);
-                                $db_addFilm->bindValue(":birth_person", $birth);
-                                $db_addFilm->bindValue(":portrait_person", $portrait);
-                                
+                                $db_addFilm->bindValue(":title_film", $title_film);
+                                $db_addFilm->bindValue(":id_director", $directorDetail["id_director"]);
+                                $db_addFilm->bindValue(":year_film", $year_film);
+                                $db_addFilm->bindValue(":duration_film", $duration_film);
+                                $db_addFilm->bindValue(":star_film", $duration_film);
+                                $db_addFilm->bindValue(":poster_film", $poster_film);
+                                var_dump($_POST['submit']);
+                                die;
                                 $db_addFilm->execute();
                                 
                             }

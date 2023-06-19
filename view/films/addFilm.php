@@ -16,7 +16,7 @@ if(isset($_SESSION['message']))
 </div>
 
 <div class="p-2">
-    <form class="row w-50 g-3 p-6 m-3 border" action="index.php?action=addActor" method="post" enctype="multipart/form-data" autocomplete="off">
+    <form class="row w-50 g-3 p-6 m-3 border" action="index.php?action=addFilm" method="post" enctype="multipart/form-data" autocomplete="off">
         <div class="col-md-6">
             <label for="title" class="form-label">Title :
                 <input type="text" class="form-control" name="title" id="title" value="required">
@@ -29,7 +29,7 @@ if(isset($_SESSION['message']))
                     <?php
                         foreach($db_directorList->fetchAll() as $directors) 
                             { ?>
-                                <option value="<?= $directors['first_name_person']." ".$directors['name_person']?>"><?= $directors['first_name_person']." ".$directors['name_person']?></option>
+                                <option value="<?= $directors['director']?>"><?= $directors['director']?></option>
                     <?php   }?>
                 </select>
             </label>
@@ -43,11 +43,6 @@ if(isset($_SESSION['message']))
         <div class="col-md-6">
             <label for="duration" class="form-label">Duration film :
                 <input type="time" class="form-control" name="duration" id="duration" value="required">
-            </label>
-        </div>
-        <div class="col-md-6">
-            <label for="year" class="form-label">Date de sortie :
-                <input type="date" class="form-control" name="year" id="year" value="required">
             </label>
         </div>
         <div class="col-md-6">
@@ -67,12 +62,12 @@ if(isset($_SESSION['message']))
             </label>
         </div>
         <div class="col-md-6">
-            <label for="portrait" class="form-label">Portrait :
-                <input type="file" class="form-control" name="portrait" id="portrait">
+            <label for="poster" class="form-label">Portrait :
+                <input type="file" class="form-control" name="poster" id="poster">
             </label>
         </div>
         <div class="col-12">
-            <button type="submit" class="btn btn-primary">Ajouter</button>
+            <button type="submit" name="submit" class="btn btn-primary">Ajouter</button>
         </div>
     </form>
 </div>

@@ -240,6 +240,159 @@ class CinemaController
         public function editFilm($id)
             {
                 $pdo = Connect::dbConnect();
+                $sql_filmList = "SELECT * FROM film";
+                $db_filmList = $pdo->query($sql_filmList);
+
+                $sql_filmDetail =   "SELECT  f.title_film, 
+                                    YEAR(f.year_film) AS year_film, 
+                                    f.duration_film AS length_film,
+                                    GROUP_CONCAT(tp.name_type_film SEPARATOR ' ') AS genres,
+                                    CONCAT_WS(' ', p.first_name_person, p.name_person) AS director,
+                                    f.star_film AS star,
+                                    f.plot_film AS plot,
+                                    f.id_director,
+                                    p.id_person,
+                                    f.id_film
+                                    FROM film f, person p, director d, talk t, type_film tp
+                                    WHERE p.id_person = d.id_person
+                                    AND f.id_director = d.id_director 
+                                    AND tp.id_type_film = t.id_type_film
+                                    AND t.id_film = f.id_film
+                                    AND f.id_film = :id";
+                $db_filmDetail = $pdo->prepare($sql_filmDetail);
+                $db_filmDetail->bindParam(':id', $id);
+                $db_filmDetail->execute();
+
+                $sql_directorList = "SELECT d.id_director, p.id_person,
+                                    CONCAT_WS(' ', p.first_name_person, p.name_person) AS director
+                                    FROM person p, director d
+                                    WHERE p.id_person = d.id_person
+                                    ORDER BY p.name_person";
+
+                $db_directorList = $pdo->query($sql_directorList);
+
+                $sql_directorDetail =   "SELECT d.id_director, p.id_person
+                                        FROM person p, director d
+                                        WHERE p.first_name_person = :first_name_director
+                                        AND p.name_person = :name_director
+                                        AND p.id_person = d.id_person";
+
+                $db_directorDetail = $pdo->prepare($sql_directorDetail);
+
+                $sql_genreList =   "SELECT tp.id_type_film, tp.name_type_film AS genre
+                                    FROM type_film tp";
+
+                $db_genreList = $pdo->query($sql_genreList);
+
+                $sql_genreDetail = "SELECT tp.id_type_film
+                                    FROM type_film tp
+                                    WHERE tp.name_type_film";
+
+
+            
+                if(isset($_POST['submit']))
+                    {
+                        $title_film = filter_input(INPUT_POST, "title", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                        $year_film = filter_input(INPUT_POST, "year", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                        $star_film = filter_input(INPUT_POST, "rating");
+                        $duration_film = filter_input(INPUT_POST, "duration");
+                        $plot_film =  filter_input(INPUT_POST, "plot", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                        $director_film = filter_input(INPUT_POST, "director", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                            
+                        foreach($db_genreList->fetchAll() as $key => $genres)
+                            {
+                                $trim_genres[] = str_replace(" ", "_", $genres["genre"]);
+                                if($_POST[$trim_genres[$key]] == "on")
+                                    {
+                                        $genre_film[] = $genres["genre"];
+                                    }
+                            }
+                            
+                            
+                                        
+                        //var_dump($genre_film);
+
+                            
+                        $poster_film = NULL;
+                            
+                        
+                        $filmExist = FALSE;
+
+                        foreach($db_filmList->fetchAll() as $films)
+                                {
+                                    if($films['id_film'] == $id)
+                                        {
+                                            continue;
+                                        }
+                                    else
+                                        {
+                                            if(strtolower($films['title_film']) == strtolower($title_film))
+                                                {
+                                                    $filmExist = TRUE;
+                                                }
+                                        }
+                                }
+                                
+                        if($filmExist)
+                                {
+                                    $_SESSION['message'] = "<p class='insuccess fadeOut'>Le film ajouté exist déjà...</p>";
+                                    header("Location:index.php?action=addFilm");
+                                }
+                        else                            
+                                { 
+                                        $directorName = explode(" ", $director_film);
+                                        
+                                        $db_directorDetail->bindValue(":first_name_director", $directorName[0]);
+                                        $db_directorDetail->bindValue(":name_director", $directorName[1]);
+
+                                        $db_directorDetail->execute();
+
+                                        $directorDetail = $db_directorDetail->fetch();
+
+                                        $sql_editFilm = "UPDATE film 
+                                                        SET title_film = :title_film, 
+                                                        id_director = :id_director, 
+                                                        year_film = :year_film, 
+                                                        duration_film = :duration_film, 
+                                                        plot_film = :plot_film, 
+                                                        star_film = :star_film
+                                                        WHERE id_film = :id_film";
+                                        $db_editFilm = $pdo->prepare($sql_editFilm);
+                                        
+                                        $year_film = $year_film."-01-01";               
+
+                                        $db_editFilm->bindValue(":title_film", $title_film);
+                                        $db_editFilm->bindValue(":id_director", $directorDetail["id_director"]);
+                                        $db_editFilm->bindValue(":year_film", $year_film);
+                                        $db_editFilm->bindValue(":duration_film", $duration_film);
+                                        $db_editFilm->bindValue(":plot_film", $plot_film);
+                                        $db_editFilm->bindValue(":star_film", $star_film);
+                                        //$db_addFilm->bindValue(":poster_film", $poster_film);
+                                        
+                                        $db_editFilm->execute();
+
+                                        $sql_deleteTalk =   "DELETE FROM talk
+                                                            WHERE id_film = :id";
+                                        $db_deleteTalk = $pdo->prepare($sql_deleteTalk);
+                                        $db_deleteTalk->bindParam(":id", $id);
+                                        $db_deleteTalk->execute();
+
+                                        $sql_addGenres =   "INSERT INTO talk (id_film, id_type_film) 
+                                                            VALUES ((SELECT id_film FROM film WHERE title_film = :title_film), 
+                                                                    (SELECT id_type_film FROM type_film WHERE name_type_film = :genre_film))";
+                                        $db_addGenres = $pdo->prepare($sql_addGenres);
+                                        $db_addGenres->bindValue(":title_film", $title_film);
+                                        
+                                        foreach($genre_film as $genre)
+                                            {
+                                                $db_addGenres->bindValue(":genre_film", $genre);
+                                                $db_addGenres->execute();
+                                            }
+                                        
+                                }
+                    }
+
+                require "view/films/editFilm.php";
             }
         public function deleteFilm($id)
             {
@@ -392,8 +545,8 @@ class CinemaController
         public function editActor($id)
             {
                 $pdo = Connect::dbConnect();
-                $sql_actorList = "SELECT * FROM person p, actor a
-                WHERE p.id_person = a.id_person";
+                $sql_actorList =   "SELECT * FROM person p, actor a
+                                    WHERE p.id_person = a.id_person";
                 $db_actorList = $pdo->query($sql_actorList);
 
                 $sql_actorDetail =  "SELECT * FROM person p, actor a

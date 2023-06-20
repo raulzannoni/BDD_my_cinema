@@ -24,7 +24,7 @@ if(isset($_SESSION['message']))
         </div>
         <div class="col-md-6">
             <label for="director" class="form-label">Director :
-                <select name="director" id="director_select">
+                <select name="director" id="director">
                     <option value="">-- Choose Director --</option>
                     <?php
                         foreach($db_directorList->fetchAll() as $directors) 
@@ -36,13 +36,34 @@ if(isset($_SESSION['message']))
             <p class="card-text fw-bold lh-1">New director ? <a class="text-decoration-none text-reset" href="index.php?action=addDirector"><i class="fa-regular fa-plus"></i></a></p>
         </div>
         <div class="col-md-6">
+            <fieldset>
+                <label for="genre" class="form-label">Genre(s) : </label>
+                <div>
+                    <?php
+                        foreach($db_genreList->fetchAll() as $genres) 
+                            { ?>
+                                <input type="checkbox" name="<?=$genres['genre']?>" id="<?= $genres['genre']?>">  
+                                <label for="<?= $genres['genre']?>"><?= $genres['genre']?></label></br>
+                    <?php   }?>
+                </div>
+            </fieldset>
+            <p class="card-text fw-bold lh-1">New genre ? <a class="text-decoration-none text-reset" href="index.php?action=addGenre"><i class="fa-regular fa-plus"></i></a></p>
+        </div>
+        <div class="col-md-6">
             <label for="year" class="form-label">Date de sortie :
-                <input type="date" class="form-control" name="year" id="year" value="required">
+                <select class="form-select" name="year" id="year">
+                    <?php
+                    for($i = 0; $i < 124; $i++)
+                        {
+                            echo '<option value='.(1900+$i).'>'.(1900+$i).'</option>';
+                        }
+                    ?>
+                </select>
             </label>
         </div>
         <div class="col-md-6">
             <label for="duration" class="form-label">Duration film :
-                <input type="time" class="form-control" name="duration" id="duration" value="required">
+                <input value="00:00:00" type="time" class="form-control" name="duration" id="duration">
             </label>
         </div>
         <div class="col-md-6">
@@ -62,7 +83,7 @@ if(isset($_SESSION['message']))
             </label>
         </div>
         <div class="col-md-6">
-            <label for="poster" class="form-label">Portrait :
+            <label for="poster" class="form-label">Poster :
                 <input type="file" class="form-control" name="poster" id="poster">
             </label>
         </div>
@@ -76,7 +97,7 @@ if(isset($_SESSION['message']))
 
 
 <?php
-$title = "new Actor";
+$title = "new Film";
 $content = ob_get_clean();
 require "view/template.php";
 ?>

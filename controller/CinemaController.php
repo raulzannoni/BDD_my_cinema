@@ -91,18 +91,43 @@ class CinemaController
                                         AND p.id_person = d.id_person";
 
                 $db_directorDetail = $pdo->prepare($sql_directorDetail);
+
+                $sql_genreList =   "SELECT tp.id_type_film, tp.name_type_film AS genre
+                                    FROM type_film tp";
+
+                $db_genreList = $pdo->query($sql_genreList);
+
+                $sql_genreDetail = "SELECT tp.id_type_film
+                                    FROM type_film tp
+                                    WHERE tp.name_type_film";
+
+
                 
                 if(isset($_POST['submit']))
                 {
-                    var_dump($_POST['submit']);
                     $title_film = filter_input(INPUT_POST, "title", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
                     $year_film = filter_input(INPUT_POST, "year", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
                     $star_film = filter_input(INPUT_POST, "rating");
                     $duration_film = filter_input(INPUT_POST, "duration");
                     $plot_film =  filter_input(INPUT_POST, "plot", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
                     $director_film = filter_input(INPUT_POST, "director", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                    
+                    foreach($db_genreList->fetchAll() as $key => $genres)
+                        {
+                            $trim_genres[] = str_replace(" ", "_", $genres["genre"]);
+                            if($_POST[$trim_genres[$key]] == "on")
+                            {
+                                $genre_film[] = $genres["genre"];
+                            }
+                        }
+                    
+                    
+                                
+                    //var_dump($genre_film);
+
+                    
                     $poster_film = NULL;
-                    var_dump($_POST['submit']);
+                    
                     
                     /*
                         if(isset($_FILES['portrait']))
@@ -179,19 +204,33 @@ class CinemaController
                                 $directorDetail = $db_directorDetail->fetch();
 
 
-                                $sql_addFilm =  "INSERT INTO film (title_film, id_director, year_film, duration_film, plot_film, star_film, poster_film)
-                                                VALUES (:title_film, :id_director, :year_film, :duration_film, :plot_film, :star_film, :poster_film)";
+                                $sql_addFilm =  "INSERT INTO film (title_film, id_director, year_film, duration_film, plot_film, star_film)
+                                                VALUES (:title_film, :id_director, :year_film, :duration_film, :plot_film, :star_film)";
                                 $db_addFilm = $pdo->prepare($sql_addFilm);
+                                
+                                $year_film = $year_film."-01-01";               
 
                                 $db_addFilm->bindValue(":title_film", $title_film);
                                 $db_addFilm->bindValue(":id_director", $directorDetail["id_director"]);
                                 $db_addFilm->bindValue(":year_film", $year_film);
                                 $db_addFilm->bindValue(":duration_film", $duration_film);
-                                $db_addFilm->bindValue(":star_film", $duration_film);
-                                $db_addFilm->bindValue(":poster_film", $poster_film);
-                                var_dump($_POST['submit']);
-                                die;
+                                $db_addFilm->bindValue(":plot_film", $plot_film);
+                                $db_addFilm->bindValue(":star_film", $star_film);
+                                //$db_addFilm->bindValue(":poster_film", $poster_film);
+                                
                                 $db_addFilm->execute();
+
+                                $sql_addGenres =   "INSERT INTO talk (id_film, id_type_film) 
+                                                    VALUES ((SELECT id_film FROM film WHERE title_film = :title_film), 
+                                                            (SELECT id_type_film FROM type_film WHERE name_type_film = :genre_film))";
+                                $db_addGenres = $pdo->prepare($sql_addGenres);
+                                $db_addGenres->bindValue(":title_film", $title_film);
+                                
+                                foreach($genre_film as $genre)
+                                    {
+                                        $db_addGenres->bindValue(":genre_film", $genre);
+                                        $db_addGenres->execute();
+                                    }
                                 
                             }
                     }
@@ -345,7 +384,8 @@ class CinemaController
                                 $db_addActor->bindValue(":sex_person", $sexe);
                                 $db_addActor->bindValue(":birth_person", $birth);
                                 $db_addActor->bindValue(":portrait_person", $portrait);
-                                
+                                var_dump($_POST['submit']);
+                                die;
                                 $db_addActor->execute();
                                 
                             }

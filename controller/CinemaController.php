@@ -38,6 +38,7 @@ class CinemaController
                                     f.star_film AS star,
                                     f.plot_film AS plot,
                                     f.id_director,
+                                    p.id_person,
                                     f.id_film
                                     FROM film f, person p, director d, talk t, type_film tp
                                     WHERE p.id_person = d.id_person
@@ -243,25 +244,22 @@ class CinemaController
         public function deleteFilm($id)
             {
                 $pdo = Connect::dbConnect();
-            }
-        public function checkFilm($id)
-            {
-                $pdo = Connect::dbConnect();
-                $sql_checkFilm =   "SELECT * FROM film
+
+                $sql_deleteTalk =   "DELETE FROM talk
                                     WHERE id_film = :id";
-                $db_checkFilm = $pdo->prepare($sql_checkFilm);
-                $db_checkFilm->execute(["id" => $id]);
-                $filmExist = $db_checkFilm->fetch();
-                if (!empty($filmExist))
-                    {
-                        $result = TRUE;
-                    }
-                else
-                    {
-                        $result = FALSE;
-                    }
-                return $result;
+                $db_deleteTalk = $pdo->prepare($sql_deleteTalk);
+                $db_deleteTalk->bindParam(":id", $id);
+                $db_deleteTalk->execute();
+
+                $sql_deleteFilm =   "DELETE FROM film
+                                    WHERE id_film = :id";
+                $db_deleteFilm = $pdo->prepare($sql_deleteFilm);
+                $db_deleteFilm->bindParam(":id", $id);
+                $db_deleteFilm->execute();
+
+                header("Location:index.php?action=filmList");
             }
+        
         /*------------------*/
         /*----- ACTORS -----*/
         /*------------------*/
@@ -384,8 +382,7 @@ class CinemaController
                                 $db_addActor->bindValue(":sex_person", $sexe);
                                 $db_addActor->bindValue(":birth_person", $birth);
                                 $db_addActor->bindValue(":portrait_person", $portrait);
-                                var_dump($_POST['submit']);
-                                die;
+                                
                                 $db_addActor->execute();
                                 
                             }
@@ -512,12 +509,18 @@ class CinemaController
         public function deleteActor($id)
             {
                 $pdo = Connect::dbConnect();
+                
                 $sql_deleteActor = "DELETE FROM person
                                     WHERE id_person = :id";
                 $db_deleteActor = $pdo->prepare($sql_deleteActor);
                 $db_deleteActor->bindParam(":id", $id);
-
                 $db_deleteActor->execute();
+
+                $sql_deletePerson =    "DELETE FROM person
+                                        WHERE id_person = :id";
+                $db_deletePerson = $pdo->prepare($sql_deletePerson);
+                $db_deletePerson->bindParam(":id", $id);
+                $db_deletePerson->execute();
 
                 header("Location:index.php?action=actorList");
             }
@@ -769,12 +772,19 @@ class CinemaController
         public function deleteDirector($id)
             {
                 $pdo = Connect::dbConnect();
-                $sql_deleteDirector =  "DELETE FROM person
+
+                $sql_deleteDirector =  "DELETE FROM director
                                         WHERE id_person = :id";
                 $db_deleteDirector = $pdo->prepare($sql_deleteDirector);
                 $db_deleteDirector->bindParam(":id", $id);
-
                 $db_deleteDirector->execute();
+
+
+                $sql_deletePerson =    "DELETE FROM person
+                                        WHERE id_person = :id";
+                $db_deletePerson = $pdo->prepare($sql_deletePerson);
+                $db_deletePerson->bindParam(":id", $id);
+                $db_deletePerson->execute();
 
                 header("Location:index.php?action=directorList");
             }

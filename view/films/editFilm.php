@@ -9,6 +9,12 @@ if(isset($_SESSION['message']))
     }
 
 $filmDetail = $db_filmDetail->fetch();
+$genresFilm = $db_genresFilm->fetchAll();
+
+foreach($genresFilm as $genres)
+    {
+        $genresSelected[] = $genres['genre'];
+    };
 
 ?>
 
@@ -18,10 +24,10 @@ $filmDetail = $db_filmDetail->fetch();
 </div>
 
 <div class="p-2">
-    <form class="row w-50 g-3 p-6 m-3 border" action="index.php?action=filmDetail&id=<?= $filmDetail['id_film']?>" method="post" enctype="multipart/form-data" autocomplete="off">
+    <form class="row w-50 g-3 p-6 m-3 border" action="index.php?action=editFilm&id=<?= $filmDetail['id_film']?>" method="post" enctype="multipart/form-data" autocomplete="off">
         <div class="col-md-6">
             <label for="title" class="form-label">Title :
-                <input type="text" class="form-control" name="title" id="title" value=<?= $filmDetail['title_film']?>>
+                <input type="text" class="form-control" name="title" id="title" value="<?=$filmDetail['title_film']?>">
             </label>
         </div>
         <div class="col-md-6">
@@ -50,11 +56,16 @@ $filmDetail = $db_filmDetail->fetch();
                     <?php
                         foreach($db_genreList->fetchAll() as $genres) 
                             { 
-                                foreach()
+                                if(in_array($genres['genre'], $genresSelected))
                                     {?>
-                                <input type="checkbox" name="<?=$genres['genre']?>" id="<?= $genres['genre']?>">  
-                                <label for="<?= $genres['genre']?>"><?= $genres['genre']?></label></br>
-                                <?php   }
+                                        <input type="checkbox" name="<?=$genres['genre']?>" id="<?= $genres['genre']?>" checked>  
+                                        <label for="<?= $genres['genre']?>"><?= $genres['genre']?></label></br>
+                            <?php   }
+                                else    
+                                    { ?>
+                                        <input type="checkbox" name="<?=$genres['genre']?>" id="<?= $genres['genre']?>">  
+                                        <label for="<?= $genres['genre']?>"><?= $genres['genre']?></label></br>
+                            <?php   }
                             }?>
                 </div>
             </fieldset>
@@ -90,7 +101,7 @@ $filmDetail = $db_filmDetail->fetch();
                     <?php
                     for($i = 1; $i < 6; $i++)
                         {
-                            if($i == $filmDetail['star_film'])
+                            if($i == $filmDetail['star'])
                                 { ?>
                                     <option value="<?=$i?>" selected><?=$i?></option>
                         <?php   }
@@ -104,7 +115,7 @@ $filmDetail = $db_filmDetail->fetch();
         </div>
         <div class="col-md-6">
             <label for="plot" class="form-label">Plot :
-                <input type="text" value="<?=$filmDetail['plot_film']?>" class="form-control" name="plot" id="plot">
+                <input type="text" value="<?=$filmDetail['plot']?>" class="form-control" name="plot" id="plot">
             </label>
         </div>
         <div class="col-md-6">

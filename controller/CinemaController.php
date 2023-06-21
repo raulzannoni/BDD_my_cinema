@@ -284,10 +284,14 @@ class CinemaController
 
                 $db_genreList = $pdo->query($sql_genreList);
 
-                $sql_genreDetail = "SELECT tp.id_type_film
-                                    FROM type_film tp
-                                    WHERE tp.name_type_film";
-
+                $sql_genresFilm =   "SELECT f.title_film AS title, tp.name_type_film AS genre, tp.id_type_film
+                                    FROM type_film tp, talk t, film f
+                                    WHERE tp.id_type_film = t.id_type_film
+                                    AND t.id_film = f.id_film
+                                    AND f.id_film = :id";
+                $db_genresFilm = $pdo->prepare($sql_genresFilm);
+                $db_genresFilm->bindParam(':id', $id);
+                $db_genresFilm->execute(); 
 
             
                 if(isset($_POST['submit']))
@@ -339,7 +343,8 @@ class CinemaController
                                     header("Location:index.php?action=addFilm");
                                 }
                         else                            
-                                { 
+                                {
+                                        //var_dymp
                                         $directorName = explode(" ", $director_film);
                                         
                                         $db_directorDetail->bindValue(":first_name_director", $directorName[0]);
@@ -356,7 +361,7 @@ class CinemaController
                                                         duration_film = :duration_film, 
                                                         plot_film = :plot_film, 
                                                         star_film = :star_film
-                                                        WHERE id_film = :id_film";
+                                                        WHERE id_film = :id";
                                         $db_editFilm = $pdo->prepare($sql_editFilm);
                                         
                                         $year_film = $year_film."-01-01";               
@@ -368,6 +373,7 @@ class CinemaController
                                         $db_editFilm->bindValue(":plot_film", $plot_film);
                                         $db_editFilm->bindValue(":star_film", $star_film);
                                         //$db_addFilm->bindValue(":poster_film", $poster_film);
+                                        $db_editFilm->bindParam(":id", $id);
                                         
                                         $db_editFilm->execute();
 
@@ -388,10 +394,10 @@ class CinemaController
                                                 $db_addGenres->bindValue(":genre_film", $genre);
                                                 $db_addGenres->execute();
                                             }
-                                        
+                                        header("Location:index.php?action=filmDetail&id=".$id);
                                 }
                     }
-
+                
                 require "view/films/editFilm.php";
             }
         public function deleteFilm($id)

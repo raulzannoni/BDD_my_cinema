@@ -87,9 +87,15 @@ if(isset($_SESSION['message']))
                 <input type="file" class="form-control" name="poster" id="poster">
             </label>
         </div>
+        <div class="col-md-6">
+            <label for="Casting" class="form-label">Casting :
+                <button id='addCasting' type='submit' formaction="index.php?action=addCasting"><i class='fa-regular fa-plus'></i></button>
+            </label>
+        </div>
         <div class="col-12">
             <button type="submit" name="submit" class="btn btn-primary">Ajouter</button>
         </div>
+        
     </form>
 </div>
 

@@ -947,23 +947,7 @@ class CinemaController
 
                 header("Location:index.php?action=directorList");
             }
-        /*------------------*/
-        /*----- PERSON -----*/
-        /*------------------*/
-        public function checkPerson($id)
-            {
-                $pdo = Connect::dbConnect();
-                $sql_checkPerson = "SELECT * FROM person
-                                    WHERE id_person = :id";
-                $db_checkPerson = $pdo->prepare($sql_checkPerson);
-                $db_checkPerson->execute(["id" => $id]);
-                $personExist = $db_checkPerson->fetch();
-                
-                if (!empty($personExist)) {$result = TRUE;}
-                else {$result = FALSE;}
-                
-                return $result;
-            }
+        
         /*------------------*/
         /*----- GENRES -----*/
         /*------------------*/
@@ -1251,6 +1235,29 @@ class CinemaController
                 $pdo = Connect::dbConnect();
             }
         public function deleteRole()
+            {
+                $pdo = Connect::dbConnect();
+            }
+        
+        /*-------------------*/
+        /*----- CASTING -----*/
+        /*-------------------*/
+        public function addCasting()
+            {
+                $pdo = Connect::dbConnect();
+                ?>
+                <tr>
+                    <td>Actor</td>
+                    <td>Role</td>
+                    <td><button id="supprimer" formaction="index.php?action=deleteCasting"><i class='fa-trash-alt'></i></button></td>
+                </tr>
+                <?php
+            }
+        public function editCasting($id)
+            {
+                $pdo = Connect::dbConnect();
+            }
+        public function deleteCasting($id)
             {
                 $pdo = Connect::dbConnect();
             }

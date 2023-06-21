@@ -5,12 +5,14 @@ session_start();
 use Controller\CinemaController;
 //use Controller\GenreController;
 
+
 spl_autoload_register(function ($class_name) {
-    include $class_name . '.php';
+    //var_dump($class_name);
+    include 'controller/'.$class_name .'.php';
 });
 
-require "controller/CinemaController.php";
-//require "controller/GenreController.php";
+require_once "controller/CinemaController.php";
+//require_once "controller/GenreController.php";
 
 $ctrlCinema = new CinemaController();
 //$ctrlGenre = new GenreController();
@@ -19,14 +21,8 @@ $id = (isset($_GET['id'])) ? $_GET['id'] : null;
 
 if(isset($_GET["action"]))
     {
-        /*
+        
         $id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $id_film = filter_input(INPUT_GET, "id_film", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $id_role = filter_input(INPUT_GET, "id_role", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $id_type_film = filter_input(INPUT_GET, "id_type_film", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $id_actor = filter_input(INPUT_GET, "id_actor", FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
-        $id_director = filter_input(INPUT_GET, "id_director", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        */
 
         switch($_GET["action"])
             {
@@ -62,14 +58,21 @@ if(isset($_GET["action"]))
                 case "deleteDirector" : $ctrlCinema->deleteDirector($id); break;
                 case "editDirector" : $ctrlCinema->editDirector($id); break;
 
-                /*----------------*/
+                /*------------------*/
                 /*----- GENRES -----*/
-                /*----------------*/
-                case "genreList" : $ctrlCinema->genreList(); break;
+                /*------------------*/
+                case "genreList" : $ctrlGenre->genreList(); break;
                 case "genreDetail" : $ctrlCinema->genreDetail($id); break;
                 case "addGenre" : $ctrlCinema->addGenre(); break;
                 case "deleteGenre" : $ctrlCinema->deleteGenre($id); break;
                 case "editGenre" : $ctrlCinema->editGenre($id); break;
+
+                /*-------------------*/
+                /*----- CASTING -----*/
+                /*-------------------*/
+                case "addCasting" : $ctrlCinema->addCasting(); break;
+                case "deleteCasting" : $ctrlCinema->deleteCasting($id); break;
+                case "editCasting" : $ctrlCinema->editCasting($id); break;
 
             }
     }

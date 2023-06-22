@@ -4,7 +4,7 @@ namespace Controller;
 //session_start();
 use Model\Connect;
 
-require "model/Connect.php";
+
 
 class GenreController  
     {

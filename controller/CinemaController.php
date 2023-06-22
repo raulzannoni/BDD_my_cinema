@@ -419,6 +419,49 @@ class CinemaController
                 header("Location:index.php?action=filmList");
             }
         
+        /*-------------------*/
+        /*----- CASTING -----*/
+        /*-------------------*/
+        public function editCasting($id)
+            {
+                $pdo = Connect::dbConnect();
+
+                $sql_filmDetail =  "SELECT * from film
+                                    WHERE id_film = :id";
+
+                $db_filmDetail = $pdo->prepare($sql_filmDetail);
+                $db_filmDetail->bindValue(":id", $id);
+                $db_filmDetail->execute();
+
+
+                $sql_castingList = "SELECT CONCAT_WS(' ', p.first_name_person, p.name_person) AS actor,
+                                    r.name_role AS role
+                                    FROM film f, casting c, person p, actor a, role r
+                                    WHERE p.id_person = a.id_person
+                                    AND c.id_role = r.id_role
+                                    AND c.id_actor = a.id_actor
+                                    AND c.id_film = f.id_film
+                                    AND f.id_film = :id";
+                $db_castingList = $pdo->prepare($sql_castingList);
+                $db_castingList->bindValue(":id", $id);
+                $db_castingList->execute();
+
+                $sql_actorList =   "SELECT a.id_actor,
+                                    p.id_person,
+                                    CONCAT_WS(' ', p.first_name_person, p.name_person) AS actor
+                                    FROM person p, actor a
+                                    WHERE p.id_person = a.id_person";
+                $db_actorList = $pdo->query($sql_actorList);
+
+                $sql_roleList = "SELECT id_role,
+                                r.name_role AS role
+                                FROM role r";
+                $db_roleList = $pdo->query($sql_roleList);
+
+                require "view/castings/editCasting.php";
+
+            }
+        
         /*------------------*/
         /*----- ACTORS -----*/
         /*------------------*/
@@ -1235,29 +1278,6 @@ class CinemaController
                 $pdo = Connect::dbConnect();
             }
         public function deleteRole()
-            {
-                $pdo = Connect::dbConnect();
-            }
-        
-        /*-------------------*/
-        /*----- CASTING -----*/
-        /*-------------------*/
-        public function addCasting()
-            {
-                $pdo = Connect::dbConnect();
-                ?>
-                <tr>
-                    <td>Actor</td>
-                    <td>Role</td>
-                    <td><button id="supprimer" formaction="index.php?action=deleteCasting"><i class='fa-trash-alt'></i></button></td>
-                </tr>
-                <?php
-            }
-        public function editCasting($id)
-            {
-                $pdo = Connect::dbConnect();
-            }
-        public function deleteCasting($id)
             {
                 $pdo = Connect::dbConnect();
             }

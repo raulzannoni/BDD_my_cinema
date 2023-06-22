@@ -3,19 +3,20 @@
 session_start();
 
 use Controller\CinemaController;
-//use Controller\GenreController;
+use Controller\GenreController;
 
 
-spl_autoload_register(function ($class_name) {
-    //var_dump($class_name);
-    include 'controller/'.$class_name .'.php';
-});
+// spl_autoload_register(function ($class_name) {
+//     //var_dump($class_name);
+//     include 'controller/'.$class_name .'.php';
+// });
 
 require_once "controller/CinemaController.php";
-//require_once "controller/GenreController.php";
+require_once "controller/GenreController.php";
 
 $ctrlCinema = new CinemaController();
-//$ctrlGenre = new GenreController();
+$ctrlGenre = new GenreController();
+
 
 $id = (isset($_GET['id'])) ? $_GET['id'] : null;
 
@@ -70,8 +71,6 @@ if(isset($_GET["action"]))
                 /*-------------------*/
                 /*----- CASTING -----*/
                 /*-------------------*/
-                case "addCasting" : $ctrlCinema->addCasting(); break;
-                case "deleteCasting" : $ctrlCinema->deleteCasting($id); break;
                 case "editCasting" : $ctrlCinema->editCasting($id); break;
 
             }

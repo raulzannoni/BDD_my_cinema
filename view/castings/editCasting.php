@@ -15,26 +15,26 @@ $roleList = $db_roleList->fetchAll();
 
 
 
-var_dump($castingList[2]);
+var_dump($db_castingList->fetchAll());
 
-function addCasting($array)
+function addCast($castingList, $id)
     {
-        echo "check";
+        
+        $_SESSION['message'] = "<p>check</p>";
         $newline =  [
                         "actor" => "required",
                         "role"  => "required"
                     ];
 
-        $array[] = $newline;
+        $castingList[] = $newline;
+                    
+        header("Location:index.php?action=editCasting&id=".$id);
         
     }
 
-
-if(isset($_POST["addCast"]))
+if(isset($_POST['addCast']))
     {
-        //$id = $filmDetail["id_film"];
-        addCasting($castingList);
-        header("Location:index.php?action=editCasting&id=".$id);
+        addCast($castingList, $id);
     }
 
 
@@ -51,7 +51,9 @@ if(isset($_POST["addCast"]))
         <label class="form-label">Casting Film "<?= $filmDetail['title_film']?>":
             <div class="d-flex flex-column">
                 <div class= 'p-5'>
-                    <input type="submit" name="addCast" class="button" value="Add new cast?">
+                    <form action="editCasting.php">
+                        <input type="submit" name="addCast" class="button" value="addCast" />
+                    </form>   
                 </div>
             </div>
                 <table>

@@ -12,6 +12,33 @@ $castingList = $db_castingList->fetchAll();
 $actorList = $db_actorList->fetchAll();
 $roleList = $db_roleList->fetchAll();
 
+
+
+
+var_dump($castingList[2]);
+
+function addCasting($array)
+    {
+        echo "check";
+        $newline =  [
+                        "actor" => "required",
+                        "role"  => "required"
+                    ];
+
+        $array[] = $newline;
+        
+    }
+
+
+if(isset($_POST["addCast"]))
+    {
+        //$id = $filmDetail["id_film"];
+        addCasting($castingList);
+        header("Location:index.php?action=editCasting&id=".$id);
+    }
+
+
+
 ?>
 
 <div id="Edit Casting Film <?=$filmDetail['title_film']?>">
@@ -23,38 +50,44 @@ $roleList = $db_roleList->fetchAll();
     <form class="row w-50 g-3 p-6 m-3 border" action="index.php?action=editCasting&id=<?= $filmDetail['id_film'] ?>" method="post" enctype="multipart/form-data" autocomplete="off">
         <label class="form-label">Casting Film "<?= $filmDetail['title_film']?>":
             <div class="d-flex flex-column">
-                <div class="d-flex flex-row">
-                    <div class= 'p-5'></div>
-                    <div class= 'p-5'>Actors : </div>
-                    <div class= 'p-5'>Roles : </div>
-                </div>                
-            <?php
-                foreach($castingList as $key => $cast)
-                    {?>
-                        <div class="d-flex flex-row">
-                            <div class= 'p-3'><?= $key + 1?></div>
-                            <div class= 'p-3'>
-                                <select name="actor<?=$key?>" id="actor<?=$key?>">
-                                <?php 
-                                foreach($actorList as $index => $actors)
-                                {
-                                    if($actors['actor'] == $cast['actor'])
-                                        { ?>
-                                            <option value="<?= $actors['actor']?>" selected><?= $actors['actor']?></option>
-                                <?php   }
-                                    else
-                                        {   ?>
-                                            <option value="<?= $actors['actor']?>"><?= $actors['actor']?></option>
-                                <?php   }
-                                }?>
-                                </select>
-                            </div>
-                            <div class= 'p-3'>
-                                <input type="text" class="form-control" name="role<?=$key?>" id="role<?=$key?>" value="<?= $cast['role']?>">
-                            </div>
-                        </div>
-            <?php   } ?>
+                <div class= 'p-5'>
+                    <input type="submit" name="addCast" class="button" value="Add new cast?">
+                </div>
             </div>
+                <table>
+                    <tr>
+                        <th>#</th>
+                        <th>Actors : </th>
+                        <th>Roles : </th>
+                    </tr>
+                <tbody>
+                    <?php
+                        foreach($castingList as $key => $cast)
+                            { ?>
+                                <tr>
+                                    <th><?= $key + 1?></th>
+                                    <th>
+                                        <select name="actor<?=$key?>" id="actor<?=$key?>">
+                                        <?php 
+                                        foreach($actorList as $index => $actors)
+                                        {
+                                            if($actors['actor'] == $cast['actor'])
+                                                { ?>
+                                                    <option value="<?= $actors['actor']?>" selected><?= $actors['actor']?></option>
+                                        <?php   }
+                                            else
+                                                {   ?>
+                                                    <option value="<?= $actors['actor']?>"><?= $actors['actor']?></option>
+                                        <?php   }
+                                        }?>
+                                    </th>
+                                    <th>
+                                        <input type="text" class="form-control" name="role<?=$key?>" id="role<?=$key?>" value="<?= $cast['role']?>">
+                                    </th>
+                                </div>
+                    <?php   } ?>
+                </tbody>
+            </table> 
         </label>
         <div class="col-12">
             <button type="submit" name="submit" class="btn btn-primary">Modifier</button>

@@ -422,6 +422,98 @@ class CinemaController
         /*-------------------*/
         /*----- CASTING -----*/
         /*-------------------*/
+        public function addCasting($id)
+            {
+                $pdo = Connect::dbConnect();
+
+                $sql_filmDetail =  "SELECT * from film
+                                    WHERE id_film = :id";
+
+                $db_filmDetail = $pdo->prepare($sql_filmDetail);
+                $db_filmDetail->bindValue(":id", $id);
+                $db_filmDetail->execute();
+
+
+                $sql_castingList = "SELECT CONCAT_WS(' ', p.first_name_person, p.name_person) AS actor,
+                                    r.name_role AS role
+                                    FROM film f, casting c, person p, actor a, role r
+                                    WHERE p.id_person = a.id_person
+                                    AND c.id_role = r.id_role
+                                    AND c.id_actor = a.id_actor
+                                    AND c.id_film = f.id_film
+                                    AND f.id_film = :id";
+                $db_castingList = $pdo->prepare($sql_castingList);
+                $db_castingList->bindValue(":id", $id);
+                $db_castingList->execute();
+
+                $sql_actorList =   "SELECT a.id_actor,
+                                    p.id_person,
+                                    CONCAT_WS(' ', p.first_name_person, p.name_person) AS actor
+                                    FROM person p, actor a
+                                    WHERE p.id_person = a.id_person";
+                $db_actorList = $pdo->query($sql_actorList);
+
+                $sql_roleList = "SELECT id_role,
+                                r.name_role AS role
+                                FROM role r";
+                $db_roleList = $pdo->query($sql_roleList);
+
+                if(isset($_POST['submit']))
+                    {
+                        $actor = filter_input(INPUT_POST, "actor", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                        $role = filter_input(INPUT_POST, "role", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+                        $roleExist = FALSE;
+
+                        foreach($db_roleList->fetchAll() as $roles)
+                            {
+                                if(strtolower($roles['role']) == strtolower($role))
+                                    {
+                                        $roleExist = TRUE;
+                                    }
+                            }
+                        
+                        if(!$roleExist)
+                            {
+                                $sql_addRole =  "INSERT INTO role (name_role)
+                                                VALUES (:name_role)";
+
+                                $db_addRole = $pdo->prepare($sql_addRole);
+
+                                $db_addRole->bindValue(":name_role", $role);
+
+                                $db_addRole->execute();      
+                            }
+                            
+                                $name_actor = explode(" ", $actor);
+                                $sql_addCast =  "INSERT INTO casting (id_film, id_actor, id_role)
+                                                VALUES (:id_film, 
+                                                        (SELECT a.id_actor FROM person p, actor a
+                                                        WHERE p.id_person = a.id_person
+                                                        AND p.first_name_person = :first_name_actor
+                                                        AND p.name_person = :name_actor),
+                                                        (SELECT r.id_role FROM role r
+                                                        WHERE r.name_role = :name_role))";
+                                $db_addCast = $pdo->prepare($sql_addCast);
+
+                                $db_addCast->bindValue(":id_film", $id);
+                                $db_addCast->bindValue(":first_name_actor", $name_actor[0]);
+                                $db_addCast->bindValue(":name_actor", $name_actor[1]);
+                                $db_addCast->bindValue(":name_role", $role);
+                                
+                                
+                                $db_addCast->execute();
+                                
+                            
+                                header("Location:index.php?action=filmDetail&id=".$id);
+                        
+                    }
+                
+                
+                require "view/castings/addCasting.php";
+            }
+
+        
         public function editCasting($id)
             {
                 $pdo = Connect::dbConnect();
@@ -460,6 +552,27 @@ class CinemaController
 
                 require "view/castings/editCasting.php";
 
+            }
+
+        public function deleteCasting($id, $id_actor)
+            {
+                $pdo = Connect::dbConnect();
+
+                $sql_deleteCast =  "DELETE FROM casting
+                                    WHERE id_film = :id
+                                    AND id_actor = :id_actor";
+                $db_deleteCast = $pdo->prepare("$sql_deleteCast");
+
+                $db_deleteCast->bindValue(":id", $id);
+                $db_deleteCast->bindValue(":id_actor", $id_actor);
+
+                var_dump($id);
+                var_dump($id_actor);
+                die;
+
+                $db_deleteCast->execute();
+
+                header("Location:index.php?action=filmDetail&id=".$id);
             }
         
         /*------------------*/

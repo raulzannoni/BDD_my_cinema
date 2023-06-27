@@ -53,6 +53,8 @@ $filmDetail = $db_filmDetail->fetch();
             </div>
         </div>
     </div>
+    <p class="card-text fw-bold lh-1">Edit Casting: <a class="text-decoration-none text-reset" href="index.php?action=editCasting&id=<?= $filmDetail['id_film'] ?>"><i class="fa-regular fa-pen-to-square"></i></a></p>
+        <p class="card-text fw-bold lh-1">Add Casting: <a class="text-decoration-none text-reset" href="index.php?action=addCasting&id=<?= $filmDetail['id_film'] ?>"><i class="fa-regular fa-plus"></i></a></p>
     <p class="fs-4">Casting :</p>
     <div class="row m-3">
         <?php
@@ -62,10 +64,10 @@ $filmDetail = $db_filmDetail->fetch();
                     <a class="text-decoration-none text-reset" href="index.php?action=actorDetail&id=<?=$casting['id_person']?>">
                         <img src="public/img/placeholder.png" alt="poster <?= $casting['actor'] ?>" class="img-thumbnail">
                         <h5 class="text-center fw-semibold"><?= $casting['actor'] ?> (<?= $casting['role']  ?>)</h5>
+                        <p class="card-text fw-bold lh-1">Delete ? <a class="text-decoration-none text-reset" href="index.php?action=deleteCasting&id=<?= $filmDetail['id_film'] ?>&id_actor=<?= $casting['id_actor'] ?>"><i class="fa-regular fa-trash-can"></i></a></p>
                     </a>
                 </div>
         <?php   } ?>
-        <p class="card-text fw-bold lh-1">Edit Casting: <a class="text-decoration-none text-reset" href="index.php?action=editCasting&id=<?= $filmDetail['id_film'] ?>"><i class="fa-regular fa-pen-to-square"></i></a></p>
     </div>
 </div>
 

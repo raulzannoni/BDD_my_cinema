@@ -12,36 +12,60 @@ $castingList = $db_castingList->fetchAll();
 $actorList = $db_actorList->fetchAll();
 $roleList = $db_roleList->fetchAll();
 
+$actorDummy =  [
+                "id_actor"  => 10000000,
+                10000000    => 10000000,
+                "id_person" => 10000000,
+                10000001    => 10000000,
+                "actor"     => "required",
+                10000002    => "required"
+                ];
 
+$actorList[] = $actorDummy;
 
+var_dump($roleList[0]);
 
-var_dump($db_castingList->fetchAll());
-
-function addCast($castingList, $id)
+if(count($castingList) == 0)
     {
-        
-        $_SESSION['message'] = "<p>check</p>";
         $newline =  [
-                        "actor" => "required",
-                        "role"  => "required"
+            "actor" => "required",
+            0       => "required",
+            "role"  => "required",
+            1       => "required"
                     ];
 
         $castingList[] = $newline;
-                    
-        header("Location:index.php?action=editCasting&id=".$id);
-        
     }
+
+//var_dump($castingList);
+
 
 if(isset($_POST['addCast']))
     {
-        addCast($castingList, $id);
+        
+        $newline =  [
+            "actor" => "required",
+            0       => "required",
+            "role"  => "required",
+            1       => "required"
+                    ];
+
+        $castingList[] = $newline;
+
+        var_dump($castingList);
+        
+
+        $_SESSION['message'] = '<p>check<p>';
+
+        header("Location:index.php?action=editCasting&id=".$filmDetail["id_film"]);
+    
+        //unset($_POST['addCast']);
     }
 
-
-
+//var_dump($_POST['addCast']);
 ?>
 
-<div id="Edit Casting Film <?=$filmDetail['title_film']?>">
+<div id="Edit Casting Film">
     <h2>Cinema_BDD</h2>
     <p>Edit Casting Film "<?=$filmDetail['title_film']?>"</p>
 </div>
@@ -49,13 +73,6 @@ if(isset($_POST['addCast']))
 <div class="p-2">
     <form class="row w-50 g-3 p-6 m-3 border" action="index.php?action=editCasting&id=<?= $filmDetail['id_film'] ?>" method="post" enctype="multipart/form-data" autocomplete="off">
         <label class="form-label">Casting Film "<?= $filmDetail['title_film']?>":
-            <div class="d-flex flex-column">
-                <div class= 'p-5'>
-                    <form action="editCasting.php">
-                        <input type="submit" name="addCast" class="button" value="addCast" />
-                    </form>   
-                </div>
-            </div>
                 <table>
                     <tr>
                         <th>#</th>
@@ -85,6 +102,11 @@ if(isset($_POST['addCast']))
                                     </th>
                                     <th>
                                         <input type="text" class="form-control" name="role<?=$key?>" id="role<?=$key?>" value="<?= $cast['role']?>">
+                                    </th>
+                                    <th>
+                                        <form action="editCasting.php">
+                                            <input type='submit' name="deleteCast" class="button" value="delete">
+                                        </form>
                                     </th>
                                 </div>
                     <?php   } ?>

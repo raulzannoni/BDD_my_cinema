@@ -62,7 +62,7 @@ if(isset($_GET["action"]))
                 /*------------------*/
                 /*----- GENRES -----*/
                 /*------------------*/
-                case "genreList" : $ctrlGenre->genreList(); break;
+                case "genreList" : $ctrlCinema->genreList(); break;
                 case "genreDetail" : $ctrlCinema->genreDetail($id); break;
                 case "addGenre" : $ctrlCinema->addGenre(); break;
                 case "deleteGenre" : $ctrlCinema->deleteGenre($id); break;
@@ -71,7 +71,9 @@ if(isset($_GET["action"]))
                 /*-------------------*/
                 /*----- CASTING -----*/
                 /*-------------------*/
+                case "addCasting" : $ctrlCinema->addCasting($id); break;
                 case "editCasting" : $ctrlCinema->editCasting($id); break;
+                case "deleteCasting" : $ctrlCinema->deleteCasting($id, $id_actor); break;
 
             }
     }

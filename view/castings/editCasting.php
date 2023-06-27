@@ -23,7 +23,6 @@ $actorDummy =  [
 
 $actorList[] = $actorDummy;
 
-var_dump($roleList[0]);
 
 if(count($castingList) == 0)
     {

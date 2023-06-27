@@ -73,7 +73,7 @@ if(isset($_GET["action"]))
                 /*-------------------*/
                 case "addCasting" : $ctrlCinema->addCasting($id); break;
                 case "editCasting" : $ctrlCinema->editCasting($id); break;
-                case "deleteCasting" : $ctrlCinema->deleteCasting($id, $id_actor); break;
+                case "deleteCasting" : $ctrlCinema->deleteCasting($id); break;
 
             }
     }

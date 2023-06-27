@@ -59,12 +59,14 @@ $filmDetail = $db_filmDetail->fetch();
     <div class="row m-3">
         <?php
             foreach ($db_castingDetail->fetchAll() as $casting) 
-                { ?>
+                { 
+                    $identifiant = strval($filmDetail['id_film'])."___".strval($casting['id_actor']);
+                    ?>
                 <div class="col-lg-2">
                     <a class="text-decoration-none text-reset" href="index.php?action=actorDetail&id=<?=$casting['id_person']?>">
                         <img src="public/img/placeholder.png" alt="poster <?= $casting['actor'] ?>" class="img-thumbnail">
                         <h5 class="text-center fw-semibold"><?= $casting['actor'] ?> (<?= $casting['role']  ?>)</h5>
-                        <p class="card-text fw-bold lh-1">Delete ? <a class="text-decoration-none text-reset" href="index.php?action=deleteCasting&id=<?= $filmDetail['id_film'] ?>&id_actor=<?= $casting['id_actor'] ?>"><i class="fa-regular fa-trash-can"></i></a></p>
+                        <p class="card-text fw-bold lh-1">Delete ? <a class="text-decoration-none text-reset" href="index.php?action=deleteCasting&id=<?= $identifiant?>"><i class="fa-regular fa-trash-can"></i></a></p>
                     </a>
                 </div>
         <?php   } ?>
